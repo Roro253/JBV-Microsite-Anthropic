@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
@@ -27,6 +27,7 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
   const prefersReducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   const isMicrositeRoute = pathname.startsWith("/anthropic");
+  const hasSyncedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -34,19 +35,28 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
 
   useEffect(() => {
     if (!mounted) return;
-    const derivedMode: ExplorerInvestorMode =
-      pathname.startsWith("/anthropic") ? "investor" : "explorer";
-    if (derivedMode !== mode) {
-      setMode(derivedMode);
+    if (!isMicrositeRoute) {
+      hasSyncedRef.current = false;
+      return;
     }
-  }, [mounted, pathname, mode, setMode]);
+    if (!hasSyncedRef.current) {
+      hasSyncedRef.current = true;
+      if (mode !== "investor") {
+        setMode("investor");
+      }
+    }
+  }, [isMicrositeRoute, mode, mounted, setMode]);
 
   const handleChange = (value: string) => {
     if (!value) return;
     const nextMode = value as ExplorerInvestorMode;
     if (nextMode === mode) return;
     setMode(nextMode);
-    router.push(nextMode === "investor" ? "/anthropic" : "/");
+    if (nextMode === "investor") {
+      router.push("/anthropic");
+    } else {
+      router.push("/");
+    }
   };
 
   if (!isMicrositeRoute) {

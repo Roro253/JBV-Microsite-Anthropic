@@ -28,7 +28,7 @@ export function Header({ className }: HeaderProps) {
             JBV Capital
           </span>
         </Link>
-        <ModeToggle className="hidden items-center gap-2 text-xs text-slate-500 md:flex" />
+        <ModeToggle className="flex items-center gap-2 text-xs text-slate-500" />
       </Container>
     </header>
   );

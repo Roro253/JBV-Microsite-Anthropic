@@ -153,7 +153,7 @@ export function AnthropicExperience({ data }: AnthropicExperienceProps) {
           <div className="flex items-center gap-4">
             <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-sky-300/60 bg-gradient-to-br from-sky-200/70 via-indigo-200/60 to-orange-200/50 shadow-[0_20px_40px_-28px_rgba(32,118,199,0.6)]">
               <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anthropic_logo.svg/2560px-Anthropic_logo.svg.png"
+                src="/logos/anthropic.svg"
                 alt="Anthropic logo"
                 fill
                 className="object-contain p-3"
