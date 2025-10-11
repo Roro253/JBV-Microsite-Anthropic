@@ -134,6 +134,7 @@ export function AnthropicExperience({ data }: AnthropicExperienceProps) {
 
   const heroCopy =
     mode === "explorer" ? data.modes.explorer.story : data.modes.investor.thesis;
+  const isInvestor = mode === "investor";
 
   return (
     <div className="flex flex-col gap-10">
@@ -239,40 +240,44 @@ export function AnthropicExperience({ data }: AnthropicExperienceProps) {
         />
       </Section>
 
-      <Section
-        eyebrow="Capital planning"
-        title="Model forward returns"
-        description="Adjust entry, ownership, dilution, and exit to visualize Anthropic's potential MOIC and IRR."
-      >
-        <ReturnSimulator animate={!prefersReducedMotion} />
-      </Section>
+      {isInvestor ? (
+        <>
+          <Section
+            eyebrow="Capital planning"
+            title="Model forward returns"
+            description="Adjust entry, ownership, dilution, and exit to visualize Anthropic's potential MOIC and IRR."
+          >
+            <ReturnSimulator animate={!prefersReducedMotion} />
+          </Section>
 
-      <Section
-        eyebrow="Portfolio design"
-        title="Match Anthropic to your mandate"
-        description="Three quick prompts calibrate the Anthropic allocation recommendation."
-      >
-        <PortfolioFit
-          animate={!prefersReducedMotion}
-          onResult={(result) => setPortfolioSummary(result.profile)}
-        />
-        {portfolioSummary ? (
-          <p className="text-sm text-sky-600">
-            Suggested profile: {portfolioSummary}. Tailor follow-on pacing with Claude roadmap catalysts and hyperscaler incentives.
-          </p>
-        ) : null}
-      </Section>
+          <Section
+            eyebrow="Portfolio design"
+            title="Match Anthropic to your mandate"
+            description="Three quick prompts calibrate the Anthropic allocation recommendation."
+          >
+            <PortfolioFit
+              animate={!prefersReducedMotion}
+              onResult={(result) => setPortfolioSummary(result.profile)}
+            />
+            {portfolioSummary ? (
+              <p className="text-sm text-sky-600">
+                Suggested profile: {portfolioSummary}. Tailor follow-on pacing with Claude roadmap catalysts and hyperscaler incentives.
+              </p>
+            ) : null}
+          </Section>
 
-      <Section
-        eyebrow="Next steps"
-        title="Engage JBV Capital"
-        description="Unlock diligence pathways and expedition-level coverage across Anthropic's roadmap."
-      >
-        <CallToAction
-          reserveUrl={data.links.reserve_interest}
-          diligenceUrl={data.links.book_diligence}
-        />
-      </Section>
+          <Section
+            eyebrow="Next steps"
+            title="Engage JBV Capital"
+            description="Unlock diligence pathways and expedition-level coverage across Anthropic's roadmap."
+          >
+            <CallToAction
+              reserveUrl={data.links.reserve_interest}
+              diligenceUrl={data.links.book_diligence}
+            />
+          </Section>
+        </>
+      ) : null}
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="space-y-8">
@@ -312,24 +317,26 @@ export function AnthropicExperience({ data }: AnthropicExperienceProps) {
         </div>
         <div className="space-y-6">
           <NewsFeed items={commentary} />
-          <Section
-            eyebrow="SPV terms"
-            title="Illustrative SPV snapshot"
-            description="Indicative term sheet for Anthropic exposure (final docs gated)."
-          >
-            <div className="space-y-3 text-sm text-slate-600">
-              <p>
-                <strong>Minimum check:</strong> {formatCurrency(data.spv_terms.min_check_usd)}
-              </p>
-              <p>
-                <strong>Fees:</strong> {data.spv_terms.fees}
-              </p>
-              <p>
-                <strong>Closing target:</strong> {data.spv_terms.closing_target}
-              </p>
-              <p className="text-xs text-slate-500">{data.spv_terms.docs_note}</p>
-            </div>
-          </Section>
+          {isInvestor ? (
+            <Section
+              eyebrow="SPV terms"
+              title="Illustrative SPV snapshot"
+              description="Indicative term sheet for Anthropic exposure (final docs gated)."
+            >
+              <div className="space-y-3 text-sm text-slate-600">
+                <p>
+                  <strong>Minimum check:</strong> {formatCurrency(data.spv_terms.min_check_usd)}
+                </p>
+                <p>
+                  <strong>Fees:</strong> {data.spv_terms.fees}
+                </p>
+                <p>
+                  <strong>Closing target:</strong> {data.spv_terms.closing_target}
+                </p>
+                <p className="text-xs text-slate-500">{data.spv_terms.docs_note}</p>
+              </div>
+            </Section>
+          ) : null}
         </div>
       </div>
     </div>

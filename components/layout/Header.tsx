@@ -28,14 +28,11 @@ export function Header({ className }: HeaderProps) {
             JBV Capital
           </span>
         </Link>
-        <div className="flex items-center gap-3 text-xs text-slate-500">
-          <span className="hidden text-slate-400/80 sm:inline">
-            Explorer Mode
+        <div className="flex items-center gap-2 text-xs text-slate-500">
+          <span className="hidden text-[11px] uppercase tracking-[0.3em] text-slate-400 sm:inline">
+            Mode
           </span>
           <ModeToggle />
-          <span className="hidden text-slate-400/80 sm:inline">
-            Investor Mode
-          </span>
         </div>
       </Container>
     </header>

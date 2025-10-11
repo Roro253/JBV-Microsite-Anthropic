@@ -6,6 +6,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
+import { useUIStore } from "@/lib/store/ui";
 
 interface NarrativeEntryPortalProps {
   subtitle?: string;
@@ -15,12 +16,17 @@ export function NarrativeEntryPortal({ subtitle }: NarrativeEntryPortalProps) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const prefersReducedMotion = useReducedMotion();
+  const setMode = useUIStore((state) => state.setMode);
 
   const springX = useSpring(0, {
     stiffness: 120,
     damping: 26,
     mass: 0.8
   });
+
+  useEffect(() => {
+    setMode("explorer");
+  }, [setMode]);
 
   useEffect(() => {
     const unsub = x.on("change", (value) => {

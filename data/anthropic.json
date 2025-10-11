@@ -76,8 +76,8 @@
     "docs_note": "Terms & dates are placeholders; move final terms behind gated data room."
   },
   "links": {
-    "reserve_interest": "ENV:NEXT_PUBLIC_TYPEFORM_URL",
-    "book_diligence": "ENV:NEXT_PUBLIC_CALENDLY_URL"
+    "reserve_interest": "mailto:JB@JBV.com?subject=Anthropic%20Investment%20Inquiry&body=Hi%20JBV%20Capital,%0A%0AI%27d%20like%20to%20connect%20regarding%20your%20Anthropic%20thesis.%20Please%20let%20me%20know%20a%20convenient%20time%20to%20speak.%0A",
+    "book_diligence": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=JBV%20Capital%20Anthropic%20Diligence&details=Schedule%20a%2015-minute%20Anthropic%20diligence%20conversation%20with%20JBV%20Capital.&sf=true&output=xml"
   },
   "sources": [
     {

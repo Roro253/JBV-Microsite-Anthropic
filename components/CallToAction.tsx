@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Sparkles } from "lucide-react";
+import { CalendarPlus, Mail } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -31,7 +31,11 @@ export function CallToAction({
         setActive(null);
         return;
       }
-      window.open(url, "_blank", "noopener");
+      if (url.startsWith("mailto:")) {
+        window.location.href = url;
+      } else {
+        window.open(url, "_blank", "noopener");
+      }
       setActive(null);
     }, 1200);
   };
@@ -50,17 +54,17 @@ export function CallToAction({
       onClick={() => trigger(key, url)}
     >
       <span className="inline-flex items-center gap-2">
-      {icon}
-      {label}
-    </span>
-    {active === key ? (
-      <motion.span
-        className="absolute inset-0 bg-sky-300/30"
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{
-          duration: animate ? 1.2 : 0,
-          ease: [0.16, 1, 0.3, 1]
+        {icon}
+        {label}
+      </span>
+      {active === key ? (
+        <motion.span
+          className="absolute inset-0 bg-sky-300/30"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{
+            duration: animate ? 1.2 : 0,
+            ease: [0.16, 1, 0.3, 1]
           }}
           style={{ originX: 0 }}
         />
@@ -77,19 +81,19 @@ export function CallToAction({
     >
       <div className="space-y-1">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600">
-          Diligence runway
+          Investor outreach
         </p>
-        <h3 className="text-2xl font-semibold text-slate-800">Allocate time</h3>
+        <h3 className="text-2xl font-semibold text-slate-800">Connect with JBV Capital</h3>
         <p className="text-sm text-slate-600">
-          Quick Typeform intake or book a 15-minute diligence block with the JBV Capital team.
+          Reach out directly via email or book a 15-minute diligence block to discuss Anthropic.
         </p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
-        {renderButton("reserve", "Reserve interest", <Sparkles className="h-4 w-4" />, reserveUrl)}
-        {renderButton("diligence", "15-min diligence", <Calendar className="h-4 w-4" />, diligenceUrl)}
+        {renderButton("reserve", "Email JBV Capital", <Mail className="h-4 w-4" />, reserveUrl)}
+        {renderButton("diligence", "Schedule via Google Calendar", <CalendarPlus className="h-4 w-4" />, diligenceUrl)}
       </div>
       {active ? (
-        <div className="text-xs text-sky-600">Allocating compute…</div>
+        <div className="text-xs text-sky-600">Preparing connection…</div>
       ) : null}
     </div>
   );
