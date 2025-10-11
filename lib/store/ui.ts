@@ -96,7 +96,6 @@ export const useUIStore = create<UIState>()(
       name: "ui-store",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
-        mode: state.mode,
         simulator: state.simulator
       })
     }

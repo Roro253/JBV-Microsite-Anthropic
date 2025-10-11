@@ -1,0 +1,45 @@
+[
+  {
+    "name": "Anthropic",
+    "slug": "anthropic",
+    "symbol": "ANTR",
+    "status": "active",
+    "logo": "/logos/anthropic.svg",
+    "link": "/anthropic",
+    "round": "Series F",
+    "valuation_usd": 183000000000,
+    "valuation_as_of": "2025-09-02",
+    "run_rate_revenue_usd": 5000000000,
+    "run_rate_as_of": "2025-08-15",
+    "growth_12m_pct": 400,
+    "closing_date": "2025-11-15",
+    "notes": "Backed by Amazon ($4B) & Google (+$1B).",
+    "revenue_history": [
+      800000000,
+      1200000000,
+      1600000000,
+      2200000000,
+      3000000000,
+      3800000000,
+      4200000000,
+      5000000000
+    ]
+  },
+  {
+    "name": "xAI",
+    "slug": "xai",
+    "symbol": "XAI",
+    "status": "coming_soon",
+    "logo": "/logos/xai.svg",
+    "link": null,
+    "round": null,
+    "valuation_usd": null,
+    "valuation_as_of": null,
+    "run_rate_revenue_usd": null,
+    "run_rate_as_of": null,
+    "growth_12m_pct": null,
+    "closing_date": null,
+    "notes": "Watchlist entry — full briefing coming soon.",
+    "revenue_history": []
+  }
+]

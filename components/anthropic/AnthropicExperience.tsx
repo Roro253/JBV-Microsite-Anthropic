@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Building2, DollarSign, Sparkles } from "lucide-react";
 
 import { CallToAction } from "@/components/CallToAction";
@@ -37,6 +37,7 @@ interface AnthropicExperienceProps {
 
 export function AnthropicExperience({ data }: AnthropicExperienceProps) {
   const mode = useUIStore((state) => state.mode);
+  const setMode = useUIStore((state) => state.setMode);
   const prefersReducedMotion = useReducedMotion();
   const [portfolioSummary, setPortfolioSummary] = useState<string | null>(null);
 
@@ -89,44 +90,44 @@ export function AnthropicExperience({ data }: AnthropicExperienceProps) {
   const commentary: NewsItem[] = useMemo(
     () => [
       {
-        title: "Anthropic raises $13B Series F at $183B valuation",
-        publisher: "Reuters",
-        date: "Sept 2, 2025",
+        title: "Anthropic Economic Index: Tracking AI's role in the US and global economy",
+        publisher: "Anthropic Research",
+        date: "Oct 9, 2025",
         whyItMatters:
-          "Confirms flagship investors backing safe frontier AI while compressing time-to-scale on revenue milestones.",
-        url: "https://www.reuters.com/business/anthropics-valuation-more-than-doubles-183-billion-after-13-billion-fundraise-2025-09-02/"
+          "New research exploring geographic patterns of AI use across the U.S. and globally, informing market sizing for Claude adoption.",
+        url: "https://www.anthropic.com/research/economic-index-geography"
       },
       {
-        title: "Amazon completes full $4B commitment and expands Bedrock rollout",
-        publisher: "Amazon",
-        date: "Sept 2025",
+        title: "Anthropic Economic Index report: Uneven geographic and enterprise AI adoption",
+        publisher: "Anthropic Research",
+        date: "Oct 9, 2025",
         whyItMatters:
-          "Cements AWS as a core channel for Anthropic, pairing Claude with mission-critical enterprise workloads.",
-        url: "https://www.aboutamazon.com/news/company-news/amazon-anthropic-ai-investment"
+          "Extends the Economic Index with enterprise API insights, highlighting where Claude is delivering measurable business value.",
+        url: "https://www.anthropic.com/research/anthropic-economic-index-september-2025-report"
       },
       {
-        title: "Google adds $1B strategic capital for Anthropic",
-        publisher: "Ars Technica",
-        date: "Jan 2025",
+        title: "A small number of samples can poison LLMs of any size",
+        publisher: "Anthropic Research",
+        date: "Oct 9, 2025",
         whyItMatters:
-          "Dual hyperscaler sponsorship de-risks compute, marketing, and sovereign rollouts.",
-        url: "https://arstechnica.com/ai/2025/01/google-increases-investment-in-anthropic-by-another-1-billion/"
+          "Analyzes data-poisoning risks across model scales, underscoring why Anthropic invests heavily in alignment oversight.",
+        url: "https://www.anthropic.com/research/small-samples-poison"
       },
       {
-        title: "Anthropic details constitutional AI governance",
-        publisher: "Anthropic",
-        date: "May 2025",
+        title: "Petri: An open-source auditing tool to accelerate AI safety research",
+        publisher: "Anthropic Research",
+        date: "Oct 6, 2025",
         whyItMatters:
-          "Offers regulated buyers transparent operating playbooks for safe deployment.",
-        url: "https://www.anthropic.com/news/claudes-constitution"
+          "Introduces open-source tooling that expands the safety community's ability to audit advanced models alongside Anthropic.",
+        url: "https://www.anthropic.com/research/petri-open-source-auditing"
       },
       {
-        title: "Anthropic opens India office to scale safety teams",
-        publisher: "Reuters",
-        date: "Oct 8, 2025",
+        title: "Building AI for cyber defenders",
+        publisher: "Anthropic Research",
+        date: "Oct 3, 2025",
         whyItMatters:
-          "Extends go-to-market and policy engagement while anchoring regional safety talent.",
-        url: "https://www.reuters.com/technology/anthropic-opens-india-office-2025-10-08/"
+          "Details Claude's upgraded cyber defense capabilities, aligning with regulated buyers who need secure AI copilots.",
+        url: "https://www.anthropic.com/research/building-ai-cyber-defenders"
       }
     ],
     []
@@ -135,6 +136,10 @@ export function AnthropicExperience({ data }: AnthropicExperienceProps) {
   const heroCopy =
     mode === "explorer" ? data.modes.explorer.story : data.modes.investor.thesis;
   const isInvestor = mode === "investor";
+
+  useEffect(() => {
+    setMode("investor");
+  }, [setMode]);
 
   return (
     <div className="flex flex-col gap-10">

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useUIStore, type ExplorerInvestorMode } from "@/lib/store/ui";
@@ -21,17 +22,36 @@ interface ModeToggleProps {
 export function ModeToggle({ className, animate = true }: ModeToggleProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
+  const router = useRouter();
+  const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
+  const isMicrositeRoute = pathname.startsWith("/anthropic");
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (!mounted) return;
+    const derivedMode: ExplorerInvestorMode =
+      pathname.startsWith("/anthropic") ? "investor" : "explorer";
+    if (derivedMode !== mode) {
+      setMode(derivedMode);
+    }
+  }, [mounted, pathname, mode, setMode]);
+
   const handleChange = (value: string) => {
     if (!value) return;
-    setMode(value as ExplorerInvestorMode);
+    const nextMode = value as ExplorerInvestorMode;
+    if (nextMode === mode) return;
+    setMode(nextMode);
+    router.push(nextMode === "investor" ? "/anthropic" : "/");
   };
+
+  if (!isMicrositeRoute) {
+    return null;
+  }
 
   const shouldAnimate = animate && !prefersReducedMotion;
 
