@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Anthropic — JBV Capital Microsite
 
-## Getting Started
+Production-ready Next.js 15 App Router experience for JBV Capital's Anthropic diligence microsite. Built with TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Zustand state, Zod content validation, Recharts visualizations, and Next SEO instrumentation.
 
-First, run the development server:
+## Quick Start
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+2. Duplicate `.env.local.example` to `.env.local` and populate the URLs:
+   ```bash
+   cp .env.local.example .env.local
+   ```
+3. Run the dev server:
+   ```bash
+   pnpm dev
+   ```
+   The site is available at `http://localhost:3000` with `/` (Narrative Entry Portal) and `/anthropic` (microsite).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command           | Description                                  |
+| ----------------- | --------------------------------------------- |
+| `pnpm dev`        | Start the Next.js development server         |
+| `pnpm build`      | Create a production build                    |
+| `pnpm start`      | Launch the production server                 |
+| `pnpm lint`       | Run ESLint across the project                |
+| `pnpm test`       | Execute Vitest unit tests (financial math)   |
+| `pnpm test:coverage` | Generate coverage via Vitest             |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment Variables
 
-## Learn More
+| Variable                         | Purpose                                                      |
+| -------------------------------- | ------------------------------------------------------------ |
+| `NEXT_PUBLIC_TYPEFORM_URL`       | External Typeform Reserve Interest form                     |
+| `NEXT_PUBLIC_CALENDLY_URL`       | Calendly 15-minute diligence booking link                   |
+| `NEXT_PUBLIC_ANALYTICS_ENABLED`  | `true` to enable Vercel Analytics, otherwise omit rendering |
 
-To learn more about Next.js, take a look at the following resources:
+## Data & Content Pipeline
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Primary content lives in `data/anthropic.json` and is validated with Zod via `lib/data.ts`.
+- When editing JSON, keep the required keys intact. Missing fields trigger console warnings and fallback copy.
+- Update KPI `as_of` dates and values monthly. Suggested cadence: the first business day of each month.
+- Sources are rendered directly in `SourceFootnotes`; maintain up-to-date URLs when metrics change.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Monthly Refresh Checklist
 
-## Deploy on Vercel
+1. Refresh KPIs and `as_of` dates with latest verified metrics.
+2. Review `differentiators` and `use_cases` for new narrative angles.
+3. Add or rotate 1–2 items in the commentary feed as needed.
+4. Confirm `last_updated` reflects the refresh date.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Content QA Checklist
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [ ] Mode toggle persists between sessions and updates copy.
+- [ ] `/` hero animations degrade when `prefers-reduced-motion` is enabled.
+- [ ] Return simulator sliders cover 0.2–2.0% ownership, export math (MOIC/IRR) verified.
+- [ ] Portfolio Fit wizard produces deterministic profile and rationale.
+- [ ] External CTAs open in a new tab with `rel="noopener"`.
+- [ ] next-seo metadata renders expected OG/Twitter tags (`/og/anthropic.png`).
+- [ ] Lighthouse targets: Performance >90, Accessibility >95, Best Practices >95, SEO >95.
+- [ ] Vercel Analytics only loads when `NEXT_PUBLIC_ANALYTICS_ENABLED=true`.
+
+## Deployment Notes
+
+- `next.config.js` whitelists remote image domains for brand assets.
+- Heavy client visualizations (Recharts simulator) load via dynamic import to keep TTFB low.
+- `public/og/anthropic.png` powers Open Graph/Twitter cards.
+
+For additional styling tokens or shadcn component scaffolding, edit `tailwind.config.ts`, `components.json`, and `lib/utils.ts`.

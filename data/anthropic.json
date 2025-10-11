@@ -1,0 +1,105 @@
+{
+  "company": {
+    "name": "Anthropic",
+    "founded": "2021",
+    "structure": "Public Benefit Corporation (PBC)",
+    "mission": "Build reliable, interpretable, and steerable AI systems that benefit humanity.",
+    "tagline": "Enterprise-grade, safety-first frontier AI."
+  },
+  "leadership": [
+    {
+      "name": "Dario Amodei",
+      "role": "CEO & Co-founder",
+      "bio": "Ex-OpenAI VP of Research; leads Anthropic's safety-first frontier model strategy."
+    },
+    {
+      "name": "Daniela Amodei",
+      "role": "President & Co-founder",
+      "bio": "Ex-OpenAI; oversees operations, policy, and partnerships."
+    }
+  ],
+  "product": {
+    "platform": "Claude (frontier LLM family)",
+    "highlights": [
+      "Strong coding & reasoning performance",
+      "Long-context handling for large documents",
+      "Constitutional AI for aligned, reliable behavior",
+      "Available via API and major clouds (AWS Bedrock, Google Vertex)"
+    ]
+  },
+  "kpis": {
+    "run_rate_revenue": {
+      "value": 5000000000,
+      "as_of": "2025-08-15",
+      "unit": "USD ARR"
+    },
+    "valuation": {
+      "value": 183000000000,
+      "as_of": "2025-09-02",
+      "unit": "USD post-money"
+    },
+    "recent_round": {
+      "round": "Series F",
+      "amount": 13000000000,
+      "date": "2025-09-02",
+      "lead": "ICONIQ"
+    },
+    "cloud_backers": [
+      "Amazon ($4B total commitment)",
+      "Google (+$1B Jan 2025)"
+    ],
+    "enterprise_adoption_notes": "Rapid growth in enterprise usage; Claude available via AWS Bedrock and Google Cloud."
+  },
+  "differentiators": [
+    "Constitutional AI: encoded principles & self-critique for safety-aligned outputs",
+    "Long-context performance for complex enterprise workflows",
+    "PBC structure & Long-Term Benefit Trust for governance independence"
+  ],
+  "use_cases": [
+    "Document analysis & summarization across legal/finance/consulting",
+    "Secure coding assistant & code review",
+    "Contact center intelligence & knowledge search",
+    "Research & policy analysis with long-context"
+  ],
+  "modes": {
+    "explorer": {
+      "story": "Anthropic's North Star is safe, reliable intelligence. Claude's long-context and Constitutional AI unlock complex, enterprise-grade workflows with trust at the core."
+    },
+    "investor": {
+      "thesis": "Safety-led, enterprise-first execution with hyperscaler distribution and record fundraising momentum positions Anthropic as a core position in the frontier AI index."
+    }
+  },
+  "spv_terms": {
+    "min_check_usd": 250000,
+    "fees": "2% management / 20% carry (illustrative)",
+    "closing_target": "2025-11-15",
+    "docs_note": "Terms & dates are placeholders; move final terms behind gated data room."
+  },
+  "links": {
+    "reserve_interest": "ENV:NEXT_PUBLIC_TYPEFORM_URL",
+    "book_diligence": "ENV:NEXT_PUBLIC_CALENDLY_URL"
+  },
+  "sources": [
+    {
+      "claim": "Series F $13B at $183B post-money (Sept 2, 2025) & run-rate >$5B by Aug 2025",
+      "url": "https://www.reuters.com/business/anthropics-valuation-more-than-doubles-183-billion-after-13-billion-fundraise-2025-09-02/"
+    },
+    {
+      "claim": "Anthropic blog confirming run-rate acceleration ($1B to >$5B in 8 months)",
+      "url": "https://www.anthropic.com/news/anthropic-raises-series-f-at-usd183b-post-money-valuation"
+    },
+    {
+      "claim": "Amazon completes $4B investment; AWS Bedrock distribution",
+      "url": "https://www.aboutamazon.com/news/company-news/amazon-anthropic-ai-investment"
+    },
+    {
+      "claim": "Google invests additional ~$1B (Jan 2025)",
+      "url": "https://arstechnica.com/ai/2025/01/google-increases-investment-in-anthropic-by-another-1-billion/"
+    },
+    {
+      "claim": "Constitutional AI principles (Anthropic explainer)",
+      "url": "https://www.anthropic.com/news/claudes-constitution"
+    }
+  ],
+  "last_updated": "2025-10-10"
+}

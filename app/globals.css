@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --background: 205 100% 97%;
+  --foreground: 219 40% 16%;
+  --muted: 200 48% 92%;
+  --muted-foreground: 210 24% 40%;
+  --accent: 200 88% 58%;
+  --accent-foreground: 0 0% 100%;
+  --border: 202 52% 82%;
+  --ring: 200 86% 54%;
+  --focus-ring: 201 90% 44%;
+  --radius: 14px;
+  --header-height: 4.5rem;
+  --footer-height: 3.5rem;
+  --motion-duration: 220ms;
+  --motion-stagger: 60ms;
+  --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-mode="dark"] {
+  color-scheme: dark;
+  --background: 220 50% 6%;
+  --foreground: 210 30% 96%;
+  --muted: 217 24% 13%;
+  --muted-foreground: 215 16% 70%;
+  --accent: 200 86% 58%;
+  --accent-foreground: 199 92% 10%;
+  --border: 215 27% 20%;
+  --ring: 200 86% 58%;
+  --focus-ring: 200 86% 58%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration: 0.001ms;
+    --motion-stagger: 0ms;
+    --motion-ease: linear;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100dvh;
+    overscroll-behavior-y: none;
+    background-image: radial-gradient(circle at top, hsl(var(--accent) / 0.12), transparent 55%),
+      radial-gradient(circle at bottom, hsl(var(--accent) / 0.08), transparent 60%),
+      linear-gradient(180deg, hsl(204 80% 95%) 0%, transparent 45%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: hsl(var(--accent) / 0.3);
+    color: hsl(var(--accent-foreground));
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px hsl(var(--accent) / 0.15), 0 0 0 5px hsl(var(--accent));
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply border border-sky-100/70 bg-white/70 backdrop-blur-xl shadow-[0_20px_60px_-30px_rgba(32,118,199,0.45)];
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-tap-highlight {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
