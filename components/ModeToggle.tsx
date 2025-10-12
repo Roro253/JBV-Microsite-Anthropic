@@ -25,7 +25,8 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
-  const isMicrositeRoute = pathname.startsWith("/anthropic") || pathname.startsWith("/xai");
+  const isMicrositeRoute =
+    pathname.startsWith("/anthropic") || pathname.startsWith("/xai") || pathname.startsWith("/openai");
   const hasSyncedRef = useRef(false);
 
   useEffect(() => {

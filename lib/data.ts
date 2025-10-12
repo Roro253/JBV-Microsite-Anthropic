@@ -1,6 +1,8 @@
 import { cache } from "react";
 import { z } from "zod";
 import anthropicRaw from "@/data/anthropic.json";
+import xaiRaw from "@/data/xai.json";
+import openaiRaw from "@/data/openai.json";
 
 const kpiMetricSchema = z.object({
   value: z.number(),
@@ -164,3 +166,270 @@ const hydrateData = () => {
 };
 
 export const getAnthropicData = cache(hydrateData);
+
+const xaiKpiSchema = z.object({
+  value: z.union([z.number(), z.string()]),
+  as_of: z.string(),
+  unit: z.string(),
+  note: z.string().optional()
+});
+
+const xaiSchema = z.object({
+  company: z.object({
+    name: z.string(),
+    founded: z.string().optional(),
+    structure: z.string(),
+    mission: z.string(),
+    tagline: z.string()
+  }),
+  leadership: z
+    .array(
+      z.object({
+        name: z.string(),
+        role: z.string(),
+        bio: z.string()
+      })
+    )
+    .min(1),
+  product: z.object({
+    platform: z.string(),
+    highlights: z.array(z.string())
+  }),
+  kpis: z.object({
+    fundraise_in_market: xaiKpiSchema,
+    gpu_scale: xaiKpiSchema,
+    model_release: xaiKpiSchema,
+    users_estimated: xaiKpiSchema
+  }),
+  differentiators: z.array(z.string()),
+  use_cases: z.array(z.string()),
+  modes: z.object({
+    explorer: z.object({ story: z.string() }),
+    investor: z.object({ thesis: z.string() })
+  }),
+  spv_terms: z.object({
+    min_check_usd: z.number(),
+    fees: z.string(),
+    closing_target: z.string(),
+    docs_note: z.string()
+  }),
+  links: z.object({
+    reserve_interest: z.string(),
+    book_diligence: z.string()
+  }),
+  sources: z
+    .array(
+      z.object({
+        claim: z.string(),
+        url: z.string().url()
+      })
+    )
+    .min(1),
+  last_updated: z.string()
+});
+
+export type XaiData = z.infer<typeof xaiSchema>;
+
+let cachedXaiData: XaiData | null = null;
+
+const xaiFallback: XaiData = {
+  company: {
+    name: "xAI",
+    founded: "2023",
+    structure: "Private",
+    mission: "",
+    tagline: ""
+  },
+  leadership: [
+    { name: "TBD", role: "Founder", bio: "Placeholder" }
+  ],
+  product: {
+    platform: "Grok",
+    highlights: []
+  },
+  kpis: {
+    fundraise_in_market: { value: 0, as_of: "", unit: "USD" },
+    gpu_scale: { value: 0, as_of: "", unit: "GPUs" },
+    model_release: { value: "", as_of: "", unit: "" },
+    users_estimated: { value: 0, as_of: "", unit: "" }
+  },
+  differentiators: [],
+  use_cases: [],
+  modes: {
+    explorer: { story: "" },
+    investor: { thesis: "" }
+  },
+  spv_terms: {
+    min_check_usd: 0,
+    fees: "",
+    closing_target: "",
+    docs_note: ""
+  },
+  links: {
+    reserve_interest: "#",
+    book_diligence: "#"
+  },
+  sources: [],
+  last_updated: new Date().toISOString().split("T")[0]
+};
+
+const hydrateXai = () => {
+  if (cachedXaiData) return cachedXaiData;
+  try {
+    const parsed = xaiSchema.safeParse(xaiRaw);
+    if (!parsed.success) {
+      console.warn("[xai-data] Validation failed", parsed.error.flatten());
+      cachedXaiData = xaiFallback;
+      return cachedXaiData;
+    }
+    const data = parsed.data;
+    cachedXaiData = {
+      ...data,
+      links: {
+        reserve_interest: resolveLink(data.links.reserve_interest),
+        book_diligence: resolveLink(data.links.book_diligence)
+      }
+    };
+    return cachedXaiData;
+  } catch (error) {
+    console.warn("[xai-data] Failed to load data", error);
+    cachedXaiData = xaiFallback;
+    return cachedXaiData;
+  }
+};
+
+export const getXaiData = cache(hydrateXai);
+
+const openAiKpiSchema = z.object({
+  value: z.union([z.number(), z.string()]),
+  as_of: z.string(),
+  unit: z.string(),
+  source: z.string().optional(),
+  note: z.string().optional()
+});
+
+const openAiSchema = z.object({
+  company: z.object({
+    name: z.string(),
+    founded: z.string().optional(),
+    structure: z.string(),
+    mission: z.string(),
+    tagline: z.string()
+  }),
+  leadership: z
+    .array(
+      z.object({
+        name: z.string(),
+        role: z.string(),
+        bio: z.string()
+      })
+    )
+    .min(1),
+  product: z.object({
+    platform: z.string(),
+    highlights: z.array(z.string())
+  }),
+  kpis: z.object({
+    valuation: openAiKpiSchema,
+    revenue_h1_2025: openAiKpiSchema,
+    compute_commit: openAiKpiSchema,
+    latest_models: openAiKpiSchema
+  }),
+  differentiators: z.array(z.string()),
+  use_cases: z.array(z.string()),
+  modes: z.object({
+    explorer: z.object({ story: z.string() }),
+    investor: z.object({ thesis: z.string() })
+  }),
+  spv_terms: z.object({
+    min_check_usd: z.number(),
+    fees: z.string(),
+    closing_target: z.string(),
+    docs_note: z.string()
+  }),
+  links: z.object({
+    reserve_interest: z.string(),
+    book_diligence: z.string()
+  }),
+  sources: z
+    .array(
+      z.object({
+        claim: z.string(),
+        url: z.string().url()
+      })
+    )
+    .min(1),
+  last_updated: z.string()
+});
+
+export type OpenAiData = z.infer<typeof openAiSchema>;
+
+let cachedOpenAiData: OpenAiData | null = null;
+
+const openAiFallback: OpenAiData = {
+  company: {
+    name: "OpenAI",
+    founded: "2015",
+    structure: "Capped-profit",
+    mission: "",
+    tagline: ""
+  },
+  leadership: [
+    { name: "TBD", role: "Leadership", bio: "Placeholder" }
+  ],
+  product: {
+    platform: "",
+    highlights: []
+  },
+  kpis: {
+    valuation: { value: 0, as_of: "", unit: "USD" },
+    revenue_h1_2025: { value: 0, as_of: "", unit: "USD" },
+    compute_commit: { value: 0, as_of: "", unit: "Watts" },
+    latest_models: { value: "", as_of: "", unit: "" }
+  },
+  differentiators: [],
+  use_cases: [],
+  modes: {
+    explorer: { story: "" },
+    investor: { thesis: "" }
+  },
+  spv_terms: {
+    min_check_usd: 0,
+    fees: "",
+    closing_target: "",
+    docs_note: ""
+  },
+  links: {
+    reserve_interest: "#",
+    book_diligence: "#"
+  },
+  sources: [],
+  last_updated: new Date().toISOString().split("T")[0]
+};
+
+const hydrateOpenAi = () => {
+  if (cachedOpenAiData) return cachedOpenAiData;
+  try {
+    const parsed = openAiSchema.safeParse(openaiRaw);
+    if (!parsed.success) {
+      console.warn("[openai-data] Validation failed", parsed.error.flatten());
+      cachedOpenAiData = openAiFallback;
+      return cachedOpenAiData;
+    }
+    const data = parsed.data;
+    cachedOpenAiData = {
+      ...data,
+      links: {
+        reserve_interest: resolveLink(data.links.reserve_interest),
+        book_diligence: resolveLink(data.links.book_diligence)
+      }
+    };
+    return cachedOpenAiData;
+  } catch (error) {
+    console.warn("[openai-data] Failed to load data", error);
+    cachedOpenAiData = openAiFallback;
+    return cachedOpenAiData;
+  }
+};
+
+export const getOpenAIData = cache(hydrateOpenAi);

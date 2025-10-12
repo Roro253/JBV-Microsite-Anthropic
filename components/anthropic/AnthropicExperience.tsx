@@ -43,10 +43,6 @@ export function AnthropicExperience({ data }: AnthropicExperienceProps) {
 
   const runRateBillions = data.kpis.run_rate_revenue.value / 1_000_000_000;
   const valuationBillions = data.kpis.valuation.value / 1_000_000_000;
-  const fundingSparkline = useMemo(
-    () => [4, 6.5, 10, 13],
-    []
-  );
 
   const stepperItems: StepperItem[] = [
     {

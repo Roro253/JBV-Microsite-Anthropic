@@ -1,0 +1,68 @@
+{
+  "company": {
+    "name": "OpenAI",
+    "founded": "2015",
+    "structure": "Capped-profit (LP/LLC structure with nonprofit board oversight)",
+    "mission": "Ensure artificial general intelligence benefits all of humanity.",
+    "tagline": "Frontier reasoning + multimodal at planetary compute scale."
+  },
+  "leadership": [
+    { "name": "Sam Altman", "role": "CEO", "bio": "Co-founded OpenAI; previously president at Y Combinator." },
+    { "name": "Greg Brockman", "role": "President", "bio": "Co-founder; previously CTO at Stripe." },
+    { "name": "Mira Murati", "role": "CTO", "bio": "Leads model and product engineering across ChatGPT, o-series, and Sora." }
+  ],
+  "product": {
+    "platform": "ChatGPT, o-series reasoning models, Sora 2 (video+audio), GPT-4o family",
+    "highlights": [
+      "o-series for complex reasoning (coding, math, analysis)",
+      "Sora 2 for video+audio with stronger world-simulation",
+      "Deep Microsoft distribution (Copilot, Azure OpenAI Service)"
+    ]
+  },
+  "kpis": {
+    "valuation": { "value": 500000000000, "as_of": "2025-10-01", "unit": "USD (secondary)", "source": "Visual Capitalist (compiles media reports)" },
+    "revenue_h1_2025": { "value": 4300000000, "as_of": "2025-06-30", "unit": "USD (H1)", "source": "Reuters citing The Information" },
+    "compute_commit": { "value": 6000000000, "as_of": "2025-10-06", "unit": "Watts (target capacity by 2026+)", "note": "AMD partnership incl. warrant up to 10% AMD on milestones" },
+    "latest_models": { "value": "o-series (o1–o3), Sora 2", "as_of": "2025-10-06", "unit": "current" }
+  },
+  "differentiators": [
+    "6-GW-class compute roadmap via AMD partnership and Stargate collaboration",
+    "Reasoning focus (o-series) + multimodal leadership (Sora 2)",
+    "Enterprise distribution via Microsoft Copilot and Azure OpenAI Service"
+  ],
+  "use_cases": [
+    "Analytical agents for code/math/research",
+    "Enterprise copilots across Office, Windows, GitHub",
+    "Studio-grade video prototyping (Sora 2) for marketing, previz and simulation"
+  ],
+  "modes": {
+    "explorer": {
+      "story": "OpenAI’s newest stack blends deep reasoning with multimodal creation, moving from chat to agents and world-simulative video."
+    },
+    "investor": {
+      "thesis": "The combination of frontier models and a 6-GW compute build places OpenAI on a unique cost/performance curve with enterprise distribution at scale."
+    }
+  },
+  "spv_terms": {
+    "min_check_usd": 250000,
+    "fees": "2% management / 20% carry (illustrative)",
+    "closing_target": "2025-12-20",
+    "docs_note": "Illustrative; actual offering details behind the data room."
+  },
+  "links": {
+    "reserve_interest": "ENV:NEXT_PUBLIC_TYPEFORM_URL",
+    "book_diligence": "ENV:NEXT_PUBLIC_CALENDLY_URL"
+  },
+  "sources": [
+    { "claim": "Valuation ~$500B via Oct 2025 secondary", "url": "https://www.visualcapitalist.com/cp/openai-500b-valuation/" },
+    { "claim": "H1-2025 revenue ~$4.3B (The Information) reported by Reuters", "url": "https://www.reuters.com/technology/openais-first-half-revenue-rises-16-about-43-billion-information-reports-2025-09-30/" },
+    { "claim": "AMD partnership: multibillion, 6-GW target, 1-GW in 2026, warrant up to ~10% AMD", "url": "https://www.theguardian.com/technology/2025/oct/06/openai-chipmaker-amd-deal" },
+    { "claim": "AP News confirmation of AMD supply deal details", "url": "https://apnews.com/article/a4714748ede46621863f4860f608ac98" },
+    { "claim": "o1 reasoning model intro & o1-mini", "url": "https://openai.com/index/introducing-openai-o1-preview/" },
+    { "claim": "o1 timeline summary & pricing context", "url": "https://en.wikipedia.org/wiki/OpenAI_o1" },
+    { "claim": "Microsoft partnership terms through 2030", "url": "https://blogs.microsoft.com/blog/2025/01/21/microsoft-and-openai-evolve-partnership-to-drive-the-next-phase-of-ai/" },
+    { "claim": "Sora 2 release", "url": "https://openai.com/index/sora-2/" },
+    { "claim": "Authenticity/watermarking challenges in the wild", "url": "https://www.axios.com/2025/10/12/spot-a-sora-fake" }
+  ],
+  "last_updated": "2025-10-12"
+}
