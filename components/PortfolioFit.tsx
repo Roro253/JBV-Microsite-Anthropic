@@ -34,34 +34,46 @@ type PortfolioRecommendation = {
   rationale: string;
 };
 
-const recommendations: Record<RiskValue, PortfolioRecommendation> = {
-  conservative: {
-    profile: "JBV Shielded",
-    suggestion: "80% Anthropic anchor / 20% diversified frontier basket",
-    rationale:
-      "Preserves downside with Anthropic's safety-first governance and cloud distribution while keeping optionality across vetted frontier pilots."
-  },
-  balanced: {
-    profile: "JBV Balanced",
-    suggestion: "65% Anthropic core / 35% frontier acceleration",
-    rationale:
-      "Blends Anthropic's enterprise ARR with emerging co-investments to balance durable cash compounding and upside access."
-  },
-  aggressive: {
-    profile: "JBV Velocity",
-    suggestion: "50% Anthropic core / 50% frontier lab + follow-on dry powder",
-    rationale:
-      "Leans into hyperscaler-backed growth while reserving follow-on capital for compounding alongside Anthropic's long-context moat."
-  }
-};
-
 interface PortfolioFitProps {
   animate?: boolean;
   className?: string;
   onResult?: (result: PortfolioRecommendation) => void;
+  companyName?: string;
+  followOnNote?: string;
 }
 
-export function PortfolioFit({ animate = true, className, onResult }: PortfolioFitProps) {
+export function PortfolioFit({
+  animate = true,
+  className,
+  onResult,
+  companyName = "Anthropic",
+  followOnNote
+}: PortfolioFitProps) {
+  const company = companyName;
+  const companyPossessive = company.endsWith("s") ? `${company}'` : `${company}'s`;
+  const recommendations = useMemo<Record<RiskValue, PortfolioRecommendation>>(
+    () => ({
+      conservative: {
+        profile: "JBV Shielded",
+        suggestion: `80% ${company} anchor / 20% diversified frontier basket`,
+        rationale:
+          `Preserves downside with ${companyPossessive} governance underpinnings and distribution while keeping optionality across vetted frontier pilots.`
+      },
+      balanced: {
+        profile: "JBV Balanced",
+        suggestion: `65% ${company} core / 35% frontier acceleration`,
+        rationale:
+          `Blends ${companyPossessive} growth trajectory with emerging co-investments to balance durable compounding and upside access.`
+      },
+      aggressive: {
+        profile: "JBV Velocity",
+        suggestion: `50% ${company} core / 50% frontier lab + follow-on dry powder`,
+        rationale:
+          `Leans into compute-backed expansion while reserving follow-on capital for compounding alongside ${companyPossessive} roadmap.`
+      }
+    }),
+    [company, companyPossessive]
+  );
   const [horizon, setHorizon] = useState<HorizonValue>(horizonOptions[1].value);
   const [risk, setRisk] = useState<RiskValue>("balanced");
   const [ticket, setTicket] = useState<TicketValue>(ticketOptions[1].value);
@@ -89,7 +101,7 @@ export function PortfolioFit({ animate = true, className, onResult }: PortfolioF
 
     const rationale = `${base.rationale} Horizons at ${horizon} strengthen ${horizonFocus}. Ticket size ${ticketNote}.`;
     return { ...base, rationale };
-  }, [horizon, risk, ticket]);
+  }, [horizon, risk, ticket, recommendations]);
 
   useEffect(() => {
     onResult?.(result);
@@ -157,6 +169,7 @@ export function PortfolioFit({ animate = true, className, onResult }: PortfolioF
         <p className="text-lg font-semibold text-slate-800">{result.suggestion}</p>
         <p className="text-sm text-slate-600">{result.rationale}</p>
       </motion.div>
+      {followOnNote ? <p className="text-xs text-slate-500">{followOnNote}</p> : null}
     </div>
   );
 }

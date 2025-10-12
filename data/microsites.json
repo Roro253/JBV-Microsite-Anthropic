@@ -29,9 +29,9 @@
     "name": "xAI",
     "slug": "xai",
     "symbol": "XAI",
-    "status": "coming_soon",
+    "status": "active",
     "logo": "/logos/xai.svg",
-    "link": null,
+    "link": "/xai",
     "round": null,
     "valuation_usd": null,
     "valuation_as_of": null,
@@ -41,5 +41,28 @@
     "closing_date": null,
     "notes": "Watchlist entry — full briefing coming soon.",
     "revenue_history": []
+  },
+  {
+    "name": "OpenAI",
+    "slug": "openai",
+    "symbol": "OPAI",
+    "status": "active",
+    "logo": "/logos/openai.svg",
+    "link": "/openai",
+    "round": "Secondary",
+    "valuation_usd": 500000000000,
+    "valuation_as_of": "2025-10-01",
+    "run_rate_revenue_usd": 8600000000,
+    "run_rate_as_of": "2025-06-30",
+    "growth_12m_pct": 120,
+    "closing_date": "2025-12-20",
+    "notes": "6-GW compute roadmap via AMD; H1 revenue $4.3B reported.",
+    "revenue_history": [
+      2500000000,
+      3000000000,
+      3400000000,
+      3800000000,
+      4300000000
+    ]
   }
 ]

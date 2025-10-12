@@ -41,6 +41,7 @@ export interface ReturnSimulatorHandle {
 interface ReturnSimulatorProps {
   className?: string;
   animate?: boolean;
+  contextLabel?: string;
 }
 
 const sliderConfigs = {
@@ -72,7 +73,7 @@ const toScenarioCsv = (
 };
 
 export const ReturnSimulator = forwardRef<ReturnSimulatorHandle, ReturnSimulatorProps>(
-  ({ className, animate = true }, ref) => {
+  ({ className, animate = true, contextLabel = "Anthropic" }, ref) => {
     const scenario = useUIStore((state) => state.simulator.current);
     const comparison = useUIStore((state) => state.simulator.comparison);
     const compareEnabled = useUIStore((state) => state.simulator.compareEnabled);
@@ -218,7 +219,7 @@ export const ReturnSimulator = forwardRef<ReturnSimulatorHandle, ReturnSimulator
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600">
-              Build your Anthropic return profile
+              Build your {contextLabel} return profile
             </p>
             <h3 className="text-2xl font-semibold text-slate-800">Return simulator</h3>
           </div>

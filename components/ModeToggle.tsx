@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useUIStore, type ExplorerInvestorMode } from "@/lib/store/ui";
@@ -22,11 +22,10 @@ interface ModeToggleProps {
 export function ModeToggle({ className, animate = true }: ModeToggleProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
-  const router = useRouter();
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
-  const isMicrositeRoute = pathname.startsWith("/anthropic");
+  const isMicrositeRoute = pathname.startsWith("/anthropic") || pathname.startsWith("/xai");
   const hasSyncedRef = useRef(false);
 
   useEffect(() => {
@@ -52,11 +51,6 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
     const nextMode = value as ExplorerInvestorMode;
     if (nextMode === mode) return;
     setMode(nextMode);
-    if (nextMode === "investor") {
-      router.push("/anthropic");
-    } else {
-      router.push("/");
-    }
   };
 
   if (!isMicrositeRoute) {

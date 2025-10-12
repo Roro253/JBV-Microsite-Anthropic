@@ -1,0 +1,63 @@
+{
+  "company": {
+    "name": "xAI",
+    "founded": "2023",
+    "structure": "Private",
+    "mission": "Build AI that understands the universe and acts in real time.",
+    "tagline": "Real-time, tool-using frontier intelligence with distribution via X."
+  },
+  "leadership": [
+    { "name": "Elon Musk", "role": "Founder & CEO", "bio": "Founded xAI in 2023; also leads Tesla, SpaceX, and X." }
+  ],
+  "product": {
+    "platform": "Grok model family (Grok 4, Grok 4 Heavy)",
+    "highlights": [
+      "Native tool-use and real-time search integration",
+      "API access + distribution via X subscriptions (Premium+, SuperGrok)",
+      "Colossus supercomputer for rapid training cycles"
+    ]
+  },
+  "kpis": {
+    "fundraise_in_market": { "value": 20000000000, "as_of": "2025-10-07", "unit": "USD (target, reported)", "note": "Reported mix of equity and debt; Nvidia up to $2B participation" },
+    "gpu_scale": { "value": 150000, "as_of": "2025-06-01", "unit": "GPUs live (official page); expected to double in months per xAI" },
+    "model_release": { "value": "Grok 4 / Grok 4 Heavy", "as_of": "2025-07-09", "unit": "latest" },
+    "users_estimated": { "value": 35000000, "as_of": "2025-09-30", "unit": "MAUs (est.)", "note": "Third-party estimates; not disclosed by xAI" }
+  },
+  "differentiators": [
+    "Colossus: xAI-operated, rapidly scaling training supercomputer",
+    "Native real-time data + distribution through X",
+    "Ambitious world-model roadmap (beyond text chat)"
+  ],
+  "use_cases": [
+    "Breaking-news and event-aware Q&A",
+    "Agentic research with real-time search/tools",
+    "Consumer and creator features inside X (Premium+ / SuperGrok)"
+  ],
+  "modes": {
+    "explorer": {
+      "story": "Grok aims at intelligence that sees the live world: search, tools, and signals from X fused into a single, fast assistant."
+    },
+    "investor": {
+      "thesis": "If compute is the moat, xAI’s Colossus + X distribution create a vertically integrated path to scale—and a fast cycle from model to user."
+    }
+  },
+  "spv_terms": {
+    "min_check_usd": 250000,
+    "fees": "2% management / 20% carry (illustrative)",
+    "closing_target": "2025-12-15",
+    "docs_note": "Illustrative terms. Gate specifics behind your data room."
+  },
+  "links": {
+    "reserve_interest": "ENV:NEXT_PUBLIC_TYPEFORM_URL",
+    "book_diligence": "ENV:NEXT_PUBLIC_CALENDLY_URL"
+  },
+  "sources": [
+    { "claim": "Grok 4 model: tool-use + real-time search; availability and tiers", "url": "https://x.ai/news/grok-4" },
+    { "claim": "Colossus: 122-day build, 150K+ GPUs, expected to double in months", "url": "https://x.ai/colossus" },
+    { "claim": "Funding in market: up to $20B (mix of equity + debt); Nvidia up to $2B", "url": "https://www.reuters.com/business/musks-xai-nears-20-billion-capital-raise-tied-nvidia-chips-bloomberg-news-2025-10-07/" },
+    { "claim": "Press coverage echoing $20B goal / ~$200B framing", "url": "https://elpais.com/economia/2025-10-08/elon-musk-responde-a-openai-su-start-up-xai-captara-20000-millones-de-dolares-con-el-respaldo-de-nvidia.html" },
+    { "claim": "World-model ambitions & game by 2026", "url": "https://www.ft.com/content/ac566346-53dd-4490-8d4c-5269906c64ee" },
+    { "claim": "Third-party Grok MAU estimates (non-official)", "url": "https://explodingtopics.com/blog/grok-users" }
+  ],
+  "last_updated": "2025-10-11"
+}

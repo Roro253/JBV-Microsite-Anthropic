@@ -190,60 +190,58 @@ export function AnthropicExperience({ data }: AnthropicExperienceProps) {
         </div>
       </Section>
 
-      <Section
-        eyebrow="Pulseboard"
-        title="Hyperscaler-backed traction"
-        description="Key indicators of Anthropic's scale as a safety-led frontier partner."
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          <KpiTile
-            title="Run-rate revenue"
-            value={`$${runRateBillions.toFixed(1)}B`}
-            subtitle="Claude platform ARR"
-            asOf="Aug 2025"
-            animate={!prefersReducedMotion}
-          />
-          <KpiTile
-            title="Post-money valuation"
-            value={`$${valuationBillions.toFixed(0)}B`}
-            subtitle="Series F led by ICONIQ"
-            asOf="Sept 2025"
-            animate={!prefersReducedMotion}
-          />
-          <KpiTile
-            title="Cloud backers"
-            value={
-              <div className="flex flex-wrap gap-2">
-                {data.kpis.cloud_backers.map((cloud) => (
-                  <Badge key={cloud} variant="secondary" className="text-xs">
-                    {cloud}
-                  </Badge>
-                ))}
-              </div>
-            }
-            subtitle="AWS Bedrock + Google Cloud distribution"
-          />
-          <KpiTile
-            title="Funding velocity"
-            value="Velocity"
-            subtitle="Quarterly capital deployment"
-            sparkline={mode === "investor" ? fundingSparkline : undefined}
-            animate={!prefersReducedMotion && mode === "investor"}
-          />
-        </div>
-      </Section>
+      {!isInvestor ? (
+        <>
+          <Section
+            eyebrow="Pulseboard"
+            title="Hyperscaler-backed traction"
+            description="Key indicators of Anthropic's scale as a safety-led frontier partner."
+          >
+            <div className="grid gap-4 md:grid-cols-2">
+              <KpiTile
+                title="Run-rate revenue"
+                value={`$${runRateBillions.toFixed(1)}B`}
+                subtitle="Claude platform ARR"
+                asOf="Aug 2025"
+                animate={!prefersReducedMotion}
+              />
+              <KpiTile
+                title="Post-money valuation"
+                value={`$${valuationBillions.toFixed(0)}B`}
+                subtitle="Series F led by ICONIQ"
+                asOf="Sept 2025"
+                animate={!prefersReducedMotion}
+              />
+              <KpiTile
+                title="Cloud backers"
+                value={
+                  <div className="flex flex-wrap gap-2">
+                    {data.kpis.cloud_backers.map((cloud) => (
+                      <Badge key={cloud} variant="secondary" className="text-xs">
+                        {cloud}
+                      </Badge>
+                    ))}
+                  </div>
+                }
+                subtitle="AWS Bedrock + Google Cloud distribution"
+              />
+              <KpiTile
+                title="Funding velocity"
+                value="Velocity"
+                subtitle="Quarterly capital deployment"
+              />
+            </div>
+          </Section>
 
-      <Section
-        eyebrow="Narrative walkthrough"
-        title="Anthropic thesis synthesis"
-        description="Toggle through the investor-grade storyline or let explorer mode carry the narrative."
-      >
-        <Stepper
-          steps={stepperItems}
-          initialStep={mode === "investor" ? 1 : 0}
-          animate={!prefersReducedMotion}
-        />
-      </Section>
+          <Section
+            eyebrow="Narrative walkthrough"
+            title="Anthropic thesis synthesis"
+            description="Toggle through the investor-grade storyline or let explorer mode carry the narrative."
+          >
+            <Stepper steps={stepperItems} initialStep={0} animate={!prefersReducedMotion} />
+          </Section>
+        </>
+      ) : null}
 
       {isInvestor ? (
         <>
@@ -321,7 +319,7 @@ export function AnthropicExperience({ data }: AnthropicExperienceProps) {
           <SourceFootnotes sources={data.sources} />
         </div>
         <div className="space-y-6">
-          <NewsFeed items={commentary} />
+          {!isInvestor ? <NewsFeed items={commentary} /> : null}
           {isInvestor ? (
             <Section
               eyebrow="SPV terms"

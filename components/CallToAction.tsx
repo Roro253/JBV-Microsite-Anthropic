@@ -12,6 +12,7 @@ interface CallToActionProps {
   diligenceUrl: string;
   animate?: boolean;
   className?: string;
+  companyName?: string;
 }
 
 type ActionKey = "reserve" | "diligence" | null;
@@ -20,7 +21,8 @@ export function CallToAction({
   reserveUrl,
   diligenceUrl,
   animate = true,
-  className
+  className,
+  companyName = "Anthropic"
 }: CallToActionProps) {
   const [active, setActive] = useState<ActionKey>(null);
 
@@ -85,7 +87,7 @@ export function CallToAction({
         </p>
         <h3 className="text-2xl font-semibold text-slate-800">Connect with JBV Capital</h3>
         <p className="text-sm text-slate-600">
-          Reach out directly via email or book a 15-minute diligence block to discuss Anthropic.
+          Reach out directly via email or book a 15-minute diligence block to discuss {companyName}.
         </p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">

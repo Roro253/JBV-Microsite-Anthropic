@@ -31,7 +31,7 @@ export function NewsFeed({ items, animate = true, className }: NewsFeedProps) {
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-slate-800">Research publications</h3>
         <span className="text-xs uppercase tracking-[0.28em] text-sky-600">
-          Anthropic research
+          Latest research & reporting
         </span>
       </div>
       <ul className="space-y-4">
