@@ -25,6 +25,13 @@ import {
   jbvCarry,
   netToInvestors
 } from "@/lib/format";
+import {
+  formatGpuFleet,
+  formatAsOfDate,
+  formatBillions,
+  formatUserRange,
+  deriveSourceLabel
+} from "@/lib/format-utils";
 import { cn } from "@/lib/utils";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
@@ -279,29 +286,29 @@ export default function XAIInvestmentDashboard({ fundModel }: XAIInvestmentDashb
   const worldDetails = `Target: ${model.public_signals.world_model_plan.target}; ${model.public_signals.world_model_plan.hires ?? "hires in flight"} (reports)`;
 
   const computeSources: TooltipSource[] = [];
-  if (sources.colossus) {
+  if (sources.colossus && typeof sources.colossus === "string") {
     computeSources.push({ url: sources.colossus, label: "xAI · Colossus (official site)" });
   }
   const fundraiseSources: TooltipSource[] = [];
-  if (sources.raise_20b) {
+  if (sources.raise_20b && typeof sources.raise_20b === "string") {
     fundraiseSources.push({ url: sources.raise_20b, label: "Reuters · $20B raise (reported)" });
   }
-  if (sources.denial_200b) {
+  if (sources.denial_200b && typeof sources.denial_200b === "string") {
     fundraiseSources.push({ url: sources.denial_200b, label: "Yahoo Finance · Musk comment (not closed)" });
   }
   const modelSources: TooltipSource[] = [];
-  if (sources.grok4_fast) {
+  if (sources.grok4_fast && typeof sources.grok4_fast === "string") {
     modelSources.push({ url: sources.grok4_fast, label: "xAI · Grok 4 Fast (official)" });
   }
   const userSources: TooltipSource[] = [];
-  if (sources.maus_estimates_1) {
+  if (sources.maus_estimates_1 && typeof sources.maus_estimates_1 === "string") {
     userSources.push({ url: sources.maus_estimates_1, label: "Exploding Topics · MAU estimate" });
   }
-  if (sources.maus_estimates_2) {
+  if (sources.maus_estimates_2 && typeof sources.maus_estimates_2 === "string") {
     userSources.push({ url: sources.maus_estimates_2, label: "DemandSage · MAU estimate" });
   }
   const worldSources: TooltipSource[] = [];
-  if (sources.world_models) {
+  if (sources.world_models && typeof sources.world_models === "string") {
     worldSources.push({ url: sources.world_models, label: "Financial Times · world models roadmap" });
   }
 
@@ -327,31 +334,31 @@ export default function XAIInvestmentDashboard({ fundModel }: XAIInvestmentDashb
             title="Compute"
             details={`${model.public_signals.compute.colossus_gpus_live.toLocaleString()} GPUs · ${model.public_signals.compute.uptime_pct}% uptime · built in ${model.public_signals.compute.claim_built_days} days`}
             badge="official"
-            href={sources.colossus}
+            sources={computeSources}
           />
           <PublicPill
             title="Fundraise"
             details={`In market: $${(model.public_signals.fundraising_in_market.amount_usd / 1_000_000_000).toFixed(1)}B (approx). Equity ~$${(model.public_signals.fundraising_in_market.mix.equity_usd / 1_000_000_000).toFixed(1)}B + debt ~$${(model.public_signals.fundraising_in_market.mix.debt_usd / 1_000_000_000).toFixed(1)}B. Nvidia up to $2B.`}
             badge="reported"
-            href={sources.raise_20b}
+            sources={fundraiseSources}
           />
           <PublicPill
             title="Models"
             details={`Grok 4 / Grok 4 Fast · tool-use RL + real-time search`}
             badge="official"
-            href={sources.grok4_fast}
+            sources={modelSources}
           />
           <PublicPill
             title="Users"
             details={`MAUs ~${(model.public_signals.users_estimate.maus_min / 1_000_000).toFixed(0)}–${(model.public_signals.users_estimate.maus_max / 1_000_000).toFixed(0)}M (est.)`}
             badge="estimate"
-            href={sources.maus_estimates_1}
+            sources={userSources}
           />
           <PublicPill
             title="World models"
             details={`Target: AI game by end-2026 · hires from Nvidia`}
             badge="reported"
-            href={sources.world_models}
+            sources={worldSources}
           />
         </div>
       </Card>
@@ -690,8 +697,8 @@ export default function XAIInvestmentDashboard({ fundModel }: XAIInvestmentDashb
           {Object.entries(sources).map(([key, url]) => (
             <li key={key}>
               <span className="font-semibold uppercase tracking-wide text-slate-500">{key.replace(/_/g, " ")}: </span>
-              <Link href={url} target="_blank" rel="noopener" className="text-sky-600 hover:text-sky-700">
-                {url}
+              <Link href={url as string} target="_blank" rel="noopener" className="text-sky-600 hover:text-sky-700">
+                {url as string}
               </Link>
             </li>
           ))}
@@ -836,4 +843,3 @@ function peerLink(company: string): string | null {
   };
   return map[company] ?? null;
 }
-*** End Patch
