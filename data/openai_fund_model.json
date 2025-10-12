@@ -1,0 +1,36 @@
+{
+  "investment_summary": {
+    "jbv_interest_usd": 8500000,
+    "expense_fee_usd": 85000,
+    "broker_fee_usd": 170000,
+    "purchase_price_usd": 8755000,
+    "valuation_cap_usd": 515000000000,
+    "implied_cost_basis_usd": 530927835052
+  },
+  "market_cap_calculator": [
+    { "year": 2025, "revenue_run_rate_usd": 20000000000 },
+    { "year": 2026, "revenue_run_rate_usd": 45000000000 },
+    { "year": 2027, "revenue_run_rate_usd": 80000000000 },
+    { "year": 2028, "revenue_run_rate_usd": 120000000000 },
+    { "year": 2029, "revenue_run_rate_usd": 160000000000 },
+    { "year": 2030, "revenue_run_rate_usd": 200000000000 }
+  ],
+  "waterfall": {
+    "commitment_default_usd": 1000000,
+    "jbv_mgmt_fee_pct": 0.05,
+    "gross_mom_multiple": 3.77,
+    "jbv_carry_pct": 0.10
+  },
+  "market_comps": [
+    { "company": "NVIDIA", "yoy_growth_pct": 114, "ev_to_sales": 25 },
+    { "company": "Palantir", "yoy_growth_pct": 40, "ev_to_sales": 114 },
+    { "company": "Figma", "yoy_growth_pct": 31, "ev_to_sales": 29 }
+  ],
+  "sources": {
+    "investment_summary": "Google Sheet: OpenAI Model — JBV Investment",
+    "market_cap_calculator": "Google Sheet: OpenAI Model — OpenAI Projections",
+    "waterfall": "Google Sheet: OpenAI Model — Waterfall at IPO",
+    "market_comps": "Google Sheet: OpenAI Model — Market Comps"
+  },
+  "last_updated": "2025-10-12"
+}

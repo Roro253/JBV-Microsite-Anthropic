@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import Image from "next/image";
 
 import { Section } from "@/components/Section";
 import { StatPill } from "@/components/StatPill";
 import { KpiTile } from "@/components/KpiTile";
 import { Stepper, type StepperItem } from "@/components/Stepper";
-import { ReturnSimulator } from "@/components/ReturnSimulator";
 import { PortfolioFit } from "@/components/PortfolioFit";
 import { CallToAction } from "@/components/CallToAction";
 import { NewsFeed, type NewsItem } from "@/components/NewsFeed";
@@ -15,31 +14,20 @@ import { SourceFootnotes } from "@/components/SourceFootnotes";
 import { useUIStore } from "@/lib/store/ui";
 import { type XaiData } from "@/lib/data";
 import { formatUSDShort } from "@/components/Format";
+import type { XFundModel } from "@/lib/xaiFundModel";
+import XAIInvestmentDashboard from "@/components/XAIInvestmentDashboard";
 
 interface XaiExperienceProps {
   data: XaiData;
+  fundModel: XFundModel | null;
 }
 
-export function XaiExperience({ data }: XaiExperienceProps) {
+export function XaiExperience({ data, fundModel }: XaiExperienceProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
-  const setScenario = useUIStore((state) => state.setScenario);
-  const hasScenarioDefaulted = useRef(false);
   useEffect(() => {
     setMode("investor");
   }, [setMode]);
-
-  useEffect(() => {
-    if (hasScenarioDefaulted.current) return;
-    hasScenarioDefaulted.current = true;
-    setScenario({
-      entryValuation: 150,
-      ownershipPct: 0.6,
-      dilutionFollowOn: 12,
-      exitValuation: 320,
-      years: 5
-    });
-  }, [setScenario]);
 
   const heroCopy = mode === "explorer" ? data.modes.explorer.story : data.modes.investor.thesis;
 
@@ -235,16 +223,7 @@ export function XaiExperience({ data }: XaiExperienceProps) {
 
       {isInvestor ? (
         <>
-          <Section
-            eyebrow="Capital modeling"
-            title="Illustrative return simulator"
-            description="Adjust ownership, dilution, and valuation scenarios to stress-test potential outcomes."
-          >
-            <ReturnSimulator animate contextLabel="xAI" />
-            <p className="text-xs text-slate-500">
-              Valuations for xAI are illustrative and based on market reporting, not finalized pricing. Adjust the model to reflect your underwriting assumptions.
-            </p>
-          </Section>
+          <XAIInvestmentDashboard fundModel={fundModel} />
 
           <Section
             eyebrow="Portfolio design"

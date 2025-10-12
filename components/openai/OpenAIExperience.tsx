@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import Image from "next/image";
 
 import { Section } from "@/components/Section";
 import { StatPill } from "@/components/StatPill";
 import { KpiTile } from "@/components/KpiTile";
 import { Stepper, type StepperItem } from "@/components/Stepper";
-import { ReturnSimulator } from "@/components/ReturnSimulator";
 import { PortfolioFit } from "@/components/PortfolioFit";
 import { CallToAction } from "@/components/CallToAction";
 import { NewsFeed, type NewsItem } from "@/components/NewsFeed";
@@ -15,35 +14,23 @@ import { SourceFootnotes } from "@/components/SourceFootnotes";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useUIStore } from "@/lib/store/ui";
 import { formatUSDShort } from "@/components/Format";
-import { Sparkline } from "@/components/Sparkline";
 import type { OpenAiData } from "@/lib/data";
+import type { FundModel } from "@/lib/openaiFundModel";
+import OpenAIInvestmentDashboard from "@/components/OpenAIInvestmentDashboard";
 
 interface OpenAIExperienceProps {
   data: OpenAiData;
+  fundModel: FundModel | null;
 }
 
-export function OpenAIExperience({ data }: OpenAIExperienceProps) {
+export function OpenAIExperience({ data, fundModel }: OpenAIExperienceProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
-  const setScenario = useUIStore((state) => state.setScenario);
   const prefersReducedMotion = useReducedMotion();
-  const scenarioInitialized = useRef(false);
 
   useEffect(() => {
     setMode("investor");
   }, [setMode]);
-
-  useEffect(() => {
-    if (scenarioInitialized.current) return;
-    scenarioInitialized.current = true;
-    setScenario({
-      entryValuation: 500,
-      ownershipPct: 0.6,
-      dilutionFollowOn: 8,
-      exitValuation: 750,
-      years: 4
-    });
-  }, [setScenario]);
 
   const isInvestor = mode === "investor";
 
@@ -51,11 +38,6 @@ export function OpenAIExperience({ data }: OpenAIExperienceProps) {
   const revenueDisplay = formatUSDShort(Number(data.kpis.revenue_h1_2025.value));
   const computeDisplay = `${(Number(data.kpis.compute_commit.value) / 1_000_000_000).toFixed(1)} GW target`;
   const latestModelsDisplay = String(data.kpis.latest_models.value);
-
-  const revenueSparkline = useMemo(
-    () => [2.5, 3, 3.4, 3.8, 4.3].map((value) => value * 1_000_000_000),
-    []
-  );
 
   const stepperItems: StepperItem[] = [
     {
@@ -230,25 +212,7 @@ export function OpenAIExperience({ data }: OpenAIExperienceProps) {
 
       {isInvestor ? (
         <>
-          <Section
-            eyebrow="Capital modeling"
-            title="Illustrative return simulator"
-            description="Adjust ownership, dilution, and valuation scenarios to stress-test potential outcomes."
-          >
-            <ReturnSimulator animate={!prefersReducedMotion} contextLabel="OpenAI" />
-            <p className="text-xs text-slate-500">
-              Inputs reflect market reporting (secondary transactions, compute expansion). Modify to match your underwriting assumptions.
-            </p>
-            <div className="mt-4 rounded-2xl border border-sky-100 bg-white/70 p-4 shadow-[0_18px_40px_-36px_rgba(15,23,42,0.25)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600">
-                Revenue momentum (est.)
-              </p>
-              <Sparkline data={revenueSparkline} className="mt-2" />
-              <p className="mt-2 text-xs text-slate-500">
-                Directional trajectory from ~$2.5B to ~$4.3B revenue per half-year (H1 2025 reporting).
-              </p>
-            </div>
-          </Section>
+          <OpenAIInvestmentDashboard fundModel={fundModel} />
 
           <Section
             eyebrow="Portfolio design"

@@ -1,0 +1,74 @@
+{
+  "company_meta": {
+    "name": "xAI",
+    "mission": "Build AI that understands the universe and operates in real time.",
+    "tagline": "Real-time, tool-using frontier intelligence + Colossus compute.",
+    "last_updated": "2025-10-12"
+  },
+  "public_signals": {
+    "models": [
+      { "name": "Grok 4", "as_of": "2025-07-09", "note": "Latest flagship release" },
+      { "name": "Grok 4 Fast", "as_of": "2025-09-XX", "note": "Tool-use RL; agentic browsing, real-time search" }
+    ],
+    "compute": {
+      "colossus_gpus_live": 150000,
+      "claim_built_days": 122,
+      "uptime_pct": 99,
+      "scale_outlook": "Expected to double in months",
+      "as_of": "2025-06-01"
+    },
+    "fundraising_in_market": {
+      "amount_usd": 20000000000,
+      "mix": { "equity_usd": 7500000000, "debt_usd": 12500000000 },
+      "notable_participant": "Nvidia up to $2B (reported)",
+      "purpose": "Colossus 2 GPU procurement",
+      "status": "reported, not closed",
+      "as_of": "2025-10-07"
+    },
+    "users_estimate": {
+      "maus_min": 30000000,
+      "maus_max": 39000000,
+      "as_of": "2025-09-30",
+      "note": "3rd-party estimates; not official"
+    },
+    "world_model_plan": {
+      "target": "AI-generated video game by end of 2026",
+      "hires": "Nvidia talent",
+      "as_of": "2025-10-12"
+    },
+    "sources": {
+      "grok4_fast": "https://x.ai/news/grok-4-fast",
+      "colossus": "https://x.ai/colossus",
+      "raise_20b": "https://www.reuters.com/business/musks-xai-nears-20-billion-capital-raise-tied-nvidia-chips-bloomberg-news-2025-10-07/",
+      "denial_200b": "https://finance.yahoo.com/news/elon-musk-refutes-claims-xais-183115662.html",
+      "maus_estimates_1": "https://explodingtopics.com/blog/grok-users",
+      "maus_estimates_2": "https://www.demandsage.com/grok-ai-statistics/",
+      "world_models": "https://www.ft.com/content/ac566346-53dd-4490-8d4c-5269906c64ee"
+    }
+  },
+  "investment_scenarios": {
+    "defaults": {
+      "commitment_usd": 1000000,
+      "mgmt_fee_pct": 0.05,
+      "carry_pct": 0.10
+    },
+    "entry": {
+      "pre_or_post": "scenario",
+      "entry_valuation_usd": null,
+      "ownership_pct": null,
+      "note": "Populate from term sheet when available"
+    }
+  },
+  "market_cap_calculator": [
+    { "year": 2026, "revenue_run_rate_usd": null },
+    { "year": 2027, "revenue_run_rate_usd": null },
+    { "year": 2028, "revenue_run_rate_usd": null },
+    { "year": 2029, "revenue_run_rate_usd": null },
+    { "year": 2030, "revenue_run_rate_usd": null }
+  ],
+  "market_comps": [
+    { "company": "OpenAI", "note": "Use valuation & revenue from your OpenAI file; show as peer." },
+    { "company": "Anthropic", "note": "Use $183B post, >$5B ARR; cite from Anthropic microsite sources." },
+    { "company": "Mistral AI", "note": "Series C ~$13.8B (Sept 2025); cite Tech/Reuters source used elsewhere." }
+  ]
+}
