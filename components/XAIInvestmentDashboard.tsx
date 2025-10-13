@@ -14,7 +14,7 @@ import {
   XAxis,
   YAxis
 } from "recharts";
-import { ExternalLink, Edit3, Lock } from "lucide-react";
+import { Edit3 } from "lucide-react";
 
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import {
@@ -22,8 +22,7 @@ import {
   formatPct,
   investedAfterFee,
   grossProceeds,
-  jbvCarry,
-  netToInvestors
+  jbvCarry
 } from "@/lib/format";
 import {
   formatGpuFleet,
@@ -36,12 +35,7 @@ import { cn } from "@/lib/utils";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
-import {
-  Tooltip as UiTooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from "@/components/ui/tooltip";
+import { Tooltip as UiTooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { XFundModel } from "@/lib/xaiFundModel";
 
 const STORAGE_KEY = "jbv:xai:fundmodel:v1";
@@ -275,15 +269,58 @@ export default function XAIInvestmentDashboard({ fundModel }: XAIInvestmentDashb
 
   const sources = model.public_signals.sources ?? {};
 
-  const computeDetails = `${formatGpuFleet(model.public_signals.compute.colossus_gpus_live)} GPUs · ${model.public_signals.compute.uptime_pct}% uptime · built in ${model.public_signals.compute.claim_built_days} days`;
-  const fundraiseAsOf = formatAsOfDate(model.public_signals.fundraising_in_market.as_of);
-  const fundraiseDetails = `In market: up to ${formatBillions(model.public_signals.fundraising_in_market.amount_usd)} (equity ~${formatBillions(model.public_signals.fundraising_in_market.mix.equity_usd)}, debt ~${formatBillions(model.public_signals.fundraising_in_market.mix.debt_usd)}); Nvidia up to $2B (reported) · as of ${fundraiseAsOf}`;
+  const computeAsOfRaw = model.public_signals.compute.as_of ?? "";
+  const computeAsOf = computeAsOfRaw ? formatAsOfDate(computeAsOfRaw) : "";
+  const computeDetails = [
+    `${formatGpuFleet(model.public_signals.compute.colossus_gpus_live)} GPUs`,
+    `${model.public_signals.compute.uptime_pct}% uptime`,
+    `built in ${model.public_signals.compute.claim_built_days} days`,
+    computeAsOf ? `as of ${computeAsOf}` : null
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  const fundraiseAsOfRaw = model.public_signals.fundraising_in_market.as_of ?? "";
+  const fundraiseAsOf = fundraiseAsOfRaw ? formatAsOfDate(fundraiseAsOfRaw) : "";
+  const fundraiseDetails = [
+    `In market: up to ${formatBillions(model.public_signals.fundraising_in_market.amount_usd)}`,
+    `equity ~${formatBillions(model.public_signals.fundraising_in_market.mix.equity_usd)}`,
+    `debt ~${formatBillions(model.public_signals.fundraising_in_market.mix.debt_usd)}`,
+    "Nvidia up to $2B (reported)",
+    fundraiseAsOf ? `as of ${fundraiseAsOf}` : null
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
   const modelNames = model.public_signals.models.map((entry) => entry.name).join(" / ");
   const fastNote = model.public_signals.models.find((entry) => entry.name.toLowerCase().includes("fast"))?.note;
-  const modelDetails = `${modelNames}${fastNote ? ` (${fastNote})` : ""}`;
-  const userRange = formatUserRange(model.public_signals.users_estimate.maus_min, model.public_signals.users_estimate.maus_max);
-  const usersDetails = `MAUs ~${userRange} (estimates; not official) · as of ${formatAsOfDate(model.public_signals.users_estimate.as_of)}`;
-  const worldDetails = `Target: ${model.public_signals.world_model_plan.target}; ${model.public_signals.world_model_plan.hires ?? "hires in flight"} (reports)`;
+  const modelDetails = [modelNames || "Models undisclosed", fastNote ? `(${fastNote})` : null]
+    .filter(Boolean)
+    .join(" ");
+
+  const userRange = formatUserRange(
+    model.public_signals.users_estimate.maus_min,
+    model.public_signals.users_estimate.maus_max
+  );
+  const usersAsOfRaw = model.public_signals.users_estimate.as_of ?? "";
+  const usersAsOf = usersAsOfRaw ? formatAsOfDate(usersAsOfRaw) : "";
+  const usersDetails = [`MAUs ~${userRange} (estimates; not official)`, usersAsOf ? `as of ${usersAsOf}` : null]
+    .filter(Boolean)
+    .join(" · ");
+
+  const worldTarget = model.public_signals.world_model_plan.target
+    ? `Target: ${model.public_signals.world_model_plan.target}`
+    : "Target undisclosed";
+  const worldHires = model.public_signals.world_model_plan.hires;
+  const worldAsOfRaw = model.public_signals.world_model_plan.as_of ?? "";
+  const worldAsOf = worldAsOfRaw ? formatAsOfDate(worldAsOfRaw) : "";
+  const worldDetails = [
+    worldTarget,
+    worldHires != null ? `${worldHires} hires in flight` : "Hires in flight (reports)",
+    worldAsOf ? `as of ${worldAsOf}` : null
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   const computeSources: TooltipSource[] = [];
   if (sources.colossus && typeof sources.colossus === "string") {
@@ -332,31 +369,31 @@ export default function XAIInvestmentDashboard({ fundModel }: XAIInvestmentDashb
         <div className="grid gap-3 md:grid-cols-2">
           <PublicPill
             title="Compute"
-            details={`${model.public_signals.compute.colossus_gpus_live.toLocaleString()} GPUs · ${model.public_signals.compute.uptime_pct}% uptime · built in ${model.public_signals.compute.claim_built_days} days`}
+            details={computeDetails}
             badge="official"
             sources={computeSources}
           />
           <PublicPill
             title="Fundraise"
-            details={`In market: $${(model.public_signals.fundraising_in_market.amount_usd / 1_000_000_000).toFixed(1)}B (approx). Equity ~$${(model.public_signals.fundraising_in_market.mix.equity_usd / 1_000_000_000).toFixed(1)}B + debt ~$${(model.public_signals.fundraising_in_market.mix.debt_usd / 1_000_000_000).toFixed(1)}B. Nvidia up to $2B.`}
+            details={fundraiseDetails}
             badge="reported"
             sources={fundraiseSources}
           />
           <PublicPill
             title="Models"
-            details={`Grok 4 / Grok 4 Fast · tool-use RL + real-time search`}
+            details={modelDetails}
             badge="official"
             sources={modelSources}
           />
           <PublicPill
             title="Users"
-            details={`MAUs ~${(model.public_signals.users_estimate.maus_min / 1_000_000).toFixed(0)}–${(model.public_signals.users_estimate.maus_max / 1_000_000).toFixed(0)}M (est.)`}
+            details={usersDetails}
             badge="estimate"
             sources={userSources}
           />
           <PublicPill
             title="World models"
-            details={`Target: AI game by end-2026 · hires from Nvidia`}
+            details={worldDetails}
             badge="reported"
             sources={worldSources}
           />
@@ -624,7 +661,7 @@ export default function XAIInvestmentDashboard({ fundModel }: XAIInvestmentDashb
                       projectionMode === "abs" ? formatUSDShort(value) : formatPct(value, { sign: true })
                     }
                   />
-                  <RechartsTooltip content={renderProjectionTooltip(projectionMode)} />
+                  <RechartsTooltip content={<ProjectionTooltipContent mode={projectionMode} />} />
                   <Line
                     type="monotone"
                     dataKey="value"
@@ -767,15 +804,6 @@ function PublicPill({
   );
 }
 
-function SummaryItem({ label, value }: { label: string; value: string }) {
-  return (
-    <li className="flex items-center justify-between">
-      <span className="text-slate-500">{label}</span>
-      <span className="font-semibold text-slate-800">{value}</span>
-    </li>
-  );
-}
-
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <tr>
@@ -815,25 +843,34 @@ function formatNumberInput(value: number) {
   return value.toLocaleString("en-US", { maximumFractionDigits: 2 });
 }
 
-function renderProjectionTooltip(mode: "abs" | "yoy") {
-  return ({ payload }: { payload?: TooltipPayload[] }) => {
-    if (!payload || payload.length === 0) return null;
-    const datum = payload[0].payload;
-    const label = mode === "abs" ? "Run rate" : "YoY";
-    const display = datum.isNull
-      ? "—"
-      : mode === "abs"
-        ? formatUSDShort(datum.value)
-        : formatPct(datum.value, { sign: true });
+type ProjectionTooltipContentProps = {
+  payload?: TooltipPayload[];
+  mode: "abs" | "yoy";
+};
 
-    return (
-      <div className="rounded-xl border border-sky-100 bg-white/90 px-3 py-2 text-xs text-slate-600 shadow">
-        <p className="font-semibold text-slate-700">{datum.year}</p>
-        <p>{label}: {display}</p>
-      </div>
-    );
-  };
+function ProjectionTooltipContent({ payload, mode }: ProjectionTooltipContentProps) {
+  if (!payload || payload.length === 0) return null;
+  const datum = payload[0]?.payload;
+  if (!datum) return null;
+
+  const label = mode === "abs" ? "Run rate" : "YoY";
+  const display = datum.isNull
+    ? "—"
+    : mode === "abs"
+      ? formatUSDShort(datum.value)
+      : formatPct(datum.value, { sign: true });
+
+  return (
+    <div className="rounded-xl border border-sky-100 bg-white/90 px-3 py-2 text-xs text-slate-600 shadow">
+      <p className="font-semibold text-slate-700">{datum.year}</p>
+      <p>
+        {label}: {display}
+      </p>
+    </div>
+  );
 }
+
+ProjectionTooltipContent.displayName = "ProjectionTooltipContent";
 
 function peerLink(company: string): string | null {
   const map: Record<string, string | null> = {
