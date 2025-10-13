@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
@@ -66,6 +66,9 @@ interface WatchlistTableProps {
 
 export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTableProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const paneSlug = searchParams?.get("pane");
+  const modeParam = searchParams?.get("mode");
   const prefersReducedMotion = useReducedMotion();
 
   const [search, setSearch] = useState("");
@@ -167,9 +170,26 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
     });
   };
 
+  const prefetchPane = (slug: string) => {
+    const params = new URLSearchParams();
+    params.set("pane", slug);
+    if (modeParam === "explorer" || modeParam === "investor") {
+      params.set("mode", modeParam);
+    }
+    router.prefetch(`/?${params.toString()}`);
+  };
+
   const handleRowClick = (item: AugmentedMicrosite) => {
-    if (item.status === "active" && item.link) {
-      router.push(item.link);
+    if (item.status === "active") {
+      const params = new URLSearchParams(searchParams ? searchParams.toString() : undefined);
+      params.set("pane", item.slug);
+      if (modeParam === "explorer" || modeParam === "investor") {
+        params.set("mode", modeParam);
+      } else {
+        params.delete("mode");
+      }
+      const query = params.toString();
+      router.push(query ? `/?${query}` : "/", { scroll: false });
       return;
     }
     setToast({
@@ -339,9 +359,12 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
                   key={item.slug}
                   className={cn(
                     "group cursor-pointer bg-white transition hover:bg-sky-50/40 focus-within:bg-sky-50/40",
-                    item.slug === featured ? "relative bg-sky-50/30" : undefined
+                    item.slug === featured ? "relative bg-sky-50/30" : undefined,
+                    item.slug === paneSlug ? "ring-2 ring-sky-200/60 md:bg-sky-50/40" : undefined
                   )}
+                  aria-expanded={item.slug === paneSlug}
                   onClick={() => handleRowClick(item)}
+                  onMouseEnter={() => prefetchPane(item.slug)}
                 >
                   <td className="whitespace-nowrap px-4 py-3 text-sm font-medium text-slate-700">
                     <div className="flex items-center gap-3">

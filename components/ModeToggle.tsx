@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useUIStore, type ExplorerInvestorMode } from "@/lib/store/ui";
@@ -23,10 +23,17 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const prefersReducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
-  const isMicrositeRoute =
+  const paneSlug = searchParams?.get("pane");
+  const isMicrositePath =
     pathname.startsWith("/anthropic") || pathname.startsWith("/xai") || pathname.startsWith("/openai");
+  const isMicrositeRoute = isMicrositePath || Boolean(paneSlug);
+  const urlModeParam = searchParams?.get("mode");
+  const effectiveUrlMode =
+    urlModeParam === "explorer" || urlModeParam === "investor" ? urlModeParam : undefined;
   const hasSyncedRef = useRef(false);
 
   useEffect(() => {
@@ -39,19 +46,50 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
       hasSyncedRef.current = false;
       return;
     }
+
+    if (effectiveUrlMode) {
+      hasSyncedRef.current = true;
+      if (mode !== effectiveUrlMode) {
+        setMode(effectiveUrlMode);
+      }
+      return;
+    }
+
     if (!hasSyncedRef.current) {
       hasSyncedRef.current = true;
       if (mode !== "investor") {
         setMode("investor");
       }
     }
-  }, [isMicrositeRoute, mode, mounted, setMode]);
+  }, [effectiveUrlMode, isMicrositeRoute, mode, mounted, setMode]);
 
   const handleChange = (value: string) => {
     if (!value) return;
     const nextMode = value as ExplorerInvestorMode;
     if (nextMode === mode) return;
     setMode(nextMode);
+
+    if (!isMicrositeRoute) {
+      return;
+    }
+
+    const params = new URLSearchParams(searchParams ? searchParams.toString() : undefined);
+    if (paneSlug) {
+      params.set("pane", paneSlug);
+    }
+
+    if (nextMode === "investor") {
+      params.delete("mode");
+    } else {
+      params.set("mode", nextMode);
+    }
+
+    const query = params.toString();
+    if (paneSlug) {
+      router.replace(query ? `/?${query}` : "/", { scroll: false });
+    } else {
+      router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    }
   };
 
   if (!isMicrositeRoute) {
