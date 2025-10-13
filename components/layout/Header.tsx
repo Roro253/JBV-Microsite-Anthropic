@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { ModeToggle } from "@/components/ModeToggle";
@@ -28,7 +29,23 @@ export function Header({ className }: HeaderProps) {
             JBV Capital
           </span>
         </Link>
-        <ModeToggle className="flex items-center gap-2 text-xs text-slate-500" />
+        <div className="flex items-center gap-4">
+          <Link
+            href="/"
+            aria-label="JBV Capital home"
+            className="inline-flex"
+          >
+            <Image
+              src="/images/jbv-logo.svg"
+              alt="JBV Capital logo"
+              width={120}
+              height={60}
+              priority
+              className="h-10 w-auto"
+            />
+          </Link>
+          <ModeToggle className="flex items-center gap-2 text-xs text-slate-500" />
+        </div>
       </Container>
     </header>
   );
