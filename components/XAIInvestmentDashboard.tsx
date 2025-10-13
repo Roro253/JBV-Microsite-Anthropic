@@ -35,7 +35,12 @@ import { cn } from "@/lib/utils";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
-import { Tooltip as UiTooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip";
 import type { XFundModel } from "@/lib/xaiFundModel";
 
 const STORAGE_KEY = "jbv:xai:fundmodel:v1";
@@ -736,7 +741,7 @@ function PublicPill({
   }
 
   return (
-    <UiTooltip delayDuration={0}>
+    <Tooltip delayDuration={0}>
       <TooltipTrigger asChild>
         <button
           type="button"
@@ -762,7 +767,7 @@ function PublicPill({
           ))}
         </ul>
       </TooltipContent>
-    </UiTooltip>
+    </Tooltip>
   );
 }
 
