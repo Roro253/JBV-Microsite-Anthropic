@@ -168,8 +168,16 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
   };
 
   const handleRowClick = (item: AugmentedMicrosite) => {
-    if (item.status === "active" && item.link) {
-      router.push(item.link);
+    if (item.status === "active") {
+      const target = `/?pane=${item.slug}`;
+      try {
+        router.prefetch(target);
+      } catch (error) {
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("[watchlist] prefetch failed", error);
+        }
+      }
+      router.push(target, { scroll: false });
       return;
     }
     setToast({

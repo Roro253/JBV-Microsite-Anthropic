@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useUIStore, type ExplorerInvestorMode } from "@/lib/store/ui";
@@ -23,10 +23,15 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const prefersReducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
+  const paneSlug = searchParams.get("pane");
   const isMicrositeRoute =
-    pathname.startsWith("/anthropic") || pathname.startsWith("/xai") || pathname.startsWith("/openai");
+    Boolean(paneSlug) ||
+    pathname.startsWith("/anthropic") ||
+    pathname.startsWith("/xai") ||
+    pathname.startsWith("/openai");
   const hasSyncedRef = useRef(false);
 
   useEffect(() => {
