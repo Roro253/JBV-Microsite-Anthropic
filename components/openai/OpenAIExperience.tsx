@@ -7,7 +7,6 @@ import { Section } from "@/components/Section";
 import { StatPill } from "@/components/StatPill";
 import { KpiTile } from "@/components/KpiTile";
 import { Stepper, type StepperItem } from "@/components/Stepper";
-import { PortfolioFit } from "@/components/PortfolioFit";
 import { CallToAction } from "@/components/CallToAction";
 import { NewsFeed, type NewsItem } from "@/components/NewsFeed";
 import { SourceFootnotes } from "@/components/SourceFootnotes";
@@ -210,23 +209,7 @@ export function OpenAIExperience({ data, fundModel }: OpenAIExperienceProps) {
         </>
       ) : null}
 
-      {isInvestor ? (
-        <>
-          <OpenAIInvestmentDashboard fundModel={fundModel} />
-
-          <Section
-            eyebrow="Portfolio design"
-            title="Match OpenAI to your mandate"
-            description="Answer three prompts to align OpenAI exposure with your allocation strategy."
-          >
-            <PortfolioFit
-              animate={!prefersReducedMotion}
-              companyName="OpenAI"
-              followOnNote="Align follow-on pacing with AMD infrastructure milestones and Microsoft GTM expansion."
-            />
-          </Section>
-        </>
-      ) : null}
+      {isInvestor ? <OpenAIInvestmentDashboard fundModel={fundModel} /> : null}
 
       {!isInvestor ? (
         <Section
