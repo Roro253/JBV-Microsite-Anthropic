@@ -64,8 +64,11 @@ type TooltipDatum = {
   payload: ProjectionDatum;
 };
 
+ codex/build-anthropic-fund-model-dashboard
 type ProjectionTooltipProps = { payload?: TooltipDatum[] };
 
+
+ main
 type KPIItem = {
   label: string;
   value: string;
@@ -687,8 +690,13 @@ function formatNumberInput(value: number): string {
   return value.toLocaleString("en-US", { maximumFractionDigits: 2 });
 }
 
+ codex/build-anthropic-fund-model-dashboard
 function createProjectionTooltip(mode: "abs" | "yoy") {
   const ProjectionTooltip = ({ payload }: ProjectionTooltipProps) => {
+
+function renderProjectionTooltip(mode: "abs" | "yoy") {
+  const ProjectionTooltip = ({ payload }: { payload?: TooltipDatum[] }) => {
+ main
     if (!payload?.length) return null;
     const datum = payload[0].payload;
     const label = mode === "abs" ? "Run rate" : "YoY";
@@ -710,6 +718,7 @@ function createProjectionTooltip(mode: "abs" | "yoy") {
     mode === "abs" ? "ProjectionTooltipAbsolute" : "ProjectionTooltipYoY";
   return ProjectionTooltip;
 }
+ codex/build-anthropic-fund-model-dashboard
 
 const ProjectionTooltipAbsolute = createProjectionTooltip("abs");
 const ProjectionTooltipYoY = createProjectionTooltip("yoy");
@@ -717,3 +726,5 @@ const ProjectionTooltipYoY = createProjectionTooltip("yoy");
 function renderProjectionTooltip(mode: "abs" | "yoy") {
   return mode === "abs" ? ProjectionTooltipAbsolute : ProjectionTooltipYoY;
 }
+
+ main
