@@ -12,15 +12,18 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children
+  children,
+  pane
 }: Readonly<{
   children: React.ReactNode;
+  pane: React.ReactNode;
 }>) {
   return (
     <html lang="en" data-mode="light">
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
         <ThemeColorScript />
         {children}
+        {pane}
       </body>
     </html>
   );
