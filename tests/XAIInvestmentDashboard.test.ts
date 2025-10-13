@@ -1,22 +1,47 @@
+import "@testing-library/jest-dom/vitest";
 import { beforeEach, describe, expect, test, vi } from "vitest";
+import React from "react";
 import { render } from "@testing-library/react";
 
 import XAIInvestmentDashboard from "@/components/XAIInvestmentDashboard";
 import type { XFundModel } from "@/lib/xaiFundModel";
 import { investedAfterFee, netToInvestors } from "@/lib/format";
 
-vi.mock("recharts", () => ({
-  ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
-  BarChart: ({ children }: any) => <div>{children}</div>,
-  Bar: ({ children }: any) => <div>{children}</div>,
-  CartesianGrid: () => null,
-  Cell: () => null,
-  LineChart: ({ children }: any) => <div>{children}</div>,
-  Line: () => null,
-  Tooltip: ({ children }: any) => <div>{children}</div>,
-  XAxis: () => null,
-  YAxis: () => null
-}));
+vi.stubGlobal("React", React);
+vi.stubGlobal(
+  "ResizeObserver",
+  class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+);
+
+vi.mock("@/components/ui/tooltip", () => {
+  const passthrough = ({ children }: any) => React.createElement("div", null, children);
+  return {
+    TooltipProvider: passthrough,
+    Tooltip: passthrough,
+    TooltipTrigger: passthrough,
+    TooltipContent: passthrough
+  };
+});
+
+vi.mock("recharts", () => {
+  const passthrough = ({ children }: any) => React.createElement("div", null, children);
+  return {
+    ResponsiveContainer: passthrough,
+    BarChart: passthrough,
+    Bar: passthrough,
+    CartesianGrid: () => null,
+    Cell: () => null,
+    LineChart: passthrough,
+    Line: () => null,
+    Tooltip: passthrough,
+    XAxis: () => null,
+    YAxis: () => null
+  };
+});
 
 vi.mock("@/lib/hooks/use-reduced-motion", () => ({
   useReducedMotion: () => true
@@ -107,7 +132,7 @@ describe("xAI investment helpers", () => {
 describe("xAI investment dashboard", () => {
   test("renders guided empty state when projections missing", () => {
     const { container, getByText } = render(
-      <XAIInvestmentDashboard fundModel={baseModel} />
+      React.createElement(XAIInvestmentDashboard, { fundModel: baseModel })
     );
     expect(getByText(/add revenue projections/i)).toBeInTheDocument();
     expect(container).toMatchSnapshot();
