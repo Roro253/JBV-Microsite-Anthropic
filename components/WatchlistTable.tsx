@@ -62,11 +62,14 @@ interface WatchlistTableProps {
   items: WatchlistMicrosite[];
   featuredSlug?: string;
   typeformUrl?: string | null;
+  activePaneSlug?: string | null;
 }
 
-export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTableProps) {
+export function WatchlistTable({ items, featuredSlug, typeformUrl, activePaneSlug }: WatchlistTableProps) {
   const router = useRouter();
   const prefersReducedMotion = useReducedMotion();
+
+  const isPaneOpen = Boolean(activePaneSlug);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<Status | "all">("all");
@@ -169,7 +172,9 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
 
   const handleRowClick = (item: AugmentedMicrosite) => {
     if (item.status === "active" && item.link) {
-      router.push(item.link);
+      const params = new URLSearchParams();
+      params.set("pane", item.slug);
+      router.push(`/?${params.toString()}`, { scroll: false });
       return;
     }
     setToast({
@@ -248,7 +253,12 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
       };
 
   return (
-    <div className="space-y-6">
+    <div
+      className={cn(
+        "space-y-6 transition-opacity duration-200",
+        isPaneOpen ? "md:opacity-90" : "opacity-100"
+      )}
+    >
       <header className="sticky top-0 z-30 -mx-4 flex flex-col gap-4 border-b border-slate-200 bg-white/90 px-4 py-4 backdrop-blur supports-[backdrop-filter]:bg-white/70 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-slate-900">
@@ -342,6 +352,11 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
                     item.slug === featured ? "relative bg-sky-50/30" : undefined
                   )}
                   onClick={() => handleRowClick(item)}
+                  onMouseEnter={() => {
+                    if (item.status === "active") {
+                      router.prefetch(`/?pane=${item.slug}`);
+                    }
+                  }}
                 >
                   <td className="whitespace-nowrap px-4 py-3 text-sm font-medium text-slate-700">
                     <div className="flex items-center gap-3">
