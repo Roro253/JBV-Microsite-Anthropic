@@ -17,16 +17,18 @@ const modes: { value: ExplorerInvestorMode; label: string }[] = [
 interface ModeToggleProps {
   className?: string;
   animate?: boolean;
+  forceVisible?: boolean;
+  onModeChange?: (mode: ExplorerInvestorMode) => void;
 }
 
-export function ModeToggle({ className, animate = true }: ModeToggleProps) {
+export function ModeToggle({ className, animate = true, forceVisible = false, onModeChange }: ModeToggleProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   const isMicrositeRoute =
-    pathname.startsWith("/anthropic") || pathname.startsWith("/xai") || pathname.startsWith("/openai");
+    forceVisible || pathname.startsWith("/anthropic") || pathname.startsWith("/xai") || pathname.startsWith("/openai");
   const hasSyncedRef = useRef(false);
 
   useEffect(() => {
@@ -39,19 +41,23 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
       hasSyncedRef.current = false;
       return;
     }
+    if (forceVisible) {
+      return;
+    }
     if (!hasSyncedRef.current) {
       hasSyncedRef.current = true;
       if (mode !== "investor") {
         setMode("investor");
       }
     }
-  }, [isMicrositeRoute, mode, mounted, setMode]);
+  }, [forceVisible, isMicrositeRoute, mode, mounted, setMode]);
 
   const handleChange = (value: string) => {
     if (!value) return;
     const nextMode = value as ExplorerInvestorMode;
     if (nextMode === mode) return;
     setMode(nextMode);
+    onModeChange?.(nextMode);
   };
 
   if (!isMicrositeRoute) {
