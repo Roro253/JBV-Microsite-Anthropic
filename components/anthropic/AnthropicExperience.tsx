@@ -1,13 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Building2, DollarSign, Sparkles } from "lucide-react";
 
 import { CallToAction } from "@/components/CallToAction";
 import { KpiTile } from "@/components/KpiTile";
 import { NewsFeed, type NewsItem } from "@/components/NewsFeed";
-import { PortfolioFit } from "@/components/PortfolioFit";
 import { Section } from "@/components/Section";
 import { SourceFootnotes } from "@/components/SourceFootnotes";
 import { StatPill } from "@/components/StatPill";
@@ -29,8 +28,6 @@ export function AnthropicExperience({ data, fundModel }: AnthropicExperienceProp
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
   const prefersReducedMotion = useReducedMotion();
-  const [portfolioSummary, setPortfolioSummary] = useState<string | null>(null);
-
   const runRateBillions = data.kpis.run_rate_revenue.value / 1_000_000_000;
   const valuationBillions = data.kpis.valuation.value / 1_000_000_000;
 
@@ -232,22 +229,6 @@ export function AnthropicExperience({ data, fundModel }: AnthropicExperienceProp
       {isInvestor ? (
         <>
           <AnthropicInvestmentDashboard fundModel={fundModel} />
-
-          <Section
-            eyebrow="Portfolio design"
-            title="Match Anthropic to your mandate"
-            description="Three quick prompts calibrate the Anthropic allocation recommendation."
-          >
-            <PortfolioFit
-              animate={!prefersReducedMotion}
-              onResult={(result) => setPortfolioSummary(result.profile)}
-            />
-            {portfolioSummary ? (
-              <p className="text-sm text-sky-600">
-                Suggested profile: {portfolioSummary}. Tailor follow-on pacing with Claude roadmap catalysts and hyperscaler incentives.
-              </p>
-            ) : null}
-          </Section>
 
           <Section
             eyebrow="Next steps"
