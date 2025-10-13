@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
@@ -62,10 +62,13 @@ interface WatchlistTableProps {
   items: WatchlistMicrosite[];
   featuredSlug?: string;
   typeformUrl?: string | null;
+  activePane?: string | null;
 }
 
-export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTableProps) {
+export function WatchlistTable({ items, featuredSlug, typeformUrl, activePane }: WatchlistTableProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const prefersReducedMotion = useReducedMotion();
 
   const [search, setSearch] = useState("");
@@ -167,23 +170,44 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
     });
   };
 
-  const handleRowClick = (item: AugmentedMicrosite) => {
-    if (item.status === "active" && item.link) {
-      router.push(item.link);
-      return;
-    }
-    setToast({
-      message:
-        item.status === "coming_soon"
-          ? "This window opens soon. Get early access notifications."
-          : "This window has closed. Join the waitlist for the next rotation.",
-      action: typeformUrl
-        ? () => {
-            window.open(typeformUrl, "_blank", "noopener");
-            setToast(null);
-          }
-        : undefined
+  const buildPaneUrl = (slug: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("pane", slug);
+    return `${pathname}?${params.toString()}`;
+  };
+
+  const prefetchPane = (slug: string) => {
+    const target = buildPaneUrl(slug);
+    router.prefetch(target).catch(() => {
+      /* noop */
     });
+  };
+
+  const handleRowClick = (item: AugmentedMicrosite) => {
+    const target = buildPaneUrl(item.slug);
+    const shouldReplace = Boolean(searchParams.get("pane"));
+    if (shouldReplace) {
+      router.replace(target, { scroll: false });
+    } else {
+      router.push(target, { scroll: false });
+    }
+
+    if (item.status !== "active") {
+      setToast({
+        message:
+          item.status === "coming_soon"
+            ? "This window opens soon. Get early access notifications."
+            : "This window has closed. Join the waitlist for the next rotation.",
+        action: typeformUrl
+          ? () => {
+              window.open(typeformUrl, "_blank", "noopener");
+              setToast(null);
+            }
+          : undefined
+      });
+    } else {
+      setToast(null);
+    }
   };
 
   const handleDownloadCSV = () => {
@@ -247,6 +271,8 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
         transition: { duration: 0.4 }
       };
 
+  const isPaneOpen = Boolean(activePane);
+
   return (
     <div className="space-y-6">
       <header className="sticky top-0 z-30 -mx-4 flex flex-col gap-4 border-b border-slate-200 bg-white/90 px-4 py-4 backdrop-blur supports-[backdrop-filter]:bg-white/70 sm:flex-row sm:items-center sm:justify-between">
@@ -296,7 +322,10 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
       </header>
 
       <motion.div
-        className="hidden overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_30px_80px_-60px_rgba(15,23,42,0.45)] md:block"
+        className={cn(
+          "hidden overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_30px_80px_-60px_rgba(15,23,42,0.45)] transition-opacity md:block",
+          isPaneOpen ? "opacity-90" : "opacity-100"
+        )}
         {...motionProps}
       >
         <table className="min-w-full divide-y divide-slate-200 text-sm" role="grid">
@@ -339,9 +368,11 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
                   key={item.slug}
                   className={cn(
                     "group cursor-pointer bg-white transition hover:bg-sky-50/40 focus-within:bg-sky-50/40",
-                    item.slug === featured ? "relative bg-sky-50/30" : undefined
+                    item.slug === featured ? "relative bg-sky-50/30" : undefined,
+                    activePane === item.slug ? "bg-sky-50/50" : undefined
                   )}
                   onClick={() => handleRowClick(item)}
+                  onMouseEnter={() => prefetchPane(item.slug)}
                 >
                   <td className="whitespace-nowrap px-4 py-3 text-sm font-medium text-slate-700">
                     <div className="flex items-center gap-3">
@@ -433,7 +464,9 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
         ) : null}
       </motion.div>
 
-      <div className="space-y-4 md:hidden">
+      <div
+        className={cn("space-y-4 transition-opacity md:hidden", isPaneOpen ? "opacity-90" : "opacity-100")}
+      >
         {sorted.length === 0 ? (
           <p className="text-sm text-slate-500">No companies match your filters yet.</p>
         ) : null}
@@ -445,12 +478,14 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
               className={cn(
                 "rounded-3xl border border-slate-200 bg-white p-4 shadow-[0_20px_60px_-50px_rgba(15,23,42,0.6)] transition",
                 "focus-within:ring-2 focus-within:ring-sky-300",
-                item.slug === featured ? "border-sky-200" : undefined
+                item.slug === featured ? "border-sky-200" : undefined,
+                activePane === item.slug ? "border-sky-300 bg-sky-50/40" : undefined
               )}
             >
               <button
                 className="flex w-full flex-col gap-3 text-left"
                 onClick={() => handleRowClick(item)}
+                onMouseEnter={() => prefetchPane(item.slug)}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
