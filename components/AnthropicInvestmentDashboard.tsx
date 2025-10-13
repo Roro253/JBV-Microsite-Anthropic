@@ -686,7 +686,7 @@ function formatNumberInput(value: number): string {
 }
 
 function renderProjectionTooltip(mode: "abs" | "yoy") {
-  return ({ payload }: { payload?: TooltipDatum[] }) => {
+  const ProjectionTooltip = ({ payload }: { payload?: TooltipDatum[] }) => {
     if (!payload?.length) return null;
     const datum = payload[0].payload;
     const label = mode === "abs" ? "Run rate" : "YoY";
@@ -704,4 +704,7 @@ function renderProjectionTooltip(mode: "abs" | "yoy") {
       </div>
     );
   };
+  ProjectionTooltip.displayName =
+    mode === "abs" ? "ProjectionTooltipAbsolute" : "ProjectionTooltipYoY";
+  return ProjectionTooltip;
 }

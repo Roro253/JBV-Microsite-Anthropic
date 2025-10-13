@@ -19,26 +19,30 @@ vi.stubGlobal(
 );
 
 vi.mock("@/components/ui/tooltip", () => {
-  const passthrough = ({ children }: any) => React.createElement("div", null, children);
+  type PassthroughProps = { children?: React.ReactNode };
+  const Passthrough = ({ children }: PassthroughProps) =>
+    React.createElement("div", null, children);
   return {
-    TooltipProvider: passthrough,
-    Tooltip: passthrough,
-    TooltipTrigger: passthrough,
-    TooltipContent: passthrough
+    TooltipProvider: Passthrough,
+    Tooltip: Passthrough,
+    TooltipTrigger: Passthrough,
+    TooltipContent: Passthrough
   };
 });
 
 vi.mock("recharts", () => {
-  const passthrough = ({ children }: any) => React.createElement("div", null, children);
+  type PassthroughProps = { children?: React.ReactNode };
+  const Passthrough = ({ children }: PassthroughProps) =>
+    React.createElement("div", null, children);
   return {
-    ResponsiveContainer: passthrough,
-    BarChart: passthrough,
-    Bar: passthrough,
+    ResponsiveContainer: Passthrough,
+    BarChart: Passthrough,
+    Bar: Passthrough,
     CartesianGrid: () => null,
     Cell: () => null,
-    LineChart: passthrough,
+    LineChart: Passthrough,
     Line: () => null,
-    Tooltip: passthrough,
+    Tooltip: Passthrough,
     XAxis: () => null,
     YAxis: () => null
   };
