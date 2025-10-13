@@ -2,6 +2,7 @@ import { IntegrationError } from "./errors";
 import { retry } from "./utils/retry";
 
 const AIRTABLE_API_URL = "https://api.airtable.com/v0";
+const DEFAULT_EMAIL_FIELD = "Email";
 
 function assertEnv(value: string | undefined, name: string): string {
   if (!value) {
@@ -19,6 +20,18 @@ function escapeFormulaValue(value: string): string {
   return value.replace(/'/g, "\\'");
 }
 
+function resolveEmailField(): string {
+  const configuredField = process.env.AIRTABLE_EMAIL_FIELD;
+
+  if (!configuredField) {
+    return DEFAULT_EMAIL_FIELD;
+  }
+
+  const sanitized = configuredField.replace(/[{}]/g, "").trim();
+
+  return sanitized.length > 0 ? sanitized : DEFAULT_EMAIL_FIELD;
+}
+
 export async function isAuthorizedEmail(email: string): Promise<boolean> {
   const apiKey = assertEnv(process.env.AIRTABLE_API_KEY, "AIRTABLE_API_KEY");
   const baseId = assertEnv(
@@ -30,8 +43,10 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
     "AIRTABLE_TABLE_ID"
   );
 
+  const emailField = resolveEmailField();
+
   const normalizedEmail = normalizeEmail(email);
-  const formula = `LOWER(TRIM({Email}))='${escapeFormulaValue(normalizedEmail)}'`;
+  const formula = `LOWER(TRIM({${emailField}}))='${escapeFormulaValue(normalizedEmail)}'`;
   const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
 
   try {
