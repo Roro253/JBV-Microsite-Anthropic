@@ -27,8 +27,9 @@ const STATUS_MESSAGES: Record<string, { tone: "error" | "info"; message: string 
 export default async function LoginPage({
   searchParams
 }: {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("jbv_session");
   if (sessionCookie) {
@@ -38,7 +39,10 @@ export default async function LoginPage({
     }
   }
 
-  const statusKey = typeof searchParams?.status === "string" ? searchParams.status : undefined;
+  const statusKey =
+    typeof resolvedSearchParams?.status === "string"
+      ? resolvedSearchParams.status
+      : undefined;
   const banner = statusKey ? STATUS_MESSAGES[statusKey] : undefined;
 
   return (
