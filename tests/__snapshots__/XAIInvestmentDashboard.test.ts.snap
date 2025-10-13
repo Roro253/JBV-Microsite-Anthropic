@@ -2,732 +2,734 @@
 
 exports[`xAI investment dashboard > renders guided empty state when projections missing 1`] = `
 <div>
-  <section
-    class="space-y-6 rounded-3xl border border-sky-100 bg-gradient-to-b from-white via-white/90 to-sky-50/40 p-6 shadow-[0_40px_120px_-70px_rgba(15,23,42,0.4)]"
-  >
-    <header
-      class="space-y-2 border-b border-slate-200 pb-4"
+  <div>
+    <section
+      class="space-y-6 rounded-3xl border border-sky-100 bg-gradient-to-b from-white via-white/90 to-sky-50/40 p-6 shadow-[0_40px_120px_-70px_rgba(15,23,42,0.4)]"
     >
-      <p
-        class="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600"
+      <header
+        class="space-y-2 border-b border-slate-200 pb-4"
       >
-        Investor Mode · last updated 
-        2025-10-12
-      </p>
-      <h2
-        class="text-2xl font-semibold text-slate-900"
-      >
-        xAI Fund Model (Scenario)
-      </h2>
-      <p
-        class="text-sm text-slate-600"
-      >
-        Public signals are sourced from xAI announcements and coverage. Scenario fields update as diligence progresses.
-      </p>
-    </header>
-    <div
-      class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
-    >
-      <div
-        class="mb-4 space-y-1"
-      >
-        <h3
-          class="text-lg font-semibold text-slate-900"
+        <p
+          class="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600"
         >
-          Public signals
-        </h3>
+          Investor Mode · last updated 
+          2025-10-12
+        </p>
+        <h2
+          class="text-2xl font-semibold text-slate-900"
+        >
+          xAI Fund Model (Scenario)
+        </h2>
         <p
           class="text-sm text-slate-600"
         >
-          Facts reported by xAI or credible coverage.
+          Public signals are sourced from xAI announcements and coverage. Scenario fields update as diligence progresses.
         </p>
-      </div>
+      </header>
       <div
-        class="grid gap-3 md:grid-cols-2"
+        class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
       >
-        <div>
-          <div>
-            <button
-              class="flex flex-col gap-1 rounded-2xl border border-sky-100 bg-white/70 p-4 text-left shadow-[0_20px_60px_-50px_rgba(15,23,42,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 transition hover:-translate-y-0.5"
-              type="button"
-            >
-              <span
-                class="inline-flex w-fit items-center rounded-full bg-sky-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-sky-600"
-              >
-                official
-              </span>
-              <p
-                class="text-sm font-semibold text-slate-900"
-              >
-                Compute
-              </p>
-              <p
-                class="text-xs text-slate-600"
-              >
-                150,000 GPUs · 99% uptime · built in 122 days
-              </p>
-            </button>
-          </div>
-          <div>
-            <p
-              class="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-500"
-            >
-              Sources
-            </p>
-            <ul
-              class="space-y-1"
-            >
-              <li>
-                <a
-                  class="text-sky-600 hover:text-sky-700"
-                  href="https://x.ai/colossus"
-                  rel="noopener"
-                  target="_blank"
-                >
-                  xAI · Colossus (official site)
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
         <div
-          class="flex flex-col gap-1 rounded-2xl border border-sky-100 bg-white/70 p-4 text-left shadow-[0_20px_60px_-50px_rgba(15,23,42,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+          class="mb-4 space-y-1"
         >
-          <span
-            class="inline-flex w-fit items-center rounded-full bg-sky-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-sky-600"
-          >
-            reported
-          </span>
-          <p
-            class="text-sm font-semibold text-slate-900"
-          >
-            Fundraise
-          </p>
-          <p
-            class="text-xs text-slate-600"
-          >
-            In market: up to $20.0B (equity ~$7.5B, debt ~$12.5B); Nvidia up to $2B (reported) · as of Oct 7, 2025
-          </p>
-        </div>
-        <div
-          class="flex flex-col gap-1 rounded-2xl border border-sky-100 bg-white/70 p-4 text-left shadow-[0_20px_60px_-50px_rgba(15,23,42,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
-        >
-          <span
-            class="inline-flex w-fit items-center rounded-full bg-sky-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-sky-600"
-          >
-            official
-          </span>
-          <p
-            class="text-sm font-semibold text-slate-900"
-          >
-            Models
-          </p>
-          <p
-            class="text-xs text-slate-600"
-          />
-        </div>
-        <div
-          class="flex flex-col gap-1 rounded-2xl border border-sky-100 bg-white/70 p-4 text-left shadow-[0_20px_60px_-50px_rgba(15,23,42,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
-        >
-          <span
-            class="inline-flex w-fit items-center rounded-full bg-sky-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-sky-600"
-          >
-            estimate
-          </span>
-          <p
-            class="text-sm font-semibold text-slate-900"
-          >
-            Users
-          </p>
-          <p
-            class="text-xs text-slate-600"
-          >
-            MAUs ~30–39M (estimates; not official) · as of Sep 30, 2025
-          </p>
-        </div>
-        <div
-          class="flex flex-col gap-1 rounded-2xl border border-sky-100 bg-white/70 p-4 text-left shadow-[0_20px_60px_-50px_rgba(15,23,42,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
-        >
-          <span
-            class="inline-flex w-fit items-center rounded-full bg-sky-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-sky-600"
-          >
-            reported
-          </span>
-          <p
-            class="text-sm font-semibold text-slate-900"
-          >
-            World models
-          </p>
-          <p
-            class="text-xs text-slate-600"
-          >
-            Target: AI-generated video game by end-2026; Nvidia (reports)
-          </p>
-        </div>
-      </div>
-    </div>
-    <div
-      class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
-    >
-      <div
-        class="mb-4 space-y-1"
-      >
-        <h3
-          class="text-lg font-semibold text-slate-900"
-        >
-          Investment summary
-        </h3>
-        <p
-          class="text-sm text-slate-600"
-        >
-          Scenario inputs; update when term sheet is finalized.
-        </p>
-      </div>
-      <div
-        class="grid gap-4 md:grid-cols-2"
-      >
-        <label
-          class="flex flex-col gap-2 text-sm font-medium text-slate-700"
-        >
-          Entry valuation (USD)
-          <input
-            class="flex h-10 w-full rounded-md border border-sky-200 bg-white/80 px-3 py-2 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50"
-            inputmode="decimal"
-            placeholder="Enter when available"
-            type="text"
-            value=""
-          />
-        </label>
-        <label
-          class="flex flex-col gap-2 text-sm font-medium text-slate-700"
-        >
-          Ownership %
-          <input
-            class="flex h-10 w-full rounded-md border border-sky-200 bg-white/80 px-3 py-2 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50"
-            inputmode="decimal"
-            placeholder="Enter when available"
-            type="text"
-            value="10"
-          />
-        </label>
-      </div>
-      <p
-        class="mt-3 text-xs text-slate-500"
-      >
-        When deal terms finalize, these fields auto-populate from 
-        <code>
-          xai_fund_model.json
-        </code>
-        .
-      </p>
-    </div>
-    <div
-      class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
-    >
-      <div
-        class="mb-4 space-y-1 flex items-center justify-between"
-      >
-        <div>
           <h3
             class="text-lg font-semibold text-slate-900"
           >
-            Market cap calculator
+            Public signals
           </h3>
           <p
             class="text-sm text-slate-600"
           >
-            Revenue is scenario-only; xAI does not disclose run-rate.
+            Facts reported by xAI or credible coverage.
           </p>
         </div>
-        <button
-          class="inline-flex items-center gap-1 rounded-full border border-sky-200 px-3 py-1 text-xs font-semibold text-sky-600 hover:border-sky-300"
-          type="button"
+        <div
+          class="grid gap-3 md:grid-cols-2"
         >
-          <svg
-            aria-hidden="true"
-            class="lucide lucide-pen-line h-3.5 w-3.5"
-            fill="none"
-            height="24"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="24"
-            xmlns="http://www.w3.org/2000/svg"
+          <div>
+            <div>
+              <button
+                class="flex flex-col gap-1 rounded-2xl border border-sky-100 bg-white/70 p-4 text-left shadow-[0_20px_60px_-50px_rgba(15,23,42,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 transition hover:-translate-y-0.5"
+                type="button"
+              >
+                <span
+                  class="inline-flex w-fit items-center rounded-full bg-sky-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-sky-600"
+                >
+                  official
+                </span>
+                <p
+                  class="text-sm font-semibold text-slate-900"
+                >
+                  Compute
+                </p>
+                <p
+                  class="text-xs text-slate-600"
+                >
+                  150,000 GPUs · 99% uptime · built in 122 days
+                </p>
+              </button>
+            </div>
+            <div>
+              <p
+                class="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-500"
+              >
+                Sources
+              </p>
+              <ul
+                class="space-y-1"
+              >
+                <li>
+                  <a
+                    class="text-sky-600 hover:text-sky-700"
+                    href="https://x.ai/colossus"
+                    rel="noopener"
+                    target="_blank"
+                  >
+                    xAI · Colossus (official site)
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="flex flex-col gap-1 rounded-2xl border border-sky-100 bg-white/70 p-4 text-left shadow-[0_20px_60px_-50px_rgba(15,23,42,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
           >
-            <path
-              d="M13 21h8"
+            <span
+              class="inline-flex w-fit items-center rounded-full bg-sky-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-sky-600"
+            >
+              reported
+            </span>
+            <p
+              class="text-sm font-semibold text-slate-900"
+            >
+              Fundraise
+            </p>
+            <p
+              class="text-xs text-slate-600"
+            >
+              In market: up to $20.0B (equity ~$7.5B, debt ~$12.5B); Nvidia up to $2B (reported) · as of Oct 7, 2025
+            </p>
+          </div>
+          <div
+            class="flex flex-col gap-1 rounded-2xl border border-sky-100 bg-white/70 p-4 text-left shadow-[0_20px_60px_-50px_rgba(15,23,42,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+          >
+            <span
+              class="inline-flex w-fit items-center rounded-full bg-sky-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-sky-600"
+            >
+              official
+            </span>
+            <p
+              class="text-sm font-semibold text-slate-900"
+            >
+              Models
+            </p>
+            <p
+              class="text-xs text-slate-600"
             />
-            <path
-              d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"
-            />
-          </svg>
-          Finish editing
-        </button>
+          </div>
+          <div
+            class="flex flex-col gap-1 rounded-2xl border border-sky-100 bg-white/70 p-4 text-left shadow-[0_20px_60px_-50px_rgba(15,23,42,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+          >
+            <span
+              class="inline-flex w-fit items-center rounded-full bg-sky-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-sky-600"
+            >
+              estimate
+            </span>
+            <p
+              class="text-sm font-semibold text-slate-900"
+            >
+              Users
+            </p>
+            <p
+              class="text-xs text-slate-600"
+            >
+              MAUs ~30–39M (estimates; not official) · as of Sep 30, 2025
+            </p>
+          </div>
+          <div
+            class="flex flex-col gap-1 rounded-2xl border border-sky-100 bg-white/70 p-4 text-left shadow-[0_20px_60px_-50px_rgba(15,23,42,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+          >
+            <span
+              class="inline-flex w-fit items-center rounded-full bg-sky-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-sky-600"
+            >
+              reported
+            </span>
+            <p
+              class="text-sm font-semibold text-slate-900"
+            >
+              World models
+            </p>
+            <p
+              class="text-xs text-slate-600"
+            >
+              Target: AI-generated video game by end-2026; Nvidia (reports)
+            </p>
+          </div>
+        </div>
       </div>
       <div
-        class="grid gap-4 md:grid-cols-[minmax(0,280px)_1fr]"
+        class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
       >
         <div
-          class="space-y-4"
+          class="mb-4 space-y-1"
+        >
+          <h3
+            class="text-lg font-semibold text-slate-900"
+          >
+            Investment summary
+          </h3>
+          <p
+            class="text-sm text-slate-600"
+          >
+            Scenario inputs; update when term sheet is finalized.
+          </p>
+        </div>
+        <div
+          class="grid gap-4 md:grid-cols-2"
         >
           <label
             class="flex flex-col gap-2 text-sm font-medium text-slate-700"
           >
-            Year
-            <select
-              class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200"
-            >
-              <option
-                value="2026"
-              >
-                2026
-              </option>
-              <option
-                value="2027"
-              >
-                2027
-              </option>
-            </select>
-          </label>
-          <div
-            class="space-y-2 text-sm font-medium text-slate-700"
-          >
-            <div
-              class="flex items-center justify-between"
-            >
-              <span>
-                EV/Sales multiple
-              </span>
-              <span>
-                20
-                ×
-              </span>
-            </div>
-            <span
-              aria-disabled="false"
-              aria-label="EV to Sales multiple"
-              class="relative flex w-full touch-none select-none items-center"
-              data-orientation="horizontal"
-              dir="ltr"
-              style="--radix-slider-thumb-transform: translateX(-50%);"
-            >
-              <span
-                class="relative h-1.5 w-full grow overflow-hidden rounded-full bg-sky-100"
-                data-orientation="horizontal"
-              >
-                <span
-                  class="absolute h-full bg-gradient-to-r from-sky-400 to-indigo-400"
-                  data-orientation="horizontal"
-                  style="left: 0%; right: 50%;"
-                />
-              </span>
-              <span
-                style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(50% + 0px);"
-              >
-                <span
-                  aria-orientation="horizontal"
-                  aria-valuemax="30"
-                  aria-valuemin="10"
-                  aria-valuenow="20"
-                  class="block h-4 w-4 rounded-full border-2 border-white bg-sky-500 shadow-[0_4px_12px_-4px_rgba(32,118,199,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50"
-                  data-orientation="horizontal"
-                  data-radix-collection-item=""
-                  role="slider"
-                  style=""
-                  tabindex="0"
-                />
-              </span>
-            </span>
-          </div>
-          <label
-            class="flex flex-col gap-2 text-sm font-medium text-slate-700"
-          >
-            Revenue run rate (USD)
+            Entry valuation (USD)
             <input
               class="flex h-10 w-full rounded-md border border-sky-200 bg-white/80 px-3 py-2 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50"
               inputmode="decimal"
-              placeholder="Enter estimate"
+              placeholder="Enter when available"
               type="text"
               value=""
             />
           </label>
-          <div
-            aria-live="polite"
-            class="rounded-2xl border border-sky-100 bg-white/70 p-4"
+          <label
+            class="flex flex-col gap-2 text-sm font-medium text-slate-700"
           >
-            <p
-              class="text-xs uppercase tracking-[0.3em] text-sky-600"
-            >
-              Implied market cap
-            </p>
-            <p
-              class="mt-1 text-2xl font-semibold text-slate-900"
-            >
-              N/A
-            </p>
-            <p
-              class="text-xs text-slate-500"
-            >
-              Scenario — enter a revenue estimate to compute market cap.
-            </p>
-          </div>
+            Ownership %
+            <input
+              class="flex h-10 w-full rounded-md border border-sky-200 bg-white/80 px-3 py-2 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50"
+              inputmode="decimal"
+              placeholder="Enter when available"
+              type="text"
+              value="10"
+            />
+          </label>
         </div>
-        <div
-          class="h-48"
-        >
-          <div>
-            <div>
-              <div />
-              <div />
-            </div>
-          </div>
-          <p
-            class="mt-2 text-xs text-slate-500"
-          >
-            Provide a revenue estimate to illustrate potential market cap.
-          </p>
-        </div>
-      </div>
-    </div>
-    <div
-      class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
-    >
-      <div
-        class="mb-4 space-y-1"
-      >
-        <h3
-          class="text-lg font-semibold text-slate-900"
-        >
-          Waterfall returns
-        </h3>
         <p
-          class="text-sm text-slate-600"
+          class="mt-3 text-xs text-slate-500"
         >
-          Ownership-based when available; otherwise choose a scenario gross multiple.
+          When deal terms finalize, these fields auto-populate from 
+          <code>
+            xai_fund_model.json
+          </code>
+          .
         </p>
       </div>
       <div
-        class="grid gap-6 lg:grid-cols-[minmax(0,260px)_1fr]"
+        class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
       >
         <div
-          class="space-y-4"
+          class="mb-4 space-y-1 flex items-center justify-between"
         >
-          <label
-            class="text-sm font-medium text-slate-700"
-          >
-            Commitment (USD)
-            <input
-              aria-label="Commitment in USD"
-              class="flex h-10 w-full rounded-md border border-sky-200 bg-white/80 px-3 py-2 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50"
-              inputmode="decimal"
-              type="text"
-              value="1,000,000"
-            />
-          </label>
-          <div
-            class="space-y-2 text-sm font-medium text-slate-700"
-          >
-            <div
-              class="flex items-center justify-between"
+          <div>
+            <h3
+              class="text-lg font-semibold text-slate-900"
             >
-              <span>
-                Scenario gross MoM
-              </span>
-              <span>
-                3.00
-                ×
-              </span>
-            </div>
-            <span
-              aria-disabled="false"
-              aria-label="Gross MoM multiplier"
-              class="relative flex w-full touch-none select-none items-center"
-              data-orientation="horizontal"
-              dir="ltr"
-              style="--radix-slider-thumb-transform: translateX(-50%);"
+              Market cap calculator
+            </h3>
+            <p
+              class="text-sm text-slate-600"
             >
-              <span
-                class="relative h-1.5 w-full grow overflow-hidden rounded-full bg-sky-100"
-                data-orientation="horizontal"
-              >
-                <span
-                  class="absolute h-full bg-gradient-to-r from-sky-400 to-indigo-400"
-                  data-orientation="horizontal"
-                  style="left: 0%; right: 77.77777777777777%;"
-                />
-              </span>
-              <span
-                style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(22.2222% + 0px);"
-              >
-                <span
-                  aria-orientation="horizontal"
-                  aria-valuemax="10"
-                  aria-valuemin="1"
-                  aria-valuenow="3"
-                  class="block h-4 w-4 rounded-full border-2 border-white bg-sky-500 shadow-[0_4px_12px_-4px_rgba(32,118,199,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50"
-                  data-orientation="horizontal"
-                  data-radix-collection-item=""
-                  role="slider"
-                  style=""
-                  tabindex="0"
-                />
-              </span>
-            </span>
+              Revenue is scenario-only; xAI does not disclose run-rate.
+            </p>
           </div>
-          <div
-            class="flex flex-wrap gap-2 text-xs text-slate-600"
+          <button
+            class="inline-flex items-center gap-1 rounded-full border border-sky-200 px-3 py-1 text-xs font-semibold text-sky-600 hover:border-sky-300"
+            type="button"
           >
-            <span
-              class="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 font-semibold text-sky-700"
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-pen-line h-3.5 w-3.5"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              Mgmt fee 
-              5%
-            </span>
-            <span
-              class="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 font-semibold text-sky-700"
-            >
-              Carry 
-              10%
-            </span>
-          </div>
+              <path
+                d="M13 21h8"
+              />
+              <path
+                d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"
+              />
+            </svg>
+            Finish editing
+          </button>
         </div>
         <div
-          class="space-y-4"
+          class="grid gap-4 md:grid-cols-[minmax(0,280px)_1fr]"
         >
           <div
-            class="overflow-hidden rounded-2xl border border-sky-100"
+            class="space-y-4"
           >
-            <table
-              class="min-w-full text-sm text-slate-700"
+            <label
+              class="flex flex-col gap-2 text-sm font-medium text-slate-700"
             >
-              <tbody
-                class="divide-y divide-slate-100"
+              Year
+              <select
+                class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200"
               >
-                <tr>
-                  <td
-                    class="px-4 py-2 text-slate-500"
-                  >
-                    Invested after fees
-                  </td>
-                  <td
-                    class="px-4 py-2 text-right font-semibold text-slate-800"
-                  >
-                    $950,000
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    class="px-4 py-2 text-slate-500"
-                  >
-                    Total gross proceeds
-                  </td>
-                  <td
-                    class="px-4 py-2 text-right font-semibold text-slate-800"
-                  >
-                    $2.9M
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    class="px-4 py-2 text-slate-500"
-                  >
-                    Gross profit
-                  </td>
-                  <td
-                    class="px-4 py-2 text-right font-semibold text-slate-800"
-                  >
-                    $1.9M
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    class="px-4 py-2 text-slate-500"
-                  >
-                    JBV carry
-                  </td>
-                  <td
-                    class="px-4 py-2 text-right font-semibold text-slate-800"
-                  >
-                    $190,000
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    class="px-4 py-2 text-slate-500"
-                  >
-                    Net to investors
-                  </td>
-                  <td
-                    class="px-4 py-2 text-right font-semibold text-slate-800"
-                  >
-                    $2.7M
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    class="px-4 py-2 text-slate-500"
-                  >
-                    Net MoM
-                  </td>
-                  <td
-                    class="px-4 py-2 text-right font-semibold text-slate-800"
-                  >
-                    2.66×
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                <option
+                  value="2026"
+                >
+                  2026
+                </option>
+                <option
+                  value="2027"
+                >
+                  2027
+                </option>
+              </select>
+            </label>
+            <div
+              class="space-y-2 text-sm font-medium text-slate-700"
+            >
+              <div
+                class="flex items-center justify-between"
+              >
+                <span>
+                  EV/Sales multiple
+                </span>
+                <span>
+                  20
+                  ×
+                </span>
+              </div>
+              <span
+                aria-disabled="false"
+                aria-label="EV to Sales multiple"
+                class="relative flex w-full touch-none select-none items-center"
+                data-orientation="horizontal"
+                dir="ltr"
+                style="--radix-slider-thumb-transform: translateX(-50%);"
+              >
+                <span
+                  class="relative h-1.5 w-full grow overflow-hidden rounded-full bg-sky-100"
+                  data-orientation="horizontal"
+                >
+                  <span
+                    class="absolute h-full bg-gradient-to-r from-sky-400 to-indigo-400"
+                    data-orientation="horizontal"
+                    style="left: 0%; right: 50%;"
+                  />
+                </span>
+                <span
+                  style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(50% + 0px);"
+                >
+                  <span
+                    aria-orientation="horizontal"
+                    aria-valuemax="30"
+                    aria-valuemin="10"
+                    aria-valuenow="20"
+                    class="block h-4 w-4 rounded-full border-2 border-white bg-sky-500 shadow-[0_4px_12px_-4px_rgba(32,118,199,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50"
+                    data-orientation="horizontal"
+                    data-radix-collection-item=""
+                    role="slider"
+                    style=""
+                    tabindex="0"
+                  />
+                </span>
+              </span>
+            </div>
+            <label
+              class="flex flex-col gap-2 text-sm font-medium text-slate-700"
+            >
+              Revenue run rate (USD)
+              <input
+                class="flex h-10 w-full rounded-md border border-sky-200 bg-white/80 px-3 py-2 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50"
+                inputmode="decimal"
+                placeholder="Enter estimate"
+                type="text"
+                value=""
+              />
+            </label>
+            <div
+              aria-live="polite"
+              class="rounded-2xl border border-sky-100 bg-white/70 p-4"
+            >
+              <p
+                class="text-xs uppercase tracking-[0.3em] text-sky-600"
+              >
+                Implied market cap
+              </p>
+              <p
+                class="mt-1 text-2xl font-semibold text-slate-900"
+              >
+                N/A
+              </p>
+              <p
+                class="text-xs text-slate-500"
+              >
+                Scenario — enter a revenue estimate to compute market cap.
+              </p>
+            </div>
           </div>
           <div
-            class="h-36"
+            class="h-48"
           >
             <div>
               <div>
                 <div />
                 <div />
-                <div />
-                <div />
               </div>
             </div>
+            <p
+              class="mt-2 text-xs text-slate-500"
+            >
+              Provide a revenue estimate to illustrate potential market cap.
+            </p>
           </div>
-          <p
-            class="text-xs text-slate-500"
-          >
-            Ownership path uses market cap × ownership %. Otherwise, MoM slider drives scenario returns.
-          </p>
         </div>
       </div>
-    </div>
-    <div
-      class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
-    >
       <div
-        class="mb-4 space-y-1 flex items-center justify-between"
+        class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
       >
-        <div>
+        <div
+          class="mb-4 space-y-1"
+        >
           <h3
             class="text-lg font-semibold text-slate-900"
           >
-            xAI projections
+            Waterfall returns
           </h3>
           <p
             class="text-sm text-slate-600"
           >
-            Enter or toggle revenue projections to visualize growth scenarios.
+            Ownership-based when available; otherwise choose a scenario gross multiple.
           </p>
         </div>
         <div
-          class="inline-flex rounded-full border border-sky-200 bg-white p-1"
+          class="grid gap-6 lg:grid-cols-[minmax(0,260px)_1fr]"
         >
-          <button
-            class="rounded-full px-3 py-1 text-xs font-semibold transition bg-sky-600 text-white shadow"
-            type="button"
+          <div
+            class="space-y-4"
           >
-            Absolute
-          </button>
-          <button
-            class="rounded-full px-3 py-1 text-xs font-semibold transition text-slate-500 hover:text-sky-600"
-            type="button"
+            <label
+              class="text-sm font-medium text-slate-700"
+            >
+              Commitment (USD)
+              <input
+                aria-label="Commitment in USD"
+                class="flex h-10 w-full rounded-md border border-sky-200 bg-white/80 px-3 py-2 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50"
+                inputmode="decimal"
+                type="text"
+                value="1,000,000"
+              />
+            </label>
+            <div
+              class="space-y-2 text-sm font-medium text-slate-700"
+            >
+              <div
+                class="flex items-center justify-between"
+              >
+                <span>
+                  Scenario gross MoM
+                </span>
+                <span>
+                  3.00
+                  ×
+                </span>
+              </div>
+              <span
+                aria-disabled="false"
+                aria-label="Gross MoM multiplier"
+                class="relative flex w-full touch-none select-none items-center"
+                data-orientation="horizontal"
+                dir="ltr"
+                style="--radix-slider-thumb-transform: translateX(-50%);"
+              >
+                <span
+                  class="relative h-1.5 w-full grow overflow-hidden rounded-full bg-sky-100"
+                  data-orientation="horizontal"
+                >
+                  <span
+                    class="absolute h-full bg-gradient-to-r from-sky-400 to-indigo-400"
+                    data-orientation="horizontal"
+                    style="left: 0%; right: 77.77777777777777%;"
+                  />
+                </span>
+                <span
+                  style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(22.2222% + 0px);"
+                >
+                  <span
+                    aria-orientation="horizontal"
+                    aria-valuemax="10"
+                    aria-valuemin="1"
+                    aria-valuenow="3"
+                    class="block h-4 w-4 rounded-full border-2 border-white bg-sky-500 shadow-[0_4px_12px_-4px_rgba(32,118,199,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50"
+                    data-orientation="horizontal"
+                    data-radix-collection-item=""
+                    role="slider"
+                    style=""
+                    tabindex="0"
+                  />
+                </span>
+              </span>
+            </div>
+            <div
+              class="flex flex-wrap gap-2 text-xs text-slate-600"
+            >
+              <span
+                class="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 font-semibold text-sky-700"
+              >
+                Mgmt fee 
+                5%
+              </span>
+              <span
+                class="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 font-semibold text-sky-700"
+              >
+                Carry 
+                10%
+              </span>
+            </div>
+          </div>
+          <div
+            class="space-y-4"
           >
-            YoY %
-          </button>
+            <div
+              class="overflow-hidden rounded-2xl border border-sky-100"
+            >
+              <table
+                class="min-w-full text-sm text-slate-700"
+              >
+                <tbody
+                  class="divide-y divide-slate-100"
+                >
+                  <tr>
+                    <td
+                      class="px-4 py-2 text-slate-500"
+                    >
+                      Invested after fees
+                    </td>
+                    <td
+                      class="px-4 py-2 text-right font-semibold text-slate-800"
+                    >
+                      $950,000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      class="px-4 py-2 text-slate-500"
+                    >
+                      Total gross proceeds
+                    </td>
+                    <td
+                      class="px-4 py-2 text-right font-semibold text-slate-800"
+                    >
+                      $2.9M
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      class="px-4 py-2 text-slate-500"
+                    >
+                      Gross profit
+                    </td>
+                    <td
+                      class="px-4 py-2 text-right font-semibold text-slate-800"
+                    >
+                      $1.9M
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      class="px-4 py-2 text-slate-500"
+                    >
+                      JBV carry
+                    </td>
+                    <td
+                      class="px-4 py-2 text-right font-semibold text-slate-800"
+                    >
+                      $190,000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      class="px-4 py-2 text-slate-500"
+                    >
+                      Net to investors
+                    </td>
+                    <td
+                      class="px-4 py-2 text-right font-semibold text-slate-800"
+                    >
+                      $2.7M
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      class="px-4 py-2 text-slate-500"
+                    >
+                      Net MoM
+                    </td>
+                    <td
+                      class="px-4 py-2 text-right font-semibold text-slate-800"
+                    >
+                      2.66×
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div
+              class="h-36"
+            >
+              <div>
+                <div>
+                  <div />
+                  <div />
+                  <div />
+                  <div />
+                </div>
+              </div>
+            </div>
+            <p
+              class="text-xs text-slate-500"
+            >
+              Ownership path uses market cap × ownership %. Otherwise, MoM slider drives scenario returns.
+            </p>
+          </div>
         </div>
       </div>
       <div
-        class="space-y-3 rounded-2xl border border-sky-100 bg-white/70 p-4 text-sm text-slate-600"
+        class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
+      >
+        <div
+          class="mb-4 space-y-1 flex items-center justify-between"
+        >
+          <div>
+            <h3
+              class="text-lg font-semibold text-slate-900"
+            >
+              xAI projections
+            </h3>
+            <p
+              class="text-sm text-slate-600"
+            >
+              Enter or toggle revenue projections to visualize growth scenarios.
+            </p>
+          </div>
+          <div
+            class="inline-flex rounded-full border border-sky-200 bg-white p-1"
+          >
+            <button
+              class="rounded-full px-3 py-1 text-xs font-semibold transition bg-sky-600 text-white shadow"
+              type="button"
+            >
+              Absolute
+            </button>
+            <button
+              class="rounded-full px-3 py-1 text-xs font-semibold transition text-slate-500 hover:text-sky-600"
+              type="button"
+            >
+              YoY %
+            </button>
+          </div>
+        </div>
+        <div
+          class="space-y-3 rounded-2xl border border-sky-100 bg-white/70 p-4 text-sm text-slate-600"
+        >
+          <p
+            class="font-semibold text-slate-700"
+          >
+            Add revenue projections
+          </p>
+          <p
+            class="text-xs text-slate-500"
+          >
+            xAI has not disclosed revenue. Enter scenario run-rate estimates below to unlock charts.
+          </p>
+          <div
+            class="grid gap-3 md:grid-cols-3"
+          >
+            <label
+              class="text-xs font-medium text-slate-600"
+            >
+              2026
+              <input
+                class="flex h-10 w-full rounded-md border border-sky-200 bg-white/80 px-3 py-2 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                inputmode="decimal"
+                placeholder="USD"
+                type="text"
+                value=""
+              />
+            </label>
+            <label
+              class="text-xs font-medium text-slate-600"
+            >
+              2027
+              <input
+                class="flex h-10 w-full rounded-md border border-sky-200 bg-white/80 px-3 py-2 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                inputmode="decimal"
+                placeholder="USD"
+                type="text"
+                value=""
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
+      >
+        <div
+          class="mb-4 space-y-1"
+        >
+          <h3
+            class="text-lg font-semibold text-slate-900"
+          >
+            Peer comparables
+          </h3>
+          <p
+            class="text-sm text-slate-600"
+          >
+            Contextual peers; click through to available microsites.
+          </p>
+        </div>
+        <div
+          class="grid gap-4 md:grid-cols-3"
+        />
+      </div>
+      <footer
+        class="space-y-2 rounded-2xl border border-slate-200 bg-white/85 p-4 text-xs text-slate-600"
       >
         <p
           class="font-semibold text-slate-700"
         >
-          Add revenue projections
+          Sources
         </p>
-        <p
-          class="text-xs text-slate-500"
+        <ol
+          class="list-decimal space-y-1 pl-5"
         >
-          xAI has not disclosed revenue. Enter scenario run-rate estimates below to unlock charts.
-        </p>
-        <div
-          class="grid gap-3 md:grid-cols-3"
-        >
-          <label
-            class="text-xs font-medium text-slate-600"
-          >
-            2026
-            <input
-              class="flex h-10 w-full rounded-md border border-sky-200 bg-white/80 px-3 py-2 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-              inputmode="decimal"
-              placeholder="USD"
-              type="text"
-              value=""
-            />
-          </label>
-          <label
-            class="text-xs font-medium text-slate-600"
-          >
-            2027
-            <input
-              class="flex h-10 w-full rounded-md border border-sky-200 bg-white/80 px-3 py-2 text-sm text-slate-700 shadow-sm transition placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50 mt-1"
-              inputmode="decimal"
-              placeholder="USD"
-              type="text"
-              value=""
-            />
-          </label>
-        </div>
-      </div>
-    </div>
-    <div
-      class="rounded-3xl border border-sky-100 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)] backdrop-blur"
-    >
-      <div
-        class="mb-4 space-y-1"
-      >
-        <h3
-          class="text-lg font-semibold text-slate-900"
-        >
-          Peer comparables
-        </h3>
-        <p
-          class="text-sm text-slate-600"
-        >
-          Contextual peers; click through to available microsites.
-        </p>
-      </div>
-      <div
-        class="grid gap-4 md:grid-cols-3"
-      />
-    </div>
-    <footer
-      class="space-y-2 rounded-2xl border border-slate-200 bg-white/85 p-4 text-xs text-slate-600"
-    >
-      <p
-        class="font-semibold text-slate-700"
-      >
-        Sources
-      </p>
-      <ol
-        class="list-decimal space-y-1 pl-5"
-      >
-        <li>
-          <span
-            class="font-semibold uppercase tracking-wide text-slate-500"
-          >
-            colossus
-            : 
-          </span>
-          <a
-            class="text-sky-600 hover:text-sky-700"
-            href="https://x.ai/colossus"
-            rel="noopener"
-            target="_blank"
-          >
-            https://x.ai/colossus
-          </a>
-        </li>
-      </ol>
-    </footer>
-  </section>
+          <li>
+            <span
+              class="font-semibold uppercase tracking-wide text-slate-500"
+            >
+              colossus
+              : 
+            </span>
+            <a
+              class="text-sky-600 hover:text-sky-700"
+              href="https://x.ai/colossus"
+              rel="noopener"
+              target="_blank"
+            >
+              https://x.ai/colossus
+            </a>
+          </li>
+        </ol>
+      </footer>
+    </section>
+  </div>
 </div>
 `;

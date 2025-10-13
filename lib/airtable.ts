@@ -1,8 +1,10 @@
+import { ConfigurationError } from "./errors";
+
 const AIRTABLE_API_URL = "https://api.airtable.com/v0";
 
 function assertEnv(value: string | undefined, name: string): string {
   if (!value) {
-    throw new Error(`${name} is not configured.`);
+    throw new ConfigurationError(`${name} is not configured.`);
   }
 
   return value;
@@ -16,10 +18,26 @@ function escapeFormulaValue(value: string): string {
   return value.replace(/'/g, "\\'");
 }
 
-export async function isAuthorizedEmail(email: string): Promise<boolean> {
+function resolveConfig() {
   const apiKey = assertEnv(process.env.AIRTABLE_API_KEY, "AIRTABLE_API_KEY");
-  const baseId = assertEnv(process.env.AIRTABLE_BASE_ID ?? "appAswQzYFHzmwqGH", "AIRTABLE_BASE_ID");
-  const tableId = assertEnv(process.env.AIRTABLE_TABLE_ID ?? "tblxmUCsZcHOZiL1K", "AIRTABLE_TABLE_ID");
+  const baseId = assertEnv(
+    process.env.AIRTABLE_BASE_ID ?? "appAswQzYFHzmwqGH",
+    "AIRTABLE_BASE_ID"
+  );
+  const tableId = assertEnv(
+    process.env.AIRTABLE_TABLE_ID ?? "tblxmUCsZcHOZiL1K",
+    "AIRTABLE_TABLE_ID"
+  );
+
+  return { apiKey, baseId, tableId };
+}
+
+export function ensureAirtableConfigured() {
+  resolveConfig();
+}
+
+export async function isAuthorizedEmail(email: string): Promise<boolean> {
+  const { apiKey, baseId, tableId } = resolveConfig();
 
   const normalizedEmail = normalizeEmail(email);
   const formula = `LOWER(TRIM({Email}))='${escapeFormulaValue(normalizedEmail)}'`;

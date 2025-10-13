@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { isAuthorizedEmail, normalizeEmail } from "@/lib/airtable";
+import {
+  ensureAirtableConfigured,
+  isAuthorizedEmail,
+  normalizeEmail
+} from "@/lib/airtable";
 import { createMagicLinkToken } from "@/lib/auth/magic-links";
-import { sendMagicLinkEmail } from "@/lib/email/sendgrid";
+import { ensureSendGridConfigured, sendMagicLinkEmail } from "@/lib/email/sendgrid";
+import { isConfigurationError } from "@/lib/errors";
 
 const RequestSchema = z.object({
   email: z.string().email("Invalid email address")
@@ -23,6 +28,8 @@ export async function POST(request: Request) {
   const email = normalizeEmail(parseResult.data.email);
 
   try {
+    ensureAirtableConfigured();
+    ensureSendGridConfigured();
     const isAuthorized = await isAuthorizedEmail(email);
 
     if (!isAuthorized) {
@@ -44,6 +51,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Failed to process magic link request", error);
+
+    if (isConfigurationError(error)) {
+      return NextResponse.json(
+        {
+          error: "Email service misconfigured",
+          code: "config"
+        },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json(
       { error: "Unable to process request", code: "server" },
       { status: 500 }

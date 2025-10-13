@@ -1,11 +1,24 @@
+import { ConfigurationError } from "../errors";
+
 const SENDGRID_ENDPOINT = "https://api.sendgrid.com/v3/mail/send";
 
 function assertEnv(value: string | undefined, name: string): string {
   if (!value) {
-    throw new Error(`${name} is not configured.`);
+    throw new ConfigurationError(`${name} is not configured.`);
   }
 
   return value;
+}
+
+function resolveConfig() {
+  const apiKey = assertEnv(process.env.SENDGRID_API_KEY, "SENDGRID_API_KEY");
+  const from = process.env.SENDGRID_FROM_EMAIL ?? "jb@jbv.com";
+
+  return { apiKey, from };
+}
+
+export function ensureSendGridConfigured() {
+  resolveConfig();
 }
 
 export async function sendMagicLinkEmail({
@@ -15,8 +28,7 @@ export async function sendMagicLinkEmail({
   to: string;
   magicLink: string;
 }) {
-  const apiKey = assertEnv(process.env.SENDGRID_API_KEY, "SENDGRID_API_KEY");
-  const from = process.env.SENDGRID_FROM_EMAIL ?? "jb@jbv.com";
+  const { apiKey, from } = resolveConfig();
 
   const response = await fetch(SENDGRID_ENDPOINT, {
     method: "POST",
