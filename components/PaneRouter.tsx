@@ -39,11 +39,13 @@ export function PaneRouter({ paneKey, mode }: PaneRouterProps) {
     <>
       <PaneAnnouncement open={Boolean(company)} companyName={company?.name} />
       {company ? (
-        <PaneShell company={company} mode={normalizedMode}>
-          <Suspense fallback={<PaneSkeleton />}>
-            <PaneContent paneKey={company.slug} />
-          </Suspense>
-        </PaneShell>
+        <Suspense fallback={<PaneSkeleton />}>
+          <PaneShell company={company} mode={normalizedMode}>
+            <Suspense fallback={<PaneSkeleton />}>
+              <PaneContent paneKey={company.slug} />
+            </Suspense>
+          </PaneShell>
+        </Suspense>
       ) : null}
     </>
   );

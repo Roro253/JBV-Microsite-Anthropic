@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -44,7 +45,9 @@ export function Header({ className }: HeaderProps) {
               className="h-10 w-auto"
             />
           </Link>
-          <ModeToggle className="flex items-center gap-2 text-xs text-slate-500" />
+          <Suspense fallback={null}>
+            <ModeToggle className="flex items-center gap-2 text-xs text-slate-500" />
+          </Suspense>
         </div>
       </Container>
     </header>
