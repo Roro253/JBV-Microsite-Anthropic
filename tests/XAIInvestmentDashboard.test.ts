@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import React from "react";
+import React, { type ReactNode } from "react";
 import { render } from "@testing-library/react";
 
 import XAIInvestmentDashboard from "@/components/XAIInvestmentDashboard";
@@ -18,7 +18,7 @@ vi.stubGlobal(
 );
 
 vi.mock("@/components/ui/tooltip", () => {
-  const passthrough = ({ children }: any) => React.createElement("div", null, children);
+  const passthrough = ({ children }: { children?: ReactNode }) => React.createElement("div", null, children);
   return {
     TooltipProvider: passthrough,
     Tooltip: passthrough,
@@ -28,7 +28,7 @@ vi.mock("@/components/ui/tooltip", () => {
 });
 
 vi.mock("recharts", () => {
-  const passthrough = ({ children }: any) => React.createElement("div", null, children);
+  const passthrough = ({ children }: { children?: ReactNode }) => React.createElement("div", null, children);
   return {
     ResponsiveContainer: passthrough,
     BarChart: passthrough,

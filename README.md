@@ -31,11 +31,18 @@ Production-ready Next.js 15 App Router experience for JBV Capital's Anthropic di
 
 ## Environment Variables
 
-| Variable                         | Purpose                                                      |
-| -------------------------------- | ------------------------------------------------------------ |
-| `NEXT_PUBLIC_TYPEFORM_URL`       | External Typeform Reserve Interest form                     |
-| `NEXT_PUBLIC_CALENDLY_URL`       | Calendly 15-minute diligence booking link                   |
-| `NEXT_PUBLIC_ANALYTICS_ENABLED`  | `true` to enable Vercel Analytics, otherwise omit rendering |
+| Variable | Purpose |
+| --- | --- |
+| `AUTH_SECRET` | Secret used to sign session tokens for authenticated requests. |
+| `AIRTABLE_API_KEY` | Airtable personal access token with read access to the Contacts table. |
+| `AIRTABLE_BASE_ID` | (Optional) Override for the Airtable base ID; defaults to `appAswQzYFHzmwqGH`. |
+| `AIRTABLE_TABLE_ID` | (Optional) Override for the Airtable table ID; defaults to `tblxmUCsZcHOZiL1K`. |
+| `SENDGRID_API_KEY` | SendGrid API key used to dispatch transactional magic link emails. |
+| `SENDGRID_FROM_EMAIL` | (Optional) Verified SendGrid sender email; defaults to `jb@jbv.com`. |
+| `NEXT_PUBLIC_SITE_URL` | Public base URL used when generating magic links (falls back to request origin). |
+| `NEXT_PUBLIC_TYPEFORM_URL` | External Typeform Reserve Interest form. |
+| `NEXT_PUBLIC_CALENDLY_URL` | Calendly 15-minute diligence booking link. |
+| `NEXT_PUBLIC_ANALYTICS_ENABLED` | `true` to enable Vercel Analytics, otherwise omit rendering. |
 
 ## Data & Content Pipeline
 
