@@ -1,62 +1,37 @@
-import { randomBytes } from "crypto";
+import { SignJWT, jwtVerify } from "jose";
 
 const MAGIC_LINK_TTL_MS = 15 * 60 * 1000; // 15 minutes
 
-type MagicLinkRecord = {
-  email: string;
-  expiresAt: number;
-};
-
-type MagicLinkStore = Map<string, MagicLinkRecord>;
-
-declare global {
-  var __jbvMagicLinkStore: MagicLinkStore | undefined;
-}
-
-function getStore(): MagicLinkStore {
-  if (!globalThis.__jbvMagicLinkStore) {
-    globalThis.__jbvMagicLinkStore = new Map();
+function getMagicLinkSecret(): Uint8Array {
+  const secret = process.env.MAGIC_LINK_SECRET;
+  if (!secret) {
+    throw new Error("MAGIC_LINK_SECRET is not configured.");
   }
 
-  return globalThis.__jbvMagicLinkStore;
+  return new TextEncoder().encode(secret);
 }
 
-function cleanupExpired(store: MagicLinkStore) {
-  const now = Date.now();
-  for (const [token, record] of store) {
-    if (record.expiresAt <= now) {
-      store.delete(token);
-    }
-  }
-}
-
-export function createMagicLinkToken(email: string): string {
-  const store = getStore();
-  cleanupExpired(store);
-
-  const token = randomBytes(32).toString("hex");
-  store.set(token, {
-    email,
-    expiresAt: Date.now() + MAGIC_LINK_TTL_MS
-  });
+export async function createMagicLinkToken(email: string): Promise<string> {
+  const token = await new SignJWT({ email })
+    .setProtectedHeader({ alg: "HS256", typ: "JWT" })
+    .setIssuedAt()
+    .setExpirationTime(Date.now() + MAGIC_LINK_TTL_MS)
+    .sign(getMagicLinkSecret());
 
   return token;
 }
 
-export function consumeMagicLinkToken(token: string): string | null {
-  const store = getStore();
-  cleanupExpired(store);
+export async function consumeMagicLinkToken(token: string): Promise<string | null> {
+  try {
+    const { payload } = await jwtVerify<{ email: string }>(token, getMagicLinkSecret());
 
-  const record = store.get(token);
-  if (!record) {
+    if (!payload?.email) {
+      return null;
+    }
+
+    return payload.email;
+  } catch (error) {
+    console.error("Failed to verify magic link token", error);
     return null;
   }
-
-  store.delete(token);
-
-  if (record.expiresAt <= Date.now()) {
-    return null;
-  }
-
-  return record.email;
 }

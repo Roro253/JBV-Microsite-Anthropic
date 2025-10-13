@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  const email = consumeMagicLinkToken(token);
+  const email = await consumeMagicLinkToken(token);
 
   if (!email) {
     const redirectUrl = new URL("/login", request.url);

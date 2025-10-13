@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const token = createMagicLinkToken(email);
+    const token = await createMagicLinkToken(email);
     const origin = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(request.url).origin;
     const magicLink = `${origin}/api/auth/verify?token=${token}`;
 
