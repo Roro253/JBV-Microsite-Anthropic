@@ -14,7 +14,7 @@ import {
   XAxis,
   YAxis
 } from "recharts";
-import { ExternalLink, Edit3, Lock } from "lucide-react";
+import { Edit3 } from "lucide-react";
 
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import {
@@ -22,8 +22,7 @@ import {
   formatPct,
   investedAfterFee,
   grossProceeds,
-  jbvCarry,
-  netToInvestors
+  jbvCarry
 } from "@/lib/format";
 import {
   formatGpuFleet,
@@ -36,12 +35,7 @@ import { cn } from "@/lib/utils";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
-import {
-  Tooltip as UiTooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from "@/components/ui/tooltip";
+import { Tooltip as UiTooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { XFundModel } from "@/lib/xaiFundModel";
 
 const STORAGE_KEY = "jbv:xai:fundmodel:v1";
@@ -332,31 +326,31 @@ export default function XAIInvestmentDashboard({ fundModel }: XAIInvestmentDashb
         <div className="grid gap-3 md:grid-cols-2">
           <PublicPill
             title="Compute"
-            details={`${model.public_signals.compute.colossus_gpus_live.toLocaleString()} GPUs · ${model.public_signals.compute.uptime_pct}% uptime · built in ${model.public_signals.compute.claim_built_days} days`}
+            details={computeDetails}
             badge="official"
             sources={computeSources}
           />
           <PublicPill
             title="Fundraise"
-            details={`In market: $${(model.public_signals.fundraising_in_market.amount_usd / 1_000_000_000).toFixed(1)}B (approx). Equity ~$${(model.public_signals.fundraising_in_market.mix.equity_usd / 1_000_000_000).toFixed(1)}B + debt ~$${(model.public_signals.fundraising_in_market.mix.debt_usd / 1_000_000_000).toFixed(1)}B. Nvidia up to $2B.`}
+            details={fundraiseDetails}
             badge="reported"
             sources={fundraiseSources}
           />
           <PublicPill
             title="Models"
-            details={`Grok 4 / Grok 4 Fast · tool-use RL + real-time search`}
+            details={modelDetails}
             badge="official"
             sources={modelSources}
           />
           <PublicPill
             title="Users"
-            details={`MAUs ~${(model.public_signals.users_estimate.maus_min / 1_000_000).toFixed(0)}–${(model.public_signals.users_estimate.maus_max / 1_000_000).toFixed(0)}M (est.)`}
+            details={usersDetails}
             badge="estimate"
             sources={userSources}
           />
           <PublicPill
             title="World models"
-            details={`Target: AI game by end-2026 · hires from Nvidia`}
+            details={worldDetails}
             badge="reported"
             sources={worldSources}
           />
@@ -767,15 +761,6 @@ function PublicPill({
   );
 }
 
-function SummaryItem({ label, value }: { label: string; value: string }) {
-  return (
-    <li className="flex items-center justify-between">
-      <span className="text-slate-500">{label}</span>
-      <span className="font-semibold text-slate-800">{value}</span>
-    </li>
-  );
-}
-
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <tr>
@@ -816,7 +801,9 @@ function formatNumberInput(value: number) {
 }
 
 function renderProjectionTooltip(mode: "abs" | "yoy") {
-  return ({ payload }: { payload?: TooltipPayload[] }) => {
+  const displayName = mode === "abs" ? "AbsProjectionTooltip" : "YoyProjectionTooltip";
+
+  function ProjectionTooltipContent({ payload }: { payload?: TooltipPayload[] }) {
     if (!payload || payload.length === 0) return null;
     const datum = payload[0].payload;
     const label = mode === "abs" ? "Run rate" : "YoY";
@@ -829,10 +816,16 @@ function renderProjectionTooltip(mode: "abs" | "yoy") {
     return (
       <div className="rounded-xl border border-sky-100 bg-white/90 px-3 py-2 text-xs text-slate-600 shadow">
         <p className="font-semibold text-slate-700">{datum.year}</p>
-        <p>{label}: {display}</p>
+        <p>
+          {label}: {display}
+        </p>
       </div>
     );
-  };
+  }
+
+  ProjectionTooltipContent.displayName = displayName;
+
+  return ProjectionTooltipContent;
 }
 
 function peerLink(company: string): string | null {
