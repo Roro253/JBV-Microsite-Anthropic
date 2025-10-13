@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { Building2, DollarSign, Sparkles } from "lucide-react";
@@ -14,28 +13,19 @@ import { SourceFootnotes } from "@/components/SourceFootnotes";
 import { StatPill } from "@/components/StatPill";
 import { Stepper, type StepperItem } from "@/components/Stepper";
 import { Badge } from "@/components/ui/badge";
+import AnthropicInvestmentDashboard from "@/components/AnthropicInvestmentDashboard";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useUIStore } from "@/lib/store/ui";
 import { formatCurrency } from "@/lib/utils";
 import type { AnthropicData } from "@/lib/data";
-
-const ReturnSimulator = dynamic(
-  () => import("@/components/ReturnSimulator").then((mod) => mod.ReturnSimulator),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-72 w-full items-center justify-center rounded-3xl border border-sky-200 bg-white/85 text-slate-500">
-        Loading simulator…
-      </div>
-    )
-  }
-);
+import type { AnthFundModel } from "@/lib/anthropicFundModel";
 
 interface AnthropicExperienceProps {
   data: AnthropicData;
+  fundModel?: AnthFundModel | null;
 }
 
-export function AnthropicExperience({ data }: AnthropicExperienceProps) {
+export function AnthropicExperience({ data, fundModel }: AnthropicExperienceProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
   const prefersReducedMotion = useReducedMotion();
@@ -241,13 +231,7 @@ export function AnthropicExperience({ data }: AnthropicExperienceProps) {
 
       {isInvestor ? (
         <>
-          <Section
-            eyebrow="Capital planning"
-            title="Model forward returns"
-            description="Adjust entry, ownership, dilution, and exit to visualize Anthropic's potential MOIC and IRR."
-          >
-            <ReturnSimulator animate={!prefersReducedMotion} />
-          </Section>
+          <AnthropicInvestmentDashboard fundModel={fundModel} />
 
           <Section
             eyebrow="Portfolio design"

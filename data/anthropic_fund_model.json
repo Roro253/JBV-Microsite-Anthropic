@@ -1,0 +1,79 @@
+{
+  "company_meta": {
+    "name": "Anthropic",
+    "mission": "Constitutional, enterprise-grade frontier AI for safe, reliable scale.",
+    "tagline": "Alignment-led frontier intelligence with hyperscaler distribution.",
+    "last_updated": "2025-10-12"
+  },
+
+  "public_kpis": {
+    "valuation_post_money_usd": 183000000000,
+    "valuation_as_of": "2025-09-02",
+    "arr_run_rate_usd": 5000000000,
+    "arr_as_of": "2025-08-15",
+    "notes": "ARR run-rate >$5B as of Aug 2025 per Anthropic; Series F at $183B post."
+  },
+
+  "distribution_partners": [
+    { "name": "Amazon Bedrock", "status": "live", "link": "https://aws.amazon.com/about-aws/whats-new/2025/02/anthropics-claude-3-7-sonnet-amazon-bedrock/" },
+    { "name": "Google Vertex AI", "status": "live", "link": "https://cloud.google.com/blog/products/ai-machine-learning/anthropics-claude-3-7-sonnet-is-available-on-vertex-ai" }
+  ],
+
+  "models": [
+    { "name": "Claude 3.5 Sonnet", "as_of": "2024-06-20", "source": "https://www.anthropic.com/news/claude-3-5-sonnet" },
+    { "name": "Claude 3.7 Sonnet", "as_of": "2025-02-24", "source": "https://aws.amazon.com/about-aws/whats-new/2025/02/anthropics-claude-3-7-sonnet-amazon-bedrock/" }
+  ],
+
+  "safety": {
+    "headline": "Constitutional AI; enterprise safety posture.",
+    "source": "https://www.anthropic.com/news/claudes-constitution"
+  },
+
+  "funding_context": {
+    "series_f_usd": 13000000000,
+    "post_money_usd": 183000000000,
+    "as_of": "2025-09-02",
+    "strategics": [
+      { "name": "Amazon", "amount_usd": 4000000000, "as_of": "2024-03-27", "source": "https://www.aboutamazon.com/news/company-news/amazon-anthropic-ai-investment" },
+      { "name": "Google", "amount_usd": 2000000000, "as_of": null, "source": "https://finance.yahoo.com/news/openai-rival-anthropic-defends-partnerships-174020573.html" }
+    ]
+  },
+
+  "investment_scenarios": {
+    "defaults": {
+      "commitment_usd": 1000000,
+      "mgmt_fee_pct": 0.05,
+      "carry_pct": 0.10
+    },
+    "entry": {
+      "pre_or_post": "scenario",
+      "entry_valuation_usd": null,
+      "ownership_pct": null,
+      "note": "Enter your negotiated terms when available; UI marks as Scenario."
+    }
+  },
+
+  "market_cap_calculator": [
+    { "year": 2026, "revenue_run_rate_usd": 7000000000 },
+    { "year": 2027, "revenue_run_rate_usd": 10000000000 },
+    { "year": 2028, "revenue_run_rate_usd": 14000000000 },
+    { "year": 2029, "revenue_run_rate_usd": 18000000000 },
+    { "year": 2030, "revenue_run_rate_usd": 22000000000 }
+  ],
+
+  "market_comps": [
+    { "company": "OpenAI", "note": "Use your OpenAI file for valuation ~$500B and H1’25 $4.3B; AMD 6GW context." },
+    { "company": "xAI", "note": "In-market raise up to $20B; Colossus 150K+ GPUs; estimates only on MAUs." },
+    { "company": "Mistral AI", "note": "Series C ~$13.8B (Sept 2025)." }
+  ],
+
+  "sources": {
+    "series_f_183b_and_arr_5b": "https://www.anthropic.com/news/anthropic-raises-series-f-at-usd183b-post-money-valuation",
+    "claude_35": "https://www.anthropic.com/news/claude-3-5-sonnet",
+    "claude_37_vertex": "https://cloud.google.com/blog/products/ai-machine-learning/anthropics-claude-3-7-sonnet-is-available-on-vertex-ai",
+    "claude_37_bedrock": "https://aws.amazon.com/about-aws/whats-new/2025/02/anthropics-claude-3-7-sonnet-amazon-bedrock/",
+    "amazon_4b": "https://www.aboutamazon.com/news/company-news/amazon-anthropic-ai-investment",
+    "constitutional_ai": "https://www.anthropic.com/news/claudes-constitution",
+    "india_office": "https://www.reuters.com/business/retail-consumer/anthropic-open-india-office-2026-2025-10-08/"
+  }
+}
