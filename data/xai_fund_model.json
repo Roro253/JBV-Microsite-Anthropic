@@ -8,7 +8,7 @@
   "public_signals": {
     "models": [
       { "name": "Grok 4", "as_of": "2025-07-09", "note": "Latest flagship release" },
-      { "name": "Grok 4 Fast", "as_of": "2025-09-XX", "note": "Tool-use RL; agentic browsing, real-time search" }
+      { "name": "Grok 4 Fast", "as_of": "2025-09-01", "note": "Tool-use RL; agentic browsing, real-time search" }
     ],
     "compute": {
       "colossus_gpus_live": 150000,

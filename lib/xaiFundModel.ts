@@ -44,7 +44,7 @@ export const XFundSchema = z.object({
       hires: z.string().optional(),
       as_of: z.string()
     }),
-    sources: z.record(z.string())
+    sources: z.record(z.string(), z.string())
   }),
   investment_scenarios: z.object({
     defaults: z.object({
@@ -76,11 +76,22 @@ export const XFundSchema = z.object({
 export type XFundModel = z.infer<typeof XFundSchema>;
 
 export async function getXAIFundModel(): Promise<XFundModel> {
-  const raw = await import("@/data/xai_fund_model.json");
-  const parsed = XFundSchema.safeParse(raw);
-  if (!parsed.success) {
-    console.error(parsed.error);
-    throw new Error("xAI fund model JSON invalid");
+  try {
+    const raw = await import("@/data/xai_fund_model.json");
+    const data = raw.default || raw;
+    
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[getXAIFundModel] raw data:', data);
+    }
+    
+    const parsed = XFundSchema.safeParse(data);
+    if (!parsed.success) {
+      console.error('[getXAIFundModel] validation error:', parsed.error);
+      throw new Error("xAI fund model JSON invalid");
+    }
+    return parsed.data;
+  } catch (error) {
+    console.error('[getXAIFundModel] load error:', error);
+    throw error;
   }
-  return parsed.data;
 }

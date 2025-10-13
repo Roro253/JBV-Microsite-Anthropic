@@ -121,8 +121,11 @@ export default function XAIInvestmentDashboard({ fundModel }: XAIInvestmentDashb
     market_comps: []
   };
 
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('[XAIInvestmentDashboard] fundModel:', fundModel);
+  }
   const model = fundModel ?? fallbackModel;
-  const hasData = Boolean(fundModel);
+  const hasData = Boolean(fundModel && Object.keys(fundModel).length > 0);
 
   const defaultYear = model.market_cap_calculator[0]?.year ?? new Date().getFullYear();
   const defaultCommitment = model.investment_scenarios.defaults.commitment_usd ?? 1_000_000;
@@ -307,7 +310,8 @@ export default function XAIInvestmentDashboard({ fundModel }: XAIInvestmentDashb
   }
 
   return (
-    <section className="space-y-6 rounded-3xl border border-sky-100 bg-gradient-to-b from-white via-white/90 to-sky-50/40 p-6 shadow-[0_40px_120px_-70px_rgba(15,23,42,0.4)]">
+    <TooltipProvider>
+      <section className="space-y-6 rounded-3xl border border-sky-100 bg-gradient-to-b from-white via-white/90 to-sky-50/40 p-6 shadow-[0_40px_120px_-70px_rgba(15,23,42,0.4)]">
       <header className="space-y-2 border-b border-slate-200 pb-4">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600">
           Investor Mode · last updated {model.company_meta.last_updated}
@@ -699,6 +703,7 @@ export default function XAIInvestmentDashboard({ fundModel }: XAIInvestmentDashb
         </ol>
       </footer>
     </section>
+    </TooltipProvider>
   );
 }
 

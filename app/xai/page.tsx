@@ -4,16 +4,16 @@ import { getXaiData } from "@/lib/data";
 import { getXAIFundModel } from "@/lib/xaiFundModel";
 
 export default async function XaiPage() {
-  const data = getXaiData();
-  let fundModel = null;
+  const [data, fundModel] = await Promise.all([
+    getXaiData(),
+    getXAIFundModel().catch(error => {
+      console.error('[xai-page] unable to load fund model:', error);
+      return null;
+    })
+  ]);
 
-  try {
-    fundModel = await getXAIFundModel();
-  } catch (error) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn("[xai-page] unable to load fund model", error);
-    }
-    fundModel = null;
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('[xai-page] loaded fund model:', fundModel);
   }
 
   return (

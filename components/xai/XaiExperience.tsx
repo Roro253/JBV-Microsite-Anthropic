@@ -4,6 +4,7 @@ import { useEffect, useMemo } from "react";
 import Image from "next/image";
 
 import { Section } from "@/components/Section";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { StatPill } from "@/components/StatPill";
 import { KpiTile } from "@/components/KpiTile";
 import { Stepper, type StepperItem } from "@/components/Stepper";
@@ -132,7 +133,8 @@ export function XaiExperience({ data, fundModel }: XaiExperienceProps) {
   const isInvestor = mode === "investor";
 
   return (
-    <div className="flex flex-col gap-10">
+    <TooltipProvider>
+      <div className="flex flex-col gap-10">
       <Section
         eyebrow="Privately held"
         title={data.company.tagline}
@@ -265,6 +267,7 @@ export function XaiExperience({ data, fundModel }: XaiExperienceProps) {
 
       <SourceFootnotes sources={data.sources} />
     </div>
+    </TooltipProvider>
   );
 }
 
