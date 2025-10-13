@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import microsites from "@/data/microsites.json";
 import { WatchlistTable, type WatchlistMicrosite } from "@/components/WatchlistTable";
 import { PaneRouter } from "@/components/PaneRouter";
@@ -29,7 +31,9 @@ export default async function WatchlistPage({
           paneKey ? "md:opacity-90" : "md:opacity-100"
         )}
       >
-        <WatchlistTable items={items} featuredSlug={featuredSlug} typeformUrl={typeformUrl} />
+        <Suspense fallback={null}>
+          <WatchlistTable items={items} featuredSlug={featuredSlug} typeformUrl={typeformUrl} />
+        </Suspense>
         <footer className="mt-10 border-t border-slate-200 pt-6 text-sm text-slate-600">
           <p>
             This portal is informational only and does not constitute an offer to sell or solicit an
@@ -42,7 +46,9 @@ export default async function WatchlistPage({
           </div>
         </footer>
       </div>
-      <PaneRouter paneKey={paneKey} mode={modeParam} />
+      <Suspense fallback={null}>
+        <PaneRouter paneKey={paneKey} mode={modeParam} />
+      </Suspense>
     </main>
   );
 }
