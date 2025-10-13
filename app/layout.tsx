@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { ThemeColorScript } from "@/app/theme-script";
+import { LeftRailWatchlist } from "@/components/LeftRailWatchlist";
 
 import { geistMono, geistSans } from "./fonts";
 import "./globals.css";
@@ -18,9 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-mode="light">
-      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen bg-gradient-to-br from-sky-50 via-white to-sky-100 font-sans antialiased`}
+      >
         <ThemeColorScript />
-        {children}
+        <LeftRailWatchlist />
+        <div className="relative flex min-h-screen flex-1 flex-col">
+          {children}
+        </div>
       </body>
     </html>
   );
