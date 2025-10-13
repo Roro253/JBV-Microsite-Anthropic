@@ -4,6 +4,7 @@ import { z } from "zod";
 import { isAuthorizedEmail, normalizeEmail } from "@/lib/airtable";
 import { createMagicLinkToken } from "@/lib/auth/magic-links";
 import { sendMagicLinkEmail } from "@/lib/email/sendgrid";
+import { isIntegrationError } from "@/lib/errors";
 
 const RequestSchema = z.object({
   email: z.string().email("Invalid email address")
@@ -43,6 +44,22 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    if (isIntegrationError(error)) {
+      console.error(
+        `Failed to process magic link request via ${error.service}`,
+        error
+      );
+      const code =
+        error.service === "airtable" ? "registry_unavailable" : "email_failed";
+      return NextResponse.json(
+        {
+          error: "Required integration is currently unavailable",
+          code
+        },
+        { status: 503 }
+      );
+    }
+
     console.error("Failed to process magic link request", error);
     return NextResponse.json(
       { error: "Unable to process request", code: "server" },
