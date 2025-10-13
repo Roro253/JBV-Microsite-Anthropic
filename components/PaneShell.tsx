@@ -140,7 +140,7 @@ export function PaneShell({ company, mode, children }: PaneShellProps) {
         transition={{ duration: prefersReducedMotion ? 0 : 0.24, ease: [0.23, 1, 0.32, 1] }}
         className={cn(
           "relative ml-auto flex h-full w-full flex-col bg-white/90 text-slate-900 backdrop-blur-xl",
-          "shadow-2xl shadow-slate-900/30 md:w-[48vw] lg:w-[760px]",
+          "shadow-2xl shadow-slate-900/30 md:w-[58vw] lg:w-[920px]",
           "md:rounded-l-3xl"
         )}
         role="dialog"
