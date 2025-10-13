@@ -8,7 +8,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { StatPill } from "@/components/StatPill";
 import { KpiTile } from "@/components/KpiTile";
 import { Stepper, type StepperItem } from "@/components/Stepper";
-import { PortfolioFit } from "@/components/PortfolioFit";
 import { CallToAction } from "@/components/CallToAction";
 import { NewsFeed, type NewsItem } from "@/components/NewsFeed";
 import { SourceFootnotes } from "@/components/SourceFootnotes";
@@ -226,18 +225,6 @@ export function XaiExperience({ data, fundModel }: XaiExperienceProps) {
       {isInvestor ? (
         <>
           <XAIInvestmentDashboard fundModel={fundModel} />
-
-          <Section
-            eyebrow="Portfolio design"
-            title="Match xAI to your mandate"
-            description="Answer three prompts to align xAI exposure with your allocation strategy."
-          >
-            <PortfolioFit
-              animate
-              companyName="xAI"
-              followOnNote="Tailor follow-on pacing with Colossus expansion milestones and X distribution incentives."
-            />
-          </Section>
         </>
       ) : null}
 
