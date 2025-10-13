@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { ThemeColorScript } from "@/app/theme-script";
@@ -23,7 +24,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen bg-gradient-to-br from-sky-50 via-white to-sky-100 font-sans antialiased`}
       >
         <ThemeColorScript />
-        <LeftRailWatchlist />
+        <Suspense fallback={null}>
+          <LeftRailWatchlist />
+        </Suspense>
         <div className="relative flex min-h-screen flex-1 flex-col">
           {children}
         </div>
