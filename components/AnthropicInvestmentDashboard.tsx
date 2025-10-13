@@ -64,11 +64,9 @@ type TooltipDatum = {
   payload: ProjectionDatum;
 };
 
- codex/build-anthropic-fund-model-dashboard
 type ProjectionTooltipProps = { payload?: TooltipDatum[] };
 
 
- main
 type KPIItem = {
   label: string;
   value: string;
@@ -144,12 +142,12 @@ export default function AnthropicInvestmentDashboard({ fundModel }: AnthropicInv
       const stored = window.localStorage.getItem(STORAGE_KEY);
       if (!stored) return;
       const parsed = JSON.parse(stored) as PersistedState;
-      if (parsed.year) setYear(parsed.year);
-      if (parsed.multiple) setMultiple(parsed.multiple);
-      if (parsed.commitment) setCommitment(parsed.commitment);
+      if (typeof parsed.year === "number") setYear(parsed.year);
+      if (typeof parsed.multiple === "number") setMultiple(parsed.multiple);
+      if (typeof parsed.commitment === "number") setCommitment(parsed.commitment);
       if (parsed.entryValuation !== undefined) setEntryValuation(parsed.entryValuation);
       if (parsed.ownershipPct !== undefined) setOwnershipPct(parsed.ownershipPct);
-      if (parsed.grossMoM) setGrossMoM(parsed.grossMoM);
+      if (typeof parsed.grossMoM === "number") setGrossMoM(parsed.grossMoM);
       if (parsed.projectionMode) setProjectionMode(parsed.projectionMode);
     } catch (error) {
       console.warn("[anthropic-fund-model] unable to restore state", error);
@@ -227,10 +225,15 @@ export default function AnthropicInvestmentDashboard({ fundModel }: AnthropicInv
 
   const kpiRow: KPIItem[] = useMemo(() => {
     const sources = model.sources ?? {};
+    const entries = Object.entries(sources);
     const getSources = (...keys: string[]) =>
       keys
         .map((key) => ({ key, url: sources[key] as string | undefined }))
         .filter((item): item is { key: string; url: string } => Boolean(item.url));
+    const findSourceKey = (url: string, fallback: string) => {
+      const match = entries.find(([, value]) => value === url);
+      return match ? match[0] : fallback;
+    };
     return [
       {
         label: "Valuation (post)",
@@ -249,7 +252,7 @@ export default function AnthropicInvestmentDashboard({ fundModel }: AnthropicInv
         value: model.distribution_partners.map((partner) => partner.name).join(" / ") || "Scenario",
         badge: "Hyperscaler GTM",
         tooltipSources: model.distribution_partners.map((partner) => ({
-          key: partner.name,
+          key: findSourceKey(partner.link, partner.name),
           url: partner.link
         })),
         hrefs: model.distribution_partners.map((partner) => ({
@@ -261,7 +264,14 @@ export default function AnthropicInvestmentDashboard({ fundModel }: AnthropicInv
         label: "Safety",
         value: model.safety.headline || "Scenario",
         badge: "Alignment",
-        tooltipSources: model.safety.source ? [{ key: "constitutional_ai", url: model.safety.source }] : []
+        tooltipSources: model.safety.source
+          ? [
+              {
+                key: findSourceKey(model.safety.source, "constitutional_ai"),
+                url: model.safety.source
+              }
+            ]
+          : []
       }
     ];
   }, [model]);
@@ -483,13 +493,27 @@ export default function AnthropicInvestmentDashboard({ fundModel }: AnthropicInv
               aria-label={`Waterfall illustrating invested capital ${formatUSDShort(invested)}, carry ${formatUSDShort(carry)}, and net proceeds ${formatUSDShort(net)}.`}
             >
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={[{ name: "Returns", invested, carry, net: Math.max(net - carry, 0) }]} layout="vertical">
+                <BarChart
+                  data={[
+                    {
+                      name: "Returns",
+                      invested,
+                      carry,
+                      netGain: Math.max(net - invested, 0)
+                    }
+                  ]}
+                  layout="vertical"
+                >
                   <CartesianGrid horizontal={false} stroke="#E2E8F0" />
                   <XAxis type="number" hide />
                   <YAxis type="category" dataKey="name" hide />
-                  <Bar dataKey="invested" stackId="a" fill="#0EA5E9" radius={[8, 8, 0, 0]} />
-                  <Bar dataKey="carry" stackId="a" fill="#6366F1" radius={[8, 8, 0, 0]} />
-                  <Bar dataKey="net" stackId="a" fill="#10B981" radius={[8, 8, 0, 0]} />
+                  <RechartsTooltip
+                    formatter={(value: number, name) => [formatUSDShort(value), name]}
+                    cursor={{ fill: "rgba(14,165,233,0.12)" }}
+                  />
+                  <Bar dataKey="invested" stackId="a" fill="#0EA5E9" radius={[8, 0, 0, 8]} />
+                  <Bar dataKey="carry" stackId="a" fill="#6366F1" />
+                  <Bar dataKey="netGain" stackId="a" fill="#10B981" radius={[0, 8, 8, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -690,13 +714,10 @@ function formatNumberInput(value: number): string {
   return value.toLocaleString("en-US", { maximumFractionDigits: 2 });
 }
 
- codex/build-anthropic-fund-model-dashboard
-function createProjectionTooltip(mode: "abs" | "yoy") {
-  const ProjectionTooltip = ({ payload }: ProjectionTooltipProps) => {
-
 function renderProjectionTooltip(mode: "abs" | "yoy") {
-  const ProjectionTooltip = ({ payload }: { payload?: TooltipDatum[] }) => {
- main
+  const displayName = mode === "abs" ? "ProjectionTooltipAbs" : "ProjectionTooltipYoy";
+
+  function ProjectionTooltip({ payload }: ProjectionTooltipProps) {
     if (!payload?.length) return null;
     const datum = payload[0].payload;
     const label = mode === "abs" ? "Run rate" : "YoY";
@@ -705,6 +726,7 @@ function renderProjectionTooltip(mode: "abs" | "yoy") {
       : mode === "abs"
         ? formatUSDShort(datum.value)
         : formatPct(datum.value, { sign: true });
+
     return (
       <div className="rounded-xl border border-sky-100 bg-white/90 px-3 py-2 text-xs text-slate-600 shadow">
         <p className="font-semibold text-slate-700">{datum.year}</p>
@@ -713,18 +735,9 @@ function renderProjectionTooltip(mode: "abs" | "yoy") {
         </p>
       </div>
     );
-  };
-  ProjectionTooltip.displayName =
-    mode === "abs" ? "ProjectionTooltipAbsolute" : "ProjectionTooltipYoY";
+  }
+
+  ProjectionTooltip.displayName = displayName;
+
   return ProjectionTooltip;
 }
- codex/build-anthropic-fund-model-dashboard
-
-const ProjectionTooltipAbsolute = createProjectionTooltip("abs");
-const ProjectionTooltipYoY = createProjectionTooltip("yoy");
-
-function renderProjectionTooltip(mode: "abs" | "yoy") {
-  return mode === "abs" ? ProjectionTooltipAbsolute : ProjectionTooltipYoY;
-}
-
- main

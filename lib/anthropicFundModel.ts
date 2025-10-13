@@ -72,7 +72,7 @@ export const AnthFundSchema = z.object({
       note: z.string().optional()
     })
   ),
-  sources: z.record(z.string())
+  sources: z.object({}).catchall(z.string())
 });
 
 export type AnthFundModel = z.infer<typeof AnthFundSchema>;

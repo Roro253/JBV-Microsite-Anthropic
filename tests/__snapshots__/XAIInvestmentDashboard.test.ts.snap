@@ -106,7 +106,7 @@ exports[`xAI investment dashboard > renders guided empty state when projections 
           <p
             class="text-xs text-slate-600"
           >
-            In market: $20.0B (approx). Equity ~$7.5B + debt ~$12.5B. Nvidia up to $2B.
+            In market: up to $20.0B (equity ~$7.5B, debt ~$12.5B); Nvidia up to $2B (reported) · as of Oct 7, 2025
           </p>
         </div>
         <div
@@ -124,9 +124,7 @@ exports[`xAI investment dashboard > renders guided empty state when projections 
           </p>
           <p
             class="text-xs text-slate-600"
-          >
-            Grok 4 / Grok 4 Fast · tool-use RL + real-time search
-          </p>
+          />
         </div>
         <div
           class="flex flex-col gap-1 rounded-2xl border border-sky-100 bg-white/70 p-4 text-left shadow-[0_20px_60px_-50px_rgba(15,23,42,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
@@ -144,7 +142,7 @@ exports[`xAI investment dashboard > renders guided empty state when projections 
           <p
             class="text-xs text-slate-600"
           >
-            MAUs ~30–39M (est.)
+            MAUs ~30–39M (estimates; not official) · as of Sep 30, 2025
           </p>
         </div>
         <div
@@ -163,7 +161,7 @@ exports[`xAI investment dashboard > renders guided empty state when projections 
           <p
             class="text-xs text-slate-600"
           >
-            Target: AI game by end-2026 · hires from Nvidia
+            Target: AI-generated video game by end-2026; Nvidia (reports)
           </p>
         </div>
       </div>
