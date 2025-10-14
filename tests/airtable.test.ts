@@ -33,7 +33,7 @@ describe("isAuthorizedEmail", () => {
     expect(fetchMock).toHaveBeenCalledOnce();
     const requestUrl = new URL(fetchMock.mock.calls[0][0] as string);
     expect(requestUrl.searchParams.get("filterByFormula")).toBe(
-      "LOWER(TRIM({Email}))='investor@example.com'"
+      "OR(LOWER(TRIM({Email}))='investor@example.com',SEARCH('investor@example.com',LOWER(ARRAYJOIN({Email},',')))>0)"
     );
   });
 
@@ -52,7 +52,7 @@ describe("isAuthorizedEmail", () => {
 
     const requestUrl = new URL(fetchMock.mock.calls[0][0] as string);
     expect(requestUrl.searchParams.get("filterByFormula")).toBe(
-      "LOWER(TRIM({Investor Email}))='custom@example.com'"
+      "OR(LOWER(TRIM({Investor Email}))='custom@example.com',SEARCH('custom@example.com',LOWER(ARRAYJOIN({Investor Email},',')))>0)"
     );
   });
 
@@ -73,7 +73,7 @@ describe("isAuthorizedEmail", () => {
     const requestUrl = new URL(fetchMock.mock.calls[0][0] as string);
     const formula = requestUrl.searchParams.get("filterByFormula");
     expect(formula).toBe(
-      "OR(LOWER(TRIM({Primary Email}))='secondary@example.com',LOWER(TRIM({Email (from Contacts) 2}))='secondary@example.com')"
+      "OR(OR(LOWER(TRIM({Primary Email}))='secondary@example.com',SEARCH('secondary@example.com',LOWER(ARRAYJOIN({Primary Email},',')))>0),OR(LOWER(TRIM({Email (from Contacts) 2}))='secondary@example.com',SEARCH('secondary@example.com',LOWER(ARRAYJOIN({Email (from Contacts) 2},',')))>0))"
     );
   });
 });
