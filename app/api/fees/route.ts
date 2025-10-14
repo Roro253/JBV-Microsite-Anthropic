@@ -12,9 +12,20 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ ok: false, error: "invalid_session" }, { status: 401 });
   }
 
-  const fees = await getUserFees(verified.email);
-  if (!fees) {
-    return NextResponse.json({ ok: true, fees: null, message: "no_fee_record" });
+  const fees = (await getUserFees(verified.email)) || { recordFound: false, managementFeePct: null, carryPct: null };
+  if (!fees.recordFound) {
+    return NextResponse.json({
+      ok: true,
+      fees: null,
+      recordFound: false,
+      message: "no_fee_record"
+    });
   }
-  return NextResponse.json({ ok: true, fees });
+  return NextResponse.json({
+    ok: true,
+    recordFound: true,
+    fees,
+    missingMgmt: fees.managementFeePct == null,
+    missingCarry: fees.carryPct == null
+  });
 }

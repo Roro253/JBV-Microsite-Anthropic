@@ -295,25 +295,35 @@ export const ReturnSimulator = forwardRef<ReturnSimulatorHandle, ReturnSimulator
             )}
             <div className="rounded-2xl border border-sky-100 bg-white/90 p-4 text-xs text-slate-600">
               <p className="font-semibold text-slate-700 mb-1">Fee profile</p>
-              {feeStatus === "loading" ? (
-                <p>Loading personalized fees…</p>
-              ) : feeStatus === "error" ? (
-                <p>Unable to load personalized fees. Using default illustrative assumptions.</p>
-              ) : feeStatus === "missing" ? (
-                <p>No personalized management fee or carry found. Defaults are illustrative only.</p>
-              ) : feeStatus === "applied" ? (
+              {feeStatus === "loading" && <p>Loading personalized fees…</p>}
+              {feeStatus === "error" && (
+                <p>Unable to load personalized fees. Using illustrative assumptions.</p>
+              )}
+              {feeStatus === "missing" && (
+                <p>No fee record found for this email. Please contact support if this seems incorrect.</p>
+              )}
+              {feeStatus === "applied" && (
                 <ul className="space-y-1">
                   <li>
-                    <strong>Management Fee:</strong> {userMgmtFee !== null ? `${userMgmtFee.toFixed(2)}%` : "—"}
+                    <strong>Management Fee:</strong>{" "}
+                    {userMgmtFee !== null ? (
+                      `${userMgmtFee.toFixed(2)}%`
+                    ) : (
+                      <span className="text-rose-600">No management fee set on file</span>
+                    )}
                   </li>
                   <li>
-                    <strong>Carry:</strong> {userCarryFee !== null ? `${userCarryFee.toFixed(2)}%` : "—"}
+                    <strong>Carry:</strong>{" "}
+                    {userCarryFee !== null ? (
+                      `${userCarryFee.toFixed(2)}%`
+                    ) : (
+                      <span className="text-rose-600">No carry set on file</span>
+                    )}
                   </li>
                 </ul>
-              ) : (
-                <p>Illustrative fee assumptions displayed.</p>
               )}
-              <p className="mt-2 text-[11px] text-slate-500">Figures are session-specific and sourced from Airtable when available.</p>
+              {feeStatus === "idle" && <p>Illustrative fee assumptions displayed.</p>}
+              <p className="mt-2 text-[11px] text-slate-500">Values sourced from Airtable when available; missing fields are clearly disclosed.</p>
             </div>
           </div>
           <div className="flex flex-col gap-4 rounded-2xl border border-sky-100 bg-white/90 p-6 shadow-[0_25px_70px_-55px_rgba(32,118,199,0.35)]">

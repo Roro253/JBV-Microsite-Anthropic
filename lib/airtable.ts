@@ -111,19 +111,28 @@ export interface UserFeesResult {
   carryPct?: number | null; // expressed as percent (e.g. 20 for 20%)
 }
 
-export async function getUserFees(email: string): Promise<UserFeesResult | null> {
+export interface UserFeesExtended extends UserFeesResult {
+  recordFound: boolean;
+  sourceField?: string; // which email field matched
+}
+
+export async function getUserFees(email: string): Promise<UserFeesExtended | null> {
   const apiKey = assertEnv(process.env.AIRTABLE_API_KEY, "AIRTABLE_API_KEY");
   const baseId = assertEnv(process.env.AIRTABLE_BASE_ID, "AIRTABLE_BASE_ID");
   const tableId = assertEnv(process.env.AIRTABLE_TABLE_ID, "AIRTABLE_TABLE_ID");
   const emailField = resolveEmailField();
+  const secondaryEmailFieldRaw = process.env.AIRTABLE_EMAIL_FIELD_2;
+  const secondaryEmailField = secondaryEmailFieldRaw
+    ? secondaryEmailFieldRaw.replace(/[{}]/g, "").trim()
+    : null;
   const mgmtField = process.env.AIRTABLE_MGMT_FEE_FIELD || "Mgmt Fee";
   const carryField = process.env.AIRTABLE_CARRY_FIELD || "Carry 1";
 
   const normalizedEmail = normalizeEmail(email);
-  const formula = `LOWER(TRIM({${emailField}}))='${escapeFormulaValue(normalizedEmail)}'`;
-  const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
-
-  try {
+  // Helper to perform a single-field lookup
+  const lookupByField = async (fieldName: string) => {
+    const formula = `LOWER(TRIM({${fieldName}}))='${escapeFormulaValue(normalizedEmail)}'`;
+    const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -131,13 +140,22 @@ export async function getUserFees(email: string): Promise<UserFeesResult | null>
       },
       cache: "no-store"
     });
-    if (!response.ok) {
-      return null;
-    }
+    if (!response.ok) return null;
     const json = await response.json();
     const record = Array.isArray(json.records) && json.records.length > 0 ? json.records[0] : null;
-    if (!record) return null;
-    const fields = record.fields || {};
+    return record ? { record, fieldName } : null;
+  };
+
+  let matched: { record: any; fieldName: string } | null = await lookupByField(emailField);
+  if (!matched && secondaryEmailField) {
+    matched = await lookupByField(secondaryEmailField);
+  }
+
+  try {
+    if (!matched) {
+      return { managementFeePct: null, carryPct: null, recordFound: false };
+    }
+    const fields = matched.record.fields || {};
     const rawMgmt = fields[mgmtField];
     const rawCarry = fields[carryField];
     const parsePct = (val: unknown): number | null => {
@@ -147,9 +165,11 @@ export async function getUserFees(email: string): Promise<UserFeesResult | null>
     };
     return {
       managementFeePct: parsePct(rawMgmt),
-      carryPct: parsePct(rawCarry)
+      carryPct: parsePct(rawCarry),
+      recordFound: true,
+      sourceField: matched.fieldName
     };
   } catch {
-    return null;
+    return { managementFeePct: null, carryPct: null, recordFound: false };
   }
 }
