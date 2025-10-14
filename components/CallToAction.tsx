@@ -92,7 +92,7 @@ export function CallToAction({
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         {renderButton("reserve", "Email JBV Capital", <Mail className="h-4 w-4" />, reserveUrl)}
-        {renderButton("diligence", "Schedule via Google Calendar", <CalendarPlus className="h-4 w-4" />, diligenceUrl)}
+        {renderButton("diligence", "Schedule via Calendly", <CalendarPlus className="h-4 w-4" />, "https://calendly.com/jb-jbv/30min")}
       </div>
       {active ? (
         <div className="text-xs text-sky-600">Preparing connection…</div>
