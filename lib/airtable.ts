@@ -99,11 +99,19 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
       );
     }
 
-    const payload = (await response.json()) as { records?: any[] };
+    interface AirtableRecord<TFields = Record<string, unknown>> {
+      id: string;
+      createdTime?: string;
+      fields: TFields;
+    }
+    interface AirtableResponse<TFields = Record<string, unknown>> {
+      records?: AirtableRecord<TFields>[];
+    }
+    const payload = (await response.json()) as AirtableResponse;
     const hasRecord = Array.isArray(payload.records) && payload.records.length > 0;
     if (!hasRecord) return false;
     try {
-      const recordFields = (payload.records?.[0] as any)?.fields || {};
+  const recordFields = payload.records?.[0]?.fields || {};
       const primaryVal = recordFields[emailField];
       const secondaryVal = secondaryEmailField ? recordFields[secondaryEmailField] : undefined;
       const toLower = (v: unknown) => typeof v === 'string' ? v.trim().toLowerCase() : null;
