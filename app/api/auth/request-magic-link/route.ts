@@ -45,7 +45,7 @@ export async function POST(request: Request) {
               }
             }
           }
-        } catch (e) {
+        } catch {
           // swallow debug fetch errors
         }
   console.warn('[auth] unauthorized email debug', { email, fields, formula, sampleFields, envEmailField: process.env.AIRTABLE_EMAIL_FIELD, envEmailField2: process.env.AIRTABLE_EMAIL_FIELD_2, envEmailFieldsList: process.env.AIRTABLE_EMAIL_FIELDS });

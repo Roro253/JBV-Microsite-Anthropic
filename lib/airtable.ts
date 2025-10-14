@@ -113,7 +113,8 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
           if (scanRes.ok) {
             const scanJson = await scanRes.json();
             const normalized = normalizedEmail;
-            const records: any[] = Array.isArray(scanJson.records) ? scanJson.records : [];
+            interface ScanRecord { id: string; fields?: Record<string, unknown>; }
+            const records: ScanRecord[] = Array.isArray(scanJson.records) ? scanJson.records as ScanRecord[] : [];
             for (const r of records) {
               const fields = r.fields || {};
               for (const [k, v] of Object.entries(fields)) {
