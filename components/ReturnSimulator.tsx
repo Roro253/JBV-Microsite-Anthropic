@@ -186,7 +186,7 @@ export const ReturnSimulator = forwardRef<ReturnSimulatorHandle, ReturnSimulator
           setUserMgmtFee(managementFeePct ?? null);
           setUserCarryFee(carryPct ?? null);
           setFeeStatus("applied");
-        } catch (e) {
+        } catch {
           if (!cancelled) setFeeStatus("error");
         }
       };

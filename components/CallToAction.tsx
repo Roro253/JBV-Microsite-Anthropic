@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 
 interface CallToActionProps {
   reserveUrl: string;
-  diligenceUrl: string;
   animate?: boolean;
   className?: string;
   companyName?: string;
@@ -19,7 +18,6 @@ type ActionKey = "reserve" | "diligence" | null;
 
 export function CallToAction({
   reserveUrl,
-  diligenceUrl,
   animate = true,
   className,
   companyName = "Anthropic"

@@ -233,7 +233,6 @@ export function OpenAIExperience({ data, fundModel }: OpenAIExperienceProps) {
         >
           <CallToAction
             reserveUrl={data.links.reserve_interest}
-            diligenceUrl={data.links.book_diligence}
             companyName="OpenAI"
           />
         </Section>

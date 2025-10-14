@@ -247,7 +247,6 @@ export function XaiExperience({ data, fundModel }: XaiExperienceProps) {
         >
           <CallToAction
             reserveUrl={data.links.reserve_interest}
-            diligenceUrl={data.links.book_diligence}
             companyName="xAI"
           />
         </Section>

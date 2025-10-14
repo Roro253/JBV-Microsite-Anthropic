@@ -237,7 +237,6 @@ export function AnthropicExperience({ data, fundModel }: AnthropicExperienceProp
           >
             <CallToAction
               reserveUrl={data.links.reserve_interest}
-              diligenceUrl={data.links.book_diligence}
             />
           </Section>
         </>

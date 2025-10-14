@@ -146,7 +146,14 @@ export async function getUserFees(email: string): Promise<UserFeesExtended | nul
     return record ? { record, fieldName } : null;
   };
 
-  let matched: { record: any; fieldName: string } | null = await lookupByField(emailField);
+  interface AirtableRecord<TFields = Record<string, unknown>> {
+    id: string;
+    createdTime?: string;
+    fields: TFields;
+  }
+  type MatchedRecord = { record: AirtableRecord; fieldName: string } | null;
+
+  let matched: MatchedRecord = await lookupByField(emailField);
   if (!matched && secondaryEmailField) {
     matched = await lookupByField(secondaryEmailField);
   }
