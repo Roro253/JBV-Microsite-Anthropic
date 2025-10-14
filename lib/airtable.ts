@@ -54,14 +54,11 @@ export function buildEmailFormula(emailFields: string[], normalizedEmail: string
 
 export async function isAuthorizedEmail(email: string): Promise<boolean> {
   const apiKey = assertEnv(process.env.AIRTABLE_API_KEY, "AIRTABLE_API_KEY");
-  const baseId = assertEnv(
-    process.env.AIRTABLE_BASE_ID ?? "appAswQzYFHzmwqGH",
-    "AIRTABLE_BASE_ID"
-  );
-  const tableId = assertEnv(
-    process.env.AIRTABLE_TABLE_ID ?? "tblxmUCsZcHOZiL1K",
-    "AIRTABLE_TABLE_ID"
-  );
+  // Require explicit configuration; previously this used baked-in fallback IDs
+  // which could silently 404 and surface as a transient integration error even
+  // when the real issue was missing env vars in the deployment environment.
+  const baseId = assertEnv(process.env.AIRTABLE_BASE_ID, "AIRTABLE_BASE_ID");
+  const tableId = assertEnv(process.env.AIRTABLE_TABLE_ID, "AIRTABLE_TABLE_ID");
 
   const emailFields = resolveEmailFields();
 
@@ -104,7 +101,12 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => "");
-      console.error("Airtable lookup failed", response.status, errorText);
+      console.error("[airtable] lookup failed", {
+        status: response.status,
+        statusText: (response as any).statusText,
+        url,
+        errorText: errorText?.slice(0, 500)
+      });
       // Fallback: debug full scan when AIRTABLE_DEBUG=1
       if (process.env.AIRTABLE_DEBUG === '1') {
         try {
@@ -133,9 +135,14 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
           console.warn('[airtable] Fallback full scan error', scanErr);
         }
       }
+      // Distinguish configuration vs transient vs not-found to aid debugging.
+      const configLikely = [401, 403, 404].includes(response.status);
+      const message = configLikely
+        ? "Airtable configuration or identifiers appear invalid (auth/base/table)."
+        : "Unable to validate email against Airtable.";
       throw new IntegrationError(
         "airtable",
-        "Unable to validate email against Airtable.",
+        message,
         {
           cause: new Error(`Status ${response.status}`)
         }
