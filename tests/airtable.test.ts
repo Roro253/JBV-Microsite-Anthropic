@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { isAuthorizedEmail } from "@/lib/airtable";
+import { getUserFees, isAuthorizedEmail } from "@/lib/airtable";
 
 describe("isAuthorizedEmail", () => {
   const originalEnv = { ...process.env };
@@ -75,5 +75,57 @@ describe("isAuthorizedEmail", () => {
     expect(formula).toBe(
       "OR(LOWER(TRIM({Primary Email}))='secondary@example.com',LOWER(TRIM({Email (from Contacts) 2}))='secondary@example.com')"
     );
+  });
+});
+
+describe("getUserFees", () => {
+  const originalEnv = { ...process.env };
+
+  beforeEach(() => {
+    process.env = { ...originalEnv };
+
+    process.env.AIRTABLE_API_KEY = "test_key";
+    process.env.AIRTABLE_BASE_ID = "appBase";
+    process.env.AIRTABLE_TABLE_ID = "tblTable";
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+    process.env = { ...originalEnv };
+  });
+
+  it("parses fees and reports secondary match", async () => {
+    process.env.AIRTABLE_EMAIL_FIELD = "Primary Email";
+    process.env.AIRTABLE_EMAIL_FIELD_2 = "Email (from Contacts) 2";
+
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        records: [
+          {
+            fields: {
+              "Primary Email": "primary@example.com",
+              "Email (from Contacts) 2": " secondary@example.com ",
+              "Mgmt Fee": "2%",
+              "Carry 1": "20"
+            }
+          }
+        ]
+      })
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await getUserFees("secondary@example.com");
+
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(result).toEqual({
+      managementFeePct: 2,
+      carryPct: 20,
+      recordFound: true,
+      sourceField: "Email (from Contacts) 2"
+    });
   });
 });
