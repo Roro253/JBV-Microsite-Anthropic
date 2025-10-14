@@ -50,17 +50,15 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
     : null;
 
   const normalizedEmail = normalizeEmail(email);
-  const buildUrlForField = (fieldName: string) => {
-    const formula = `LOWER(TRIM({${fieldName}}))='${escapeFormulaValue(normalizedEmail)}'`;
-    return `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
-  };
-
-  const primaryUrl = buildUrlForField(emailField);
+  const formula = secondaryEmailField && secondaryEmailField.length > 0
+    ? `OR(LOWER(TRIM({${emailField}}))='${escapeFormulaValue(normalizedEmail)}',LOWER(TRIM({${secondaryEmailField}}))='${escapeFormulaValue(normalizedEmail)}')`
+    : `LOWER(TRIM({${emailField}}))='${escapeFormulaValue(normalizedEmail)}'`;
+  const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
 
   try {
     const response = await retry(async () => {
       try {
-        const result = await fetch(primaryUrl, {
+  const result = await fetch(url, {
           headers: {
             Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json"
@@ -101,31 +99,24 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
       );
     }
 
-    const payload = (await response.json()) as { records?: unknown[] };
-    const foundPrimary = Array.isArray(payload.records) && payload.records.length > 0;
-    if (foundPrimary) return true;
-
-    // Attempt secondary field if configured and primary failed
-    if (secondaryEmailField) {
-      try {
-        const secondaryUrl = buildUrlForField(secondaryEmailField);
-        const secondaryResult = await fetch(secondaryUrl, {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json"
-          },
-          cache: "no-store"
-        });
-        if (!secondaryResult.ok) return false;
-        const secondaryPayload = (await secondaryResult.json()) as { records?: unknown[] };
-        return Array.isArray(secondaryPayload.records) && secondaryPayload.records.length > 0;
-      } catch (err) {
-        console.warn("Secondary email field lookup failed", err);
-        return false;
-      }
+    const payload = (await response.json()) as { records?: any[] };
+    const hasRecord = Array.isArray(payload.records) && payload.records.length > 0;
+    if (!hasRecord) return false;
+    try {
+      const recordFields = (payload.records?.[0] as any)?.fields || {};
+      const primaryVal = recordFields[emailField];
+      const secondaryVal = secondaryEmailField ? recordFields[secondaryEmailField] : undefined;
+      const toLower = (v: unknown) => typeof v === 'string' ? v.trim().toLowerCase() : null;
+      const matchedField = toLower(primaryVal) === normalizedEmail
+        ? emailField
+        : (secondaryEmailField && toLower(secondaryVal) === normalizedEmail
+            ? secondaryEmailField
+            : 'unknown');
+      console.log('[auth] matched email field:', matchedField);
+    } catch (logErr) {
+      console.warn('[auth] unable to determine matched field', logErr);
     }
-
-    return false;
+    return true;
   } catch (error) {
     if (error instanceof IntegrationError) {
       throw error;
