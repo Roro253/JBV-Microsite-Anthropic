@@ -49,7 +49,7 @@
   },
   "links": {
     "reserve_interest": "ENV:NEXT_PUBLIC_TYPEFORM_URL",
-    "book_diligence": "ENV:NEXT_PUBLIC_CALENDLY_URL"
+    "book_diligence": "https://calendly.com/jb-jbv/30min"
   },
   "sources": [
     { "claim": "Grok 4 model: tool-use + real-time search; availability and tiers", "url": "https://x.ai/news/grok-4" },

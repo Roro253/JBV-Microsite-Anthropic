@@ -130,7 +130,7 @@ const fallbackData: AnthropicData = {
   },
   links: {
     reserve_interest: "#",
-    book_diligence: "#"
+    book_diligence: "https://calendly.com/jb-jbv/30min"
   },
   sources: [],
   last_updated: new Date().toISOString().split("T")[0]
