@@ -51,7 +51,7 @@
   },
   "links": {
     "reserve_interest": "ENV:NEXT_PUBLIC_TYPEFORM_URL",
-    "book_diligence": "ENV:NEXT_PUBLIC_CALENDLY_URL"
+    "book_diligence": "https://calendly.com/jb-jbv/30min"
   },
   "sources": [
     { "claim": "Valuation ~$500B via Oct 2025 secondary", "url": "https://www.visualcapitalist.com/cp/openai-500b-valuation/" },
