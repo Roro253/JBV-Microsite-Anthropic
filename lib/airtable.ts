@@ -61,7 +61,7 @@ export function buildEmailFormula(emailFields: string[], normalizedEmail: string
   return formula;
 }
 
-function buildSimpleEmailFormula(emailFields: string[], normalizedEmail: string): string {
+export function buildSimpleEmailFormula(emailFields: string[], normalizedEmail: string): string {
   const target = escapeFormulaValue(normalizedEmail);
   // Simpler equality-only formula without ARRAYJOIN/SEARCH for Airtable bases that reject ARRAYJOIN on non-array fields (422 errors)
   const clauses = emailFields.map(f => `LOWER(TRIM({${f}}))='${target}'`);
