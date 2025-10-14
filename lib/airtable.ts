@@ -101,9 +101,11 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => "");
+      // Access statusText via narrowing: fetch Response has statusText in standard lib
+      const { status, statusText } = response as Response;
       console.error("[airtable] lookup failed", {
-        status: response.status,
-        statusText: (response as any).statusText,
+        status,
+        statusText,
         url,
         errorText: errorText?.slice(0, 500)
       });
