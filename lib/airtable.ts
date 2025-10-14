@@ -20,11 +20,11 @@ function escapeFormulaValue(value: string): string {
   return value.replace(/'/g, "\\'");
 }
 
-function sanitizeFieldName(name: string): string {
+export function sanitizeFieldName(name: string): string {
   return name.replace(/[{}]/g, "").trim();
 }
 
-function resolveEmailFields(): string[] {
+export function resolveEmailFields(): string[] {
   // Priority: explicit list variable, else individual vars, else default.
   const listRaw = process.env.AIRTABLE_EMAIL_FIELDS;
   if (listRaw) {
@@ -42,6 +42,16 @@ function resolveEmailFields(): string[] {
   return fields;
 }
 
+export function buildEmailFormula(emailFields: string[], normalizedEmail: string): string {
+  const target = escapeFormulaValue(normalizedEmail);
+  const perFieldClauses = emailFields.map(f => `OR(LOWER(TRIM({${f}}))='${target}',SEARCH('${target}',LOWER(ARRAYJOIN({${f}},',')))>0)`);
+  const formula = perFieldClauses.length > 1 ? `OR(${perFieldClauses.join(',')})` : perFieldClauses[0];
+  if (process.env.AIRTABLE_DEBUG === '1') {
+    console.log('[airtable] email formula:', formula);
+  }
+  return formula;
+}
+
 export async function isAuthorizedEmail(email: string): Promise<boolean> {
   const apiKey = assertEnv(process.env.AIRTABLE_API_KEY, "AIRTABLE_API_KEY");
   const baseId = assertEnv(
@@ -57,11 +67,7 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
 
   const normalizedEmail = normalizeEmail(email);
   // Array-safe matching: for each field attempt direct equality OR a SEARCH on ARRAYJOIN (covers lookup/rollup arrays)
-  const perFieldClauses = emailFields.map(f => {
-    const target = escapeFormulaValue(normalizedEmail);
-    return `OR(LOWER(TRIM({${f}}))='${target}',SEARCH('${target}',LOWER(ARRAYJOIN({${f}},',')))>0)`;
-  });
-  const formula = perFieldClauses.length > 1 ? `OR(${perFieldClauses.join(',')})` : perFieldClauses[0];
+  const formula = buildEmailFormula(emailFields, normalizedEmail);
   const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
 
   try {
@@ -158,11 +164,7 @@ export async function getUserFees(email: string): Promise<UserFeesExtended | nul
   const carryField = process.env.AIRTABLE_CARRY_FIELD || "Carry 1";
 
   const normalizedEmail = normalizeEmail(email);
-  const perFieldClauses = emailFields.map(f => {
-    const target = escapeFormulaValue(normalizedEmail);
-    return `OR(LOWER(TRIM({${f}}))='${target}',SEARCH('${target}',LOWER(ARRAYJOIN({${f}},',')))>0)`;
-  });
-  const formula = perFieldClauses.length > 1 ? `OR(${perFieldClauses.join(',')})` : perFieldClauses[0];
+  const formula = buildEmailFormula(emailFields, normalizedEmail);
   const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
 
   try {

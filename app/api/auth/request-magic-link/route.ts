@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { isAuthorizedEmail, normalizeEmail } from "@/lib/airtable";
+import { isAuthorizedEmail, normalizeEmail, resolveEmailFields, buildEmailFormula } from "@/lib/airtable";
 import { createMagicLinkToken } from "@/lib/auth/magic-links";
 import { sendMagicLinkEmail } from "@/lib/email/sendgrid";
 import { isIntegrationError } from "@/lib/errors";
@@ -27,6 +27,15 @@ export async function POST(request: Request) {
     const isAuthorized = await isAuthorizedEmail(email);
 
     if (!isAuthorized) {
+      if (process.env.AIRTABLE_DEBUG === '1') {
+        const fields = resolveEmailFields();
+        const formula = buildEmailFormula(fields, email);
+        console.warn('[auth] unauthorized email debug', { email, fields, formula });
+        return NextResponse.json(
+          { error: "Unauthorized email", code: "unauthorized", debug: { fields, formula } },
+          { status: 403 }
+        );
+      }
       return NextResponse.json(
         { error: "Unauthorized email", code: "unauthorized" },
         { status: 403 }
