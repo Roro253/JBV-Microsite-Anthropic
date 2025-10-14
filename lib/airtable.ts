@@ -21,7 +21,8 @@ function escapeFormulaValue(value: string): string {
 }
 
 export function sanitizeFieldName(name: string): string {
-  return name.replace(/[{}]/g, "").trim();
+  // Remove Airtable formula braces and any wrapping single/double quotes accidentally copied.
+  return name.replace(/[{}]/g, "").replace(/^['"]+|['"]+$/g, "").trim();
 }
 
 export function resolveEmailFields(): string[] {
@@ -43,7 +44,15 @@ export function resolveEmailFields(): string[] {
 }
 
 export function buildEmailFormula(emailFields: string[], normalizedEmail: string): string {
+  const forceSimple = process.env.AIRTABLE_FORCE_SIMPLE === '1';
   const target = escapeFormulaValue(normalizedEmail);
+  if (forceSimple) {
+    const simple = buildSimpleEmailFormula(emailFields, normalizedEmail);
+    if (process.env.AIRTABLE_DEBUG === '1') {
+      console.log('[airtable] FORCE_SIMPLE active, using simple formula:', simple);
+    }
+    return simple;
+  }
   const perFieldClauses = emailFields.map(f => `OR(LOWER(TRIM({${f}}))='${target}',SEARCH('${target}',LOWER(ARRAYJOIN({${f}},',')))>0)`);
   const formula = perFieldClauses.length > 1 ? `OR(${perFieldClauses.join(',')})` : perFieldClauses[0];
   if (process.env.AIRTABLE_DEBUG === '1') {
@@ -72,6 +81,9 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
   const tableId = assertEnv(process.env.AIRTABLE_TABLE_ID, "AIRTABLE_TABLE_ID");
 
   const emailFields = resolveEmailFields();
+  if (process.env.AIRTABLE_DEBUG === '1') {
+    console.log('[airtable] resolved email fields:', emailFields);
+  }
 
   const normalizedEmail = normalizeEmail(email);
   // Array-safe matching: for each field attempt direct equality OR a SEARCH on ARRAYJOIN (covers lookup/rollup arrays)
@@ -103,7 +115,7 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
         }
 
         // If the complex formula causes a 422 (validation) retry once with simpler equality-only formula.
-        if (result.status === 422) {
+  if (result.status === 422 && process.env.AIRTABLE_FORCE_SIMPLE !== '1') {
           try {
             const simple = buildSimpleEmailFormula(emailFields, normalizedEmail);
             const simpleUrl = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(simple)}`;
