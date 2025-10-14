@@ -4,7 +4,8 @@ import {
   forwardRef,
   useImperativeHandle,
   useMemo,
-  useState
+  useState,
+  useEffect
 } from "react";
 import {
   Line,
@@ -84,6 +85,9 @@ export const ReturnSimulator = forwardRef<ReturnSimulatorHandle, ReturnSimulator
     const setScenario = useUIStore((state) => state.setScenario);
     const prefersReducedMotion = useReducedMotion();
     const [copied, setCopied] = useState(false);
+  const [userMgmtFee, setUserMgmtFee] = useState<number | null>(null);
+  const [userCarryFee, setUserCarryFee] = useState<number | null>(null);
+  const [feeStatus, setFeeStatus] = useState<"loading" | "applied" | "missing" | "error" | "idle">("idle");
 
     const metrics = useMemo(() => calculateReturnMetrics(scenario), [scenario]);
     const comparisonMetrics = useMemo(
@@ -156,6 +160,41 @@ export const ReturnSimulator = forwardRef<ReturnSimulatorHandle, ReturnSimulator
       setScenario(getDefaultScenario());
       resetComparison();
     };
+
+    // Fetch user-specific fees after mount (client-side; relies on session cookie)
+    useEffect(() => {
+      let cancelled = false;
+      const fetchFees = async () => {
+        try {
+          setFeeStatus("loading");
+          const res = await fetch("/api/fees", { cache: "no-store" });
+          if (!res.ok) {
+            setFeeStatus("error");
+            return;
+          }
+          const data = await res.json();
+          if (!data.ok) {
+            setFeeStatus("error");
+            return;
+          }
+          if (cancelled) return;
+          if (data.fees === null) {
+            setFeeStatus("missing");
+            return;
+          }
+          const { managementFeePct, carryPct } = data.fees as { managementFeePct?: number | null; carryPct?: number | null };
+          setUserMgmtFee(managementFeePct ?? null);
+          setUserCarryFee(carryPct ?? null);
+          setFeeStatus("applied");
+        } catch (e) {
+          if (!cancelled) setFeeStatus("error");
+        }
+      };
+      fetchFees();
+      return () => {
+        cancelled = true;
+      };
+    }, []);
 
     const sliderItem = <K extends keyof SimulatorScenario>(
       key: K,
@@ -251,9 +290,31 @@ export const ReturnSimulator = forwardRef<ReturnSimulatorHandle, ReturnSimulator
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <div className="space-y-5">
-            {(
-              Object.keys(sliderConfigs) as Array<keyof typeof sliderConfigs>
-            ).map((key) => sliderItem(key, sliderConfigs[key]))}
+            {(Object.keys(sliderConfigs) as Array<keyof typeof sliderConfigs>).map((key) =>
+              sliderItem(key, sliderConfigs[key])
+            )}
+            <div className="rounded-2xl border border-sky-100 bg-white/90 p-4 text-xs text-slate-600">
+              <p className="font-semibold text-slate-700 mb-1">Fee profile</p>
+              {feeStatus === "loading" ? (
+                <p>Loading personalized fees…</p>
+              ) : feeStatus === "error" ? (
+                <p>Unable to load personalized fees. Using default illustrative assumptions.</p>
+              ) : feeStatus === "missing" ? (
+                <p>No personalized management fee or carry found. Defaults are illustrative only.</p>
+              ) : feeStatus === "applied" ? (
+                <ul className="space-y-1">
+                  <li>
+                    <strong>Management Fee:</strong> {userMgmtFee !== null ? `${userMgmtFee.toFixed(2)}%` : "—"}
+                  </li>
+                  <li>
+                    <strong>Carry:</strong> {userCarryFee !== null ? `${userCarryFee.toFixed(2)}%` : "—"}
+                  </li>
+                </ul>
+              ) : (
+                <p>Illustrative fee assumptions displayed.</p>
+              )}
+              <p className="mt-2 text-[11px] text-slate-500">Figures are session-specific and sourced from Airtable when available.</p>
+            </div>
           </div>
           <div className="flex flex-col gap-4 rounded-2xl border border-sky-100 bg-white/90 p-6 shadow-[0_25px_70px_-55px_rgba(32,118,199,0.35)]">
             <div className="grid grid-cols-2 gap-4 text-sm text-slate-600">

@@ -105,3 +105,51 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
     });
   }
 }
+
+export interface UserFeesResult {
+  managementFeePct?: number | null; // expressed as percent (e.g. 2 for 2%)
+  carryPct?: number | null; // expressed as percent (e.g. 20 for 20%)
+}
+
+export async function getUserFees(email: string): Promise<UserFeesResult | null> {
+  const apiKey = assertEnv(process.env.AIRTABLE_API_KEY, "AIRTABLE_API_KEY");
+  const baseId = assertEnv(process.env.AIRTABLE_BASE_ID, "AIRTABLE_BASE_ID");
+  const tableId = assertEnv(process.env.AIRTABLE_TABLE_ID, "AIRTABLE_TABLE_ID");
+  const emailField = resolveEmailField();
+  const mgmtField = process.env.AIRTABLE_MGMT_FEE_FIELD || "Mgmt Fee";
+  const carryField = process.env.AIRTABLE_CARRY_FIELD || "Carry 1";
+
+  const normalizedEmail = normalizeEmail(email);
+  const formula = `LOWER(TRIM({${emailField}}))='${escapeFormulaValue(normalizedEmail)}'`;
+  const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json"
+      },
+      cache: "no-store"
+    });
+    if (!response.ok) {
+      return null;
+    }
+    const json = await response.json();
+    const record = Array.isArray(json.records) && json.records.length > 0 ? json.records[0] : null;
+    if (!record) return null;
+    const fields = record.fields || {};
+    const rawMgmt = fields[mgmtField];
+    const rawCarry = fields[carryField];
+    const parsePct = (val: unknown): number | null => {
+      if (val === null || val === undefined) return null;
+      const num = typeof val === "number" ? val : Number(String(val).replace(/[^0-9.\-]/g, ""));
+      return Number.isFinite(num) ? num : null;
+    };
+    return {
+      managementFeePct: parsePct(rawMgmt),
+      carryPct: parsePct(rawCarry)
+    };
+  } catch {
+    return null;
+  }
+}
