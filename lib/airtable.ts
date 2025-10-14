@@ -44,15 +44,23 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
   );
 
   const emailField = resolveEmailField();
+  const secondaryEmailFieldRaw = process.env.AIRTABLE_EMAIL_FIELD_2;
+  const secondaryEmailField = secondaryEmailFieldRaw
+    ? secondaryEmailFieldRaw.replace(/[{}]/g, "").trim()
+    : null;
 
   const normalizedEmail = normalizeEmail(email);
-  const formula = `LOWER(TRIM({${emailField}}))='${escapeFormulaValue(normalizedEmail)}'`;
-  const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
+  const buildUrlForField = (fieldName: string) => {
+    const formula = `LOWER(TRIM({${fieldName}}))='${escapeFormulaValue(normalizedEmail)}'`;
+    return `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
+  };
+
+  const primaryUrl = buildUrlForField(emailField);
 
   try {
     const response = await retry(async () => {
       try {
-        const result = await fetch(url, {
+        const result = await fetch(primaryUrl, {
           headers: {
             Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json"
@@ -94,7 +102,30 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
     }
 
     const payload = (await response.json()) as { records?: unknown[] };
-    return Array.isArray(payload.records) && payload.records.length > 0;
+    const foundPrimary = Array.isArray(payload.records) && payload.records.length > 0;
+    if (foundPrimary) return true;
+
+    // Attempt secondary field if configured and primary failed
+    if (secondaryEmailField) {
+      try {
+        const secondaryUrl = buildUrlForField(secondaryEmailField);
+        const secondaryResult = await fetch(secondaryUrl, {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json"
+          },
+          cache: "no-store"
+        });
+        if (!secondaryResult.ok) return false;
+        const secondaryPayload = (await secondaryResult.json()) as { records?: unknown[] };
+        return Array.isArray(secondaryPayload.records) && secondaryPayload.records.length > 0;
+      } catch (err) {
+        console.warn("Secondary email field lookup failed", err);
+        return false;
+      }
+    }
+
+    return false;
   } catch (error) {
     if (error instanceof IntegrationError) {
       throw error;
