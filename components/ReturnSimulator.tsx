@@ -309,7 +309,7 @@ export const ReturnSimulator = forwardRef<ReturnSimulatorHandle, ReturnSimulator
                     {userMgmtFee !== null ? (
                       `${userMgmtFee.toFixed(2)}%`
                     ) : (
-                      <span className="text-rose-600">No management fee set on file</span>
+                      <span className="text-rose-600">Management fee not yet configured for your profile</span>
                     )}
                   </li>
                   <li>
@@ -317,7 +317,7 @@ export const ReturnSimulator = forwardRef<ReturnSimulatorHandle, ReturnSimulator
                     {userCarryFee !== null ? (
                       `${userCarryFee.toFixed(2)}%`
                     ) : (
-                      <span className="text-rose-600">No carry set on file</span>
+                      <span className="text-rose-600">Carry percentage not yet configured for your profile</span>
                     )}
                   </li>
                 </ul>

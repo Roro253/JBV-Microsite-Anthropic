@@ -20,16 +20,26 @@ function escapeFormulaValue(value: string): string {
   return value.replace(/'/g, "\\'");
 }
 
-function resolveEmailField(): string {
-  const configuredField = process.env.AIRTABLE_EMAIL_FIELD;
+function sanitizeFieldName(name: string): string {
+  return name.replace(/[{}]/g, "").trim();
+}
 
-  if (!configuredField) {
-    return DEFAULT_EMAIL_FIELD;
+function resolveEmailFields(): string[] {
+  // Priority: explicit list variable, else individual vars, else default.
+  const listRaw = process.env.AIRTABLE_EMAIL_FIELDS;
+  if (listRaw) {
+    const parts = listRaw.split(/[,;]/).map((p) => sanitizeFieldName(p)).filter(Boolean);
+    if (parts.length > 0) return parts;
   }
-
-  const sanitized = configuredField.replace(/[{}]/g, "").trim();
-
-  return sanitized.length > 0 ? sanitized : DEFAULT_EMAIL_FIELD;
+  const primaryRaw = process.env.AIRTABLE_EMAIL_FIELD;
+  const secondaryRaw = process.env.AIRTABLE_EMAIL_FIELD_2;
+  const primary = primaryRaw ? sanitizeFieldName(primaryRaw) : DEFAULT_EMAIL_FIELD;
+  const fields = [primary];
+  if (secondaryRaw) {
+    const secondary = sanitizeFieldName(secondaryRaw);
+    if (secondary && !fields.includes(secondary)) fields.push(secondary);
+  }
+  return fields;
 }
 
 export async function isAuthorizedEmail(email: string): Promise<boolean> {
@@ -43,16 +53,12 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
     "AIRTABLE_TABLE_ID"
   );
 
-  const emailField = resolveEmailField();
-  const secondaryEmailFieldRaw = process.env.AIRTABLE_EMAIL_FIELD_2;
-  const secondaryEmailField = secondaryEmailFieldRaw
-    ? secondaryEmailFieldRaw.replace(/[{}]/g, "").trim()
-    : null;
+  const emailFields = resolveEmailFields();
 
   const normalizedEmail = normalizeEmail(email);
-  const formula = secondaryEmailField && secondaryEmailField.length > 0
-    ? `OR(LOWER(TRIM({${emailField}}))='${escapeFormulaValue(normalizedEmail)}',LOWER(TRIM({${secondaryEmailField}}))='${escapeFormulaValue(normalizedEmail)}')`
-    : `LOWER(TRIM({${emailField}}))='${escapeFormulaValue(normalizedEmail)}'`;
+  const formula = emailFields.length > 1
+    ? `OR(${emailFields.map(f => `LOWER(TRIM({${f}}))='${escapeFormulaValue(normalizedEmail)}'`).join(",")})`
+    : `LOWER(TRIM({${emailFields[0]}}))='${escapeFormulaValue(normalizedEmail)}'`;
   const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
 
   try {
@@ -112,14 +118,8 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
     if (!hasRecord) return false;
     try {
   const recordFields = payload.records?.[0]?.fields || {};
-      const primaryVal = recordFields[emailField];
-      const secondaryVal = secondaryEmailField ? recordFields[secondaryEmailField] : undefined;
-      const toLower = (v: unknown) => typeof v === 'string' ? v.trim().toLowerCase() : null;
-      const matchedField = toLower(primaryVal) === normalizedEmail
-        ? emailField
-        : (secondaryEmailField && toLower(secondaryVal) === normalizedEmail
-            ? secondaryEmailField
-            : 'unknown');
+  const toLower = (v: unknown) => typeof v === 'string' ? v.trim().toLowerCase() : null;
+  const matchedField = emailFields.find(f => toLower(recordFields[f]) === normalizedEmail) || 'unknown';
       console.log('[auth] matched email field:', matchedField);
     } catch (logErr) {
       console.warn('[auth] unable to determine matched field', logErr);
@@ -150,19 +150,17 @@ export async function getUserFees(email: string): Promise<UserFeesExtended | nul
   const apiKey = assertEnv(process.env.AIRTABLE_API_KEY, "AIRTABLE_API_KEY");
   const baseId = assertEnv(process.env.AIRTABLE_BASE_ID, "AIRTABLE_BASE_ID");
   const tableId = assertEnv(process.env.AIRTABLE_TABLE_ID, "AIRTABLE_TABLE_ID");
-  const emailField = resolveEmailField();
-  const secondaryEmailFieldRaw = process.env.AIRTABLE_EMAIL_FIELD_2;
-  const secondaryEmailField = secondaryEmailFieldRaw
-    ? secondaryEmailFieldRaw.replace(/[{}]/g, "").trim()
-    : null;
+  const emailFields = resolveEmailFields();
   const mgmtField = process.env.AIRTABLE_MGMT_FEE_FIELD || "Mgmt Fee";
   const carryField = process.env.AIRTABLE_CARRY_FIELD || "Carry 1";
 
   const normalizedEmail = normalizeEmail(email);
-  // Helper to perform a single-field lookup
-  const lookupByField = async (fieldName: string) => {
-    const formula = `LOWER(TRIM({${fieldName}}))='${escapeFormulaValue(normalizedEmail)}'`;
-    const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
+  const formula = emailFields.length > 1
+    ? `OR(${emailFields.map(f => `LOWER(TRIM({${f}}))='${escapeFormulaValue(normalizedEmail)}'`).join(",")})`
+    : `LOWER(TRIM({${emailFields[0]}}))='${escapeFormulaValue(normalizedEmail)}'`;
+  const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
+
+  try {
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -170,29 +168,15 @@ export async function getUserFees(email: string): Promise<UserFeesExtended | nul
       },
       cache: "no-store"
     });
-    if (!response.ok) return null;
-    const json = await response.json();
-    const record = Array.isArray(json.records) && json.records.length > 0 ? json.records[0] : null;
-    return record ? { record, fieldName } : null;
-  };
-
-  interface AirtableRecord<TFields = Record<string, unknown>> {
-    id: string;
-    createdTime?: string;
-    fields: TFields;
-  }
-  type MatchedRecord = { record: AirtableRecord; fieldName: string } | null;
-
-  let matched: MatchedRecord = await lookupByField(emailField);
-  if (!matched && secondaryEmailField) {
-    matched = await lookupByField(secondaryEmailField);
-  }
-
-  try {
-    if (!matched) {
+    if (!response.ok) {
       return { managementFeePct: null, carryPct: null, recordFound: false };
     }
-    const fields = matched.record.fields || {};
+    const json = await response.json();
+    const record = Array.isArray(json.records) && json.records.length > 0 ? json.records[0] : null;
+    if (!record) {
+      return { managementFeePct: null, carryPct: null, recordFound: false };
+    }
+    const fields = (record as { fields?: Record<string, unknown> }).fields || {};
     const rawMgmt = fields[mgmtField];
     const rawCarry = fields[carryField];
     const parsePct = (val: unknown): number | null => {
@@ -200,11 +184,13 @@ export async function getUserFees(email: string): Promise<UserFeesExtended | nul
       const num = typeof val === "number" ? val : Number(String(val).replace(/[^0-9.\-]/g, ""));
       return Number.isFinite(num) ? num : null;
     };
+    const toLower = (v: unknown) => typeof v === "string" ? v.trim().toLowerCase() : null;
+    const matchedField = emailFields.find(f => toLower(fields[f]) === normalizedEmail);
     return {
       managementFeePct: parsePct(rawMgmt),
       carryPct: parsePct(rawCarry),
       recordFound: true,
-      sourceField: matched.fieldName
+      sourceField: matchedField
     };
   } catch {
     return { managementFeePct: null, carryPct: null, recordFound: false };
