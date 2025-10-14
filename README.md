@@ -38,6 +38,8 @@ Production-ready Next.js 15 App Router experience for JBV Capital's Anthropic di
 | `AIRTABLE_BASE_ID` | (Optional) Override for the Airtable base ID; defaults to `appAswQzYFHzmwqGH`. |
 | `AIRTABLE_TABLE_ID` | (Optional) Override for the Airtable table ID; defaults to `tblxmUCsZcHOZiL1K`. |
 | `AIRTABLE_EMAIL_FIELD` | (Optional) Override for the Airtable field that stores investor emails; defaults to `Email`. |
+| `AIRTABLE_EMAIL_FIELD_2` | (Optional) Secondary email column to check (e.g. `Email (from Contacts) 2`). |
+| `AIRTABLE_EMAIL_FIELDS` | (Optional) Comma- or semicolon-separated list of email fields; overrides the individual field settings. |
 | `SENDGRID_API_KEY` | SendGrid API key used to dispatch transactional magic link emails. |
 | `SENDGRID_FROM_EMAIL` | (Optional) Verified SendGrid sender email; defaults to `jb@jbv.com`. |
 | `NEXT_PUBLIC_SITE_URL` | Public base URL used when generating magic links (falls back to request origin). |
