@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // JS version of Airtable dual-field email debug script
-const fetch = require('node-fetch');
+// Uses global fetch (Node 18+) – no dependency on node-fetch
 
 function assertEnv(name){
   const v = process.env[name];
@@ -17,6 +17,7 @@ if(!rawEmail){
   process.exit(1);
 }
 const email = rawEmail.trim().toLowerCase();
+const DEBUG = process.env.AIRTABLE_DEBUG === '1';
 
 const apiKey = assertEnv('AIRTABLE_API_KEY');
 const baseId = assertEnv('AIRTABLE_BASE_ID');
@@ -38,15 +39,61 @@ function arrayFormula(){
   return clauses.length > 1 ? `OR(${clauses.join(',')})` : clauses[0];
 }
 async function run(formula){
-  const url = `https://api.airtable.com/v0/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
+  const params = new URLSearchParams({ maxRecords: '1', filterByFormula: formula });
+  const url = `https://api.airtable.com/v0/${baseId}/${tableId}?${params.toString()}`;
   const res = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` }});
   const json = await res.json();
   return { formula, status: res.status, json };
+}
+
+async function listFirst(){
+  const url = `https://api.airtable.com/v0/${baseId}/${tableId}?maxRecords=1`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` }});
+  const json = await res.json();
+  console.log('\n[Listing] First record raw field keys:');
+  if(Array.isArray(json.records) && json.records[0]){
+    const fields = json.records[0].fields;
+    Object.keys(fields).forEach(k => {
+      console.log('-', k, '=>', JSON.stringify(fields[k]));
+    });
+  } else {
+    console.log('No records returned or error status:', res.status);
+  }
+}
+
+async function fullScan(){
+  const url = `https://api.airtable.com/v0/${baseId}/${tableId}?maxRecords=100`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` }});
+  const json = await res.json();
+  if(!Array.isArray(json.records)){
+    console.log('Full scan failed status:', res.status, json.error || json);
+    return;
+  }
+  const target = email;
+  const matched = [];
+  for(const rec of json.records){
+    const fields = rec.fields || {};
+    for(const [k,v] of Object.entries(fields)){
+      const flat = Array.isArray(v) ? v.join(', ') : String(v);
+      if(flat.toLowerCase().includes(target)){
+        matched.push({ id: rec.id, field: k, value: flat });
+      }
+    }
+  }
+  console.log('\n[Fallback Full Scan] Matches for', email, ':');
+  if(matched.length === 0){
+    console.log('No matches found in first 100 records.');
+  } else {
+    matched.forEach(m => console.log('-', m.id, 'field:', m.field, 'value:', m.value));
+  }
 }
 (async()=>{
   console.log('--- Airtable Email Debug ---');
   console.log('Email:', email);
   console.log('Fields:', emailField, emailField2 || '(none)');
+  if(DEBUG){
+    await listFirst();
+  }
 
   const eq = await run(eqFormula());
   console.log('\n[1] Equality formula');
@@ -75,10 +122,14 @@ async function run(formula){
   }
 
   if((!eq.json.records || eq.json.records.length===0) && (!arr.json.records || arr.json.records.length===0)){
-    console.log('\nNo record matched. Check:');
-    console.log('- Field names EXACT (copy from Airtable header)');
-    console.log('- Email stored differently (e.g., Name <email>)');
-    console.log('- Table ID mismatch');
-    console.log('- Row lives in linked table not this base table');
+    console.log('\nNo record matched via formulas. Diagnostics:');
+    console.log('- Validate field keys from [Listing] against env vars');
+    console.log('- Confirm table ID vs name');
+    console.log('- Ensure email exactly stored (no display name wrappers)');
+    if(DEBUG){
+      await fullScan();
+    } else {
+      console.log('Enable AIRTABLE_DEBUG=1 for full scan.');
+    }
   }
 })();

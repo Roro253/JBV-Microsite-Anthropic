@@ -30,9 +30,27 @@ export async function POST(request: Request) {
       if (process.env.AIRTABLE_DEBUG === '1') {
         const fields = resolveEmailFields();
         const formula = buildEmailFormula(fields, email);
-        console.warn('[auth] unauthorized email debug', { email, fields, formula });
+        let sampleFields: string[] = [];
+        try {
+          const baseId = process.env.AIRTABLE_BASE_ID;
+          const tableId = process.env.AIRTABLE_TABLE_ID;
+          const apiKey = process.env.AIRTABLE_API_KEY;
+          if (baseId && tableId && apiKey) {
+            const url = `https://api.airtable.com/v0/${baseId}/${tableId}?maxRecords=1`;
+            const res = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` } });
+            if (res.ok) {
+              const data = await res.json();
+              if (Array.isArray(data.records) && data.records[0]?.fields) {
+                sampleFields = Object.keys(data.records[0].fields);
+              }
+            }
+          }
+        } catch (e) {
+          // swallow debug fetch errors
+        }
+  console.warn('[auth] unauthorized email debug', { email, fields, formula, sampleFields, envEmailField: process.env.AIRTABLE_EMAIL_FIELD, envEmailField2: process.env.AIRTABLE_EMAIL_FIELD_2, envEmailFieldsList: process.env.AIRTABLE_EMAIL_FIELDS });
         return NextResponse.json(
-          { error: "Unauthorized email", code: "unauthorized", debug: { fields, formula } },
+          { error: "Unauthorized email", code: "unauthorized", debug: { fields, formula, sampleFields } },
           { status: 403 }
         );
       }

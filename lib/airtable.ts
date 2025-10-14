@@ -105,6 +105,33 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
     if (!response.ok) {
       const errorText = await response.text().catch(() => "");
       console.error("Airtable lookup failed", response.status, errorText);
+      // Fallback: debug full scan when AIRTABLE_DEBUG=1
+      if (process.env.AIRTABLE_DEBUG === '1') {
+        try {
+          const scanUrl = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=100`;
+          const scanRes = await fetch(scanUrl, { headers: { Authorization: `Bearer ${apiKey}` }, cache: 'no-store' });
+          if (scanRes.ok) {
+            const scanJson = await scanRes.json();
+            const normalized = normalizedEmail;
+            const records: any[] = Array.isArray(scanJson.records) ? scanJson.records : [];
+            for (const r of records) {
+              const fields = r.fields || {};
+              for (const [k, v] of Object.entries(fields)) {
+                const flat = Array.isArray(v) ? v.join(', ') : String(v);
+                if (flat.toLowerCase().includes(normalized)) {
+                  console.warn('[airtable] Fallback full scan authorized via field', k, 'record', r.id);
+                  return true;
+                }
+              }
+            }
+            console.warn('[airtable] Fallback full scan found no match for', normalized);
+          } else {
+            console.warn('[airtable] Fallback full scan request failed', scanRes.status);
+          }
+        } catch (scanErr) {
+          console.warn('[airtable] Fallback full scan error', scanErr);
+        }
+      }
       throw new IntegrationError(
         "airtable",
         "Unable to validate email against Airtable.",

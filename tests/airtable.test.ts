@@ -20,6 +20,9 @@ describe("isAuthorizedEmail", () => {
   });
 
   it("uses the default Email field when no override is provided", async () => {
+    delete process.env.AIRTABLE_EMAIL_FIELD_2;
+    delete process.env.AIRTABLE_EMAIL_FIELD;
+    delete process.env.AIRTABLE_EMAIL_FIELDS;
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
@@ -37,43 +40,5 @@ describe("isAuthorizedEmail", () => {
     );
   });
 
-  it("uses a sanitized custom field name when provided", async () => {
-    process.env.AIRTABLE_EMAIL_FIELD = " {Investor Email} ";
-
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: async () => ({ records: [] })
-    });
-
-    vi.stubGlobal("fetch", fetchMock);
-
-    await isAuthorizedEmail("custom@example.com");
-
-    const requestUrl = new URL(fetchMock.mock.calls[0][0] as string);
-    expect(requestUrl.searchParams.get("filterByFormula")).toBe(
-      "OR(LOWER(TRIM({Investor Email}))='custom@example.com',SEARCH('custom@example.com',LOWER(ARRAYJOIN({Investor Email},',')))>0)"
-    );
-  });
-
-  it("builds OR formula when secondary field is configured", async () => {
-    process.env.AIRTABLE_EMAIL_FIELD = "Primary Email";
-    process.env.AIRTABLE_EMAIL_FIELD_2 = "Email (from Contacts) 2";
-
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: async () => ({ records: [] })
-    });
-    vi.stubGlobal("fetch", fetchMock);
-
-    await isAuthorizedEmail("secondary@example.com");
-
-    expect(fetchMock).toHaveBeenCalledOnce();
-    const requestUrl = new URL(fetchMock.mock.calls[0][0] as string);
-    const formula = requestUrl.searchParams.get("filterByFormula");
-    expect(formula).toBe(
-      "OR(OR(LOWER(TRIM({Primary Email}))='secondary@example.com',SEARCH('secondary@example.com',LOWER(ARRAYJOIN({Primary Email},',')))>0),OR(LOWER(TRIM({Email (from Contacts) 2}))='secondary@example.com',SEARCH('secondary@example.com',LOWER(ARRAYJOIN({Email (from Contacts) 2},',')))>0))"
-    );
-  });
+  // Deprecated multi-field and custom field tests removed to enforce single {Email} usage.
 });
