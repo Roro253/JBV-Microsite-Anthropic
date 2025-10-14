@@ -52,6 +52,17 @@ export function buildEmailFormula(emailFields: string[], normalizedEmail: string
   return formula;
 }
 
+function buildSimpleEmailFormula(emailFields: string[], normalizedEmail: string): string {
+  const target = escapeFormulaValue(normalizedEmail);
+  // Simpler equality-only formula without ARRAYJOIN/SEARCH for Airtable bases that reject ARRAYJOIN on non-array fields (422 errors)
+  const clauses = emailFields.map(f => `LOWER(TRIM({${f}}))='${target}'`);
+  const formula = clauses.length > 1 ? `OR(${clauses.join(',')})` : clauses[0];
+  if (process.env.AIRTABLE_DEBUG === '1') {
+    console.log('[airtable] fallback simple email formula:', formula);
+  }
+  return formula;
+}
+
 export async function isAuthorizedEmail(email: string): Promise<boolean> {
   const apiKey = assertEnv(process.env.AIRTABLE_API_KEY, "AIRTABLE_API_KEY");
   // Require explicit configuration; previously this used baked-in fallback IDs
@@ -64,8 +75,8 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
 
   const normalizedEmail = normalizeEmail(email);
   // Array-safe matching: for each field attempt direct equality OR a SEARCH on ARRAYJOIN (covers lookup/rollup arrays)
-  const formula = buildEmailFormula(emailFields, normalizedEmail);
-  const url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
+  let formula = buildEmailFormula(emailFields, normalizedEmail);
+  let url = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`;
 
   try {
     const response = await retry(async () => {
@@ -91,6 +102,31 @@ export async function isAuthorizedEmail(email: string): Promise<boolean> {
           );
         }
 
+        // If the complex formula causes a 422 (validation) retry once with simpler equality-only formula.
+        if (result.status === 422) {
+          try {
+            const simple = buildSimpleEmailFormula(emailFields, normalizedEmail);
+            const simpleUrl = `${AIRTABLE_API_URL}/${baseId}/${tableId}?maxRecords=1&filterByFormula=${encodeURIComponent(simple)}`;
+            const simpleRes = await fetch(simpleUrl, {
+              headers: {
+                Authorization: `Bearer ${apiKey}`,
+                "Content-Type": "application/json"
+              },
+              cache: "no-store"
+            });
+            if (process.env.AIRTABLE_DEBUG === '1') {
+              console.warn('[airtable] 422 on complex formula; retried with simple formula', { originalFormula: formula, simpleFormula: simple, status: simpleRes.status });
+            }
+            if (simpleRes.ok) {
+              formula = simple; // adopt simpler formula for downstream logging
+              url = simpleUrl;
+              return simpleRes;
+            }
+            // If fallback still fails, continue to return original 422 response to be handled below
+          } catch (fallbackErr) {
+            console.warn('[airtable] fallback simple formula attempt failed', fallbackErr);
+          }
+        }
         return result;
       } catch (error) {
         throw new IntegrationError("airtable", "Unable to reach Airtable.", {
