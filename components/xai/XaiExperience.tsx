@@ -151,7 +151,11 @@ export function XaiExperience({ data, fundModel }: XaiExperienceProps) {
               <p className="text-sm text-slate-600">Founded {data.company.founded} · {data.company.mission}</p>
             </div>
           </div>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex items-center justify-end gap-4">
+            <div className="relative hidden h-12 w-12 overflow-hidden rounded-2xl border border-sky-200 bg-white/70 shadow-sm lg:block">
+              <Image src="/logos/xai.svg" alt="xAI logo" fill className="object-contain p-2" />
+            </div>
+            <div className="flex flex-wrap gap-4">
             <StatGroup
               label="Fundraise (reported)"
               value={fundraiseDisplay}
@@ -167,6 +171,7 @@ export function XaiExperience({ data, fundModel }: XaiExperienceProps) {
               value={modelDisplay}
               asOf={data.kpis.model_release.as_of}
             />
+            </div>
           </div>
         </div>
       </Section>

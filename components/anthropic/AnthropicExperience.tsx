@@ -151,24 +151,29 @@ export function AnthropicExperience({ data, fundModel }: AnthropicExperienceProp
               </h1>
             </div>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <StatPill
-              label="Valuation"
-              value={`$${valuationBillions.toFixed(0)}B post-money`}
-              icon={<DollarSign className="h-4 w-4" />}
-            />
-            <StatPill
-              label="Series F"
-              value={formatCurrency(data.kpis.recent_round.amount, {
-                maximumFractionDigits: 0
-              })}
-              icon={<Sparkles className="h-4 w-4" />}
-            />
-            <StatPill
-              label="Run-rate"
-              value={`$${runRateBillions.toFixed(1)}B ARR`}
-              icon={<Building2 className="h-4 w-4" />}
-            />
+          <div className="flex items-center justify-end gap-4">
+            <div className="flex flex-wrap gap-3">
+              <StatPill
+                label="Valuation"
+                value={`$${valuationBillions.toFixed(0)}B post-money`}
+                icon={<DollarSign className="h-4 w-4" />}
+              />
+              <StatPill
+                label="Series F"
+                value={formatCurrency(data.kpis.recent_round.amount, {
+                  maximumFractionDigits: 0
+                })}
+                icon={<Sparkles className="h-4 w-4" />}
+              />
+              <StatPill
+                label="Run-rate"
+                value={`$${runRateBillions.toFixed(1)}B ARR`}
+                icon={<Building2 className="h-4 w-4" />}
+              />
+            </div>
+            <div className="relative hidden h-12 w-12 overflow-hidden rounded-2xl border border-sky-200 bg-white/70 shadow-sm lg:block">
+              <Image src="/logos/anthropic.svg" alt="Anthropic logo" fill className="object-contain p-2" />
+            </div>
           </div>
         </div>
       </Section>

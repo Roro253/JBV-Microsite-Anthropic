@@ -150,11 +150,16 @@ export function OpenAIExperience({ data, fundModel }: OpenAIExperienceProps) {
               <p className="text-sm text-slate-600">Founded {data.company.founded} · {data.company.mission}</p>
             </div>
           </div>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex items-center justify-end gap-4">
+            <div className="relative hidden h-12 w-12 overflow-hidden rounded-2xl border border-sky-200 bg-white/70 shadow-sm lg:block">
+              <Image src="/logos/openai.svg" alt="OpenAI logo" fill className="object-contain p-2" />
+            </div>
+            <div className="flex flex-wrap gap-4">
             <StatSummary label="Valuation (secondary)" value={valuationDisplay} asOf={data.kpis.valuation.as_of} />
             <StatSummary label="H1 revenue" value={`${revenueDisplay} (H1)`} asOf={data.kpis.revenue_h1_2025.as_of} />
             <StatSummary label="Compute roadmap" value={computeDisplay} asOf={data.kpis.compute_commit.as_of} />
             <StatSummary label="Latest models" value={latestModelsDisplay} asOf={data.kpis.latest_models.as_of} />
+            </div>
           </div>
         </div>
       </Section>
