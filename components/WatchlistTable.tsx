@@ -213,7 +213,7 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
       "Status",
       "Valuation USD",
       "Valuation As Of",
-      "Run-Rate Revenue USD",
+      "Projected 2025 Revenue Run Rate USD",
       "Run-Rate As Of",
       "12-mo Growth %",
       "Round",
@@ -331,7 +331,7 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
               </HeaderCell>
               <HeaderCell sortable onClick={() => toggleSort("run_rate_revenue_usd")}>
                 <span className="inline-flex items-center gap-2">
-                  Run-Rate Revenue
+                  Projected 2025 Revenue Run Rate
                   {renderSortIcon("run_rate_revenue_usd")}
                 </span>
               </HeaderCell>
@@ -511,7 +511,7 @@ export function WatchlistTable({ items, featuredSlug, typeformUrl }: WatchlistTa
                     <p>{formatUSDShort(item.valuation_usd)}</p>
                   </div>
                   <div>
-                    <p className="font-semibold text-slate-500">Run-Rate Revenue</p>
+                    <p className="font-semibold text-slate-500">Projected 2025 Revenue Run Rate</p>
                     <p>{formatUSDShort(item.run_rate_revenue_usd)}</p>
                   </div>
                   <div>
