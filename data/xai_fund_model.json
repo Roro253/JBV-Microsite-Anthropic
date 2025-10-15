@@ -60,11 +60,11 @@
     }
   },
   "market_cap_calculator": [
-    { "year": 2026, "revenue_run_rate_usd": null },
-    { "year": 2027, "revenue_run_rate_usd": null },
-    { "year": 2028, "revenue_run_rate_usd": null },
-    { "year": 2029, "revenue_run_rate_usd": null },
-    { "year": 2030, "revenue_run_rate_usd": null }
+    { "year": 2026, "revenue_run_rate_usd": 28000000000 },
+    { "year": 2027, "revenue_run_rate_usd": 41650000000 },
+    { "year": 2028, "revenue_run_rate_usd": 64450000000 },
+    { "year": 2029, "revenue_run_rate_usd": 118650000000 },
+    { "year": 2030, "revenue_run_rate_usd": 154200000000 }
   ],
   "market_comps": [
     { "company": "OpenAI", "note": "Use valuation & revenue from your OpenAI file; show as peer." },
