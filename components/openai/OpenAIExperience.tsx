@@ -16,6 +16,7 @@ import { formatUSDShort } from "@/components/Format";
 import type { OpenAiData } from "@/lib/data";
 import type { FundModel } from "@/lib/openaiFundModel";
 import OpenAIInvestmentDashboard from "@/components/OpenAIInvestmentDashboard";
+import { ExplorerBackdrop } from "@/components/ExplorerBackdrop";
 
 interface OpenAIExperienceProps {
   data: OpenAiData;
@@ -28,8 +29,8 @@ export function OpenAIExperience({ data, fundModel }: OpenAIExperienceProps) {
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    setMode("investor");
-  }, [setMode]);
+    if (!mode) setMode("investor");
+  }, [mode, setMode]);
 
   const isInvestor = mode === "investor";
 
@@ -139,6 +140,9 @@ export function OpenAIExperience({ data, fundModel }: OpenAIExperienceProps) {
         description={mode === "explorer" ? data.modes.explorer.story : data.modes.investor.thesis}
         className="overflow-hidden"
       >
+        <div className="relative">
+          <ExplorerBackdrop active={mode === "explorer"} brand="openai" />
+        </div>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-4">
             <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-100 via-white to-sky-100 shadow-[0_20px_40px_-32px_rgba(56,189,248,0.5)]">

@@ -16,6 +16,7 @@ import { type XaiData } from "@/lib/data";
 import { formatUSDShort } from "@/components/Format";
 import type { XFundModel } from "@/lib/xaiFundModel";
 import XAIInvestmentDashboard from "@/components/XAIInvestmentDashboard";
+import { ExplorerBackdrop } from "@/components/ExplorerBackdrop";
 
 interface XaiExperienceProps {
   data: XaiData;
@@ -26,8 +27,8 @@ export function XaiExperience({ data, fundModel }: XaiExperienceProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
   useEffect(() => {
-    setMode("investor");
-  }, [setMode]);
+    if (!mode) setMode("investor");
+  }, [mode, setMode]);
 
   const heroCopy = mode === "explorer" ? data.modes.explorer.story : data.modes.investor.thesis;
 
@@ -140,6 +141,9 @@ export function XaiExperience({ data, fundModel }: XaiExperienceProps) {
         description={heroCopy}
         className="overflow-hidden"
       >
+        <div className="relative">
+          <ExplorerBackdrop active={mode === "explorer"} brand="xai" />
+        </div>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-4">
             <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-100/80 via-white to-sky-100 shadow-[0_20px_40px_-30px_rgba(56,189,248,0.55)]">

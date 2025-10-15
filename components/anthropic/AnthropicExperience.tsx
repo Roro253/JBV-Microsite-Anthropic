@@ -13,6 +13,7 @@ import { StatPill } from "@/components/StatPill";
 import { Stepper, type StepperItem } from "@/components/Stepper";
 import { Badge } from "@/components/ui/badge";
 import AnthropicInvestmentDashboard from "@/components/AnthropicInvestmentDashboard";
+import { ExplorerBackdrop } from "@/components/ExplorerBackdrop";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useUIStore } from "@/lib/store/ui";
 import { formatCurrency } from "@/lib/utils";
@@ -121,8 +122,9 @@ export function AnthropicExperience({ data, fundModel }: AnthropicExperienceProp
   const isInvestor = mode === "investor";
 
   useEffect(() => {
-    setMode("investor");
-  }, [setMode]);
+    // Preserve current mode; do not force investor to allow Explorer visuals.
+    if (!mode) setMode("investor");
+  }, [mode, setMode]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -132,6 +134,9 @@ export function AnthropicExperience({ data, fundModel }: AnthropicExperienceProp
         description={heroCopy}
         className="overflow-hidden"
       >
+        <div className="relative">
+          <ExplorerBackdrop active={mode === "explorer"} brand="anthropic" />
+        </div>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-4">
             <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-sky-300/60 bg-gradient-to-br from-sky-200/70 via-indigo-200/60 to-orange-200/50 shadow-[0_20px_40px_-28px_rgba(32,118,199,0.6)]">
