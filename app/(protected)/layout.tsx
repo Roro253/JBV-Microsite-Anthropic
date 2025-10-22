@@ -9,6 +9,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AnalyticsToggle } from "@/components/AnalyticsToggle";
 import { CookieNotice } from "@/components/CookieNotice";
+import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { getAnthropicData } from "@/lib/data";
 import { verifySessionToken } from "@/lib/auth/session";
 
@@ -40,6 +41,7 @@ export default async function ProtectedLayout({
       <div className="flex min-h-screen flex-col">
         <Header />
         <Providers>
+          <PageViewTracker />
           <main id="main-content" className="flex flex-1 flex-col">
             {children}
           </main>

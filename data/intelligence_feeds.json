@@ -1,0 +1,396 @@
+{
+  "xai": {
+    "headline": "Colossus build + Grok velocity are setting the tone",
+    "summary": "Investors are leaning into xAI’s intelligence flywheel: Grok 4 tool use is creating new premium conversions while Colossus 2 funding locks in compute independence.",
+    "aiNarrative": "Momentum is accelerating this week — ARR run rate up 7%, hiring expanding around inference reliability, and enterprise pilots unlocked two new verticals.",
+    "updatedAt": "2025-10-08T17:00:00Z",
+    "moodIndex": { "label": "Mood Index", "score": 74, "change": "+3 vs last week" },
+    "trendIndicators": [
+      { "label": "ARR Pulse", "value": "$3.2B run rate", "helper": "+7% MoM" },
+      { "label": "GPU Build", "value": "Colossus 2 58% racked", "helper": "First Blackwell trays landed" },
+      { "label": "Engagement Heat", "value": "63% dwell on roadmap card", "helper": "Trending with LPs" }
+    ],
+    "topEngaged": [
+      { "cardId": "milestone-colossus-phase2", "message": "Trending with LPs — dwell time +63% and 14 watchlist saves." }
+    ],
+    "predictions": [
+      {
+        "title": "Colossus 2 hits full power",
+        "timeframe": "By Q1 2026",
+        "probability": "72%",
+        "narrative": "Vendor chatter plus financing cadence imply energization inside Q1 with accelerated rack integration."
+      },
+      {
+        "title": "Premium+ upsell to 4.5M subs",
+        "timeframe": "Next 90 days",
+        "probability": "61%",
+        "narrative": "Tool API activation across creator cohorts is lifting conversion and retention simultaneously."
+      }
+    ],
+    "contrast": {
+      "title": "Usage vs prior update",
+      "current": "35M MAUs",
+      "previous": "32M MAUs",
+      "change": "+3M",
+      "narrative": "Grok 4 tool API unlocks creator-led workflows, boosting daily actives and premium attach."
+    },
+    "cards": [
+      {
+        "id": "narrative-founders-notebook",
+        "type": "narrative",
+        "title": "Founder notebook: integrating world-model pilots",
+        "timestamp": "2025-10-08T08:30:00Z",
+        "summary": "Engineering is stress-testing multi-agent planning with on-device robotics partners while public Grok keeps compounding.",
+        "body": "Colossus 2’s cadence is letting the team schedule rapid retrains. We are pairing creator telemetry with robotics embeddings — expect a playable world-model teaser before year end.",
+        "highlight": "What we're thinking about",
+        "tags": ["Strategy", "Founder"],
+        "sentiment": "positive",
+        "trending": true
+      },
+      {
+        "id": "milestone-colossus-phase2",
+        "type": "milestone",
+        "title": "Colossus 2 racks cross 58% build-out",
+        "timestamp": "2025-10-07T16:00:00Z",
+        "summary": "Facilities signed off on 58% of Phase 2 racks. First 6K Blackwell trays landed ahead of schedule.",
+        "metrics": [
+          { "label": "Compute online", "value": "150K GPUs", "change": "+12K WoW", "trend": "up" },
+          { "label": "CapEx deployed", "value": "$4.8B", "change": "+$600M", "trend": "up" }
+        ],
+        "action": { "label": "View build dashboard", "href": "https://x.ai/colossus" },
+        "tags": ["Compute", "Milestone"],
+        "sentiment": "positive"
+      },
+      {
+        "id": "data-demand-surge",
+        "type": "data",
+        "title": "Creator demand spike post Tool API rollout",
+        "timestamp": "2025-10-06T11:45:00Z",
+        "summary": "Creator teams deploying real-time agents are generating a 18% uplift in Premium+ conversion funnels.",
+        "body": "The automation templates for live coverage picked up 2.4M interactions within 72 hours. Expect conversion lift to sustain as we publish more vertical playbooks.",
+        "metrics": [
+          { "label": "Premium+ conversions", "value": "+18% WoW", "trend": "up" },
+          { "label": "Average session length", "value": "11m 40s", "change": "+90s", "trend": "up" }
+        ],
+        "tags": ["Growth", "Data spark"]
+      },
+      {
+        "id": "future-signal-world-model",
+        "type": "future",
+        "title": "Future signal: embodied world-model alpha",
+        "timestamp": "2025-10-05T09:00:00Z",
+        "summary": "Synthetic environment sandbox now generates multi-agent scenes with creator-provided scripts.",
+        "body": "Expect the next preview to layer in robotics telemetry. This is an investor watch item for differentiation vs. ChatGPT and Claude.",
+        "tags": ["Future signal", "Product"],
+        "sentiment": "positive"
+      },
+      {
+        "id": "market-watch-regulatory",
+        "type": "market",
+        "title": "Market watch: EU fast-tracks real-time AI guidance",
+        "timestamp": "2025-10-04T15:00:00Z",
+        "summary": "EU regulators advanced guidance on live-model transparency; xAI’s telemetry controls likely exceed baseline requirements.",
+        "body": "Legal partnered with X Trust & Safety to publish a voluntary transparency addendum. Investors tagging compliance risk now have a fresh artifact.",
+        "tags": ["Regulation", "Market"],
+        "sentiment": "neutral"
+      },
+      {
+        "id": "poll-product-priority",
+        "type": "poll",
+        "title": "Investor decision pulse",
+        "timestamp": "2025-10-03T19:30:00Z",
+        "summary": "Where would you prioritize incremental investment?",
+        "poll": {
+          "question": "Choose the focus you want to see next quarter.",
+          "options": [
+            { "label": "Scale Colossus 2 faster", "percent": 44 },
+            { "label": "Aggressive enterprise sales ramp", "percent": 32 },
+            { "label": "Expand consumer creator tooling", "percent": 24 }
+          ]
+        },
+        "tags": ["Engagement"]
+      },
+      {
+        "id": "media-founder-voice",
+        "type": "media",
+        "title": "Voice reel: Musk on Grok’s next leap",
+        "timestamp": "2025-10-02T12:00:00Z",
+        "summary": "30-second clip on why world models are the differentiator.",
+        "media": {
+          "kind": "audio",
+          "src": "https://cdn.jbv-intelligence.com/xai/musk-briefing-2025-10-02.mp3",
+          "caption": "Founder commentary — recorded Oct 2"
+        },
+        "tags": ["Voice", "Narrative"],
+        "sentiment": "positive"
+      }
+    ],
+    "bot": {
+      "name": "X Bot",
+      "tagline": "Ask me anything about xAI’s momentum, roadmap, or capital stack.",
+      "systemPrompt": "You are X Bot, the intelligence concierge for xAI’s microsite. Use the latest feed data, KPIs, and milestones provided by the intelligence feed to answer investors, LPs, or founders. Highlight why signals matter, tie responses back to the feed when possible, and keep answers concise, confident, and forward-looking. Note when data is estimated or illustrative.",
+      "welcome": "I’m X Bot — here to brief you on Grok, Colossus, and xAI’s investor narrative.",
+      "sampleQuestions": [
+        "What should LPs know about the Colossus 2 financing progress?",
+        "Which signals are investors engaging with most this week?",
+        "Give me the short version of xAI’s roadmap focus right now."
+      ]
+    }
+  },
+  "anthropic": {
+    "headline": "Safety-first moat deepens as enterprise revenue scales",
+    "summary": "Anthropic is stacking product velocity with disciplined go-to-market — Claude for Work launches, enterprise ARR keeps compounding, and strategic partnerships stay hot.",
+    "aiNarrative": "Momentum shows an 8% ARR climb week over week, new Claude for Work modules, and policy coverage that elevates Anthropic’s safety brand equity.",
+    "updatedAt": "2025-10-08T16:30:00Z",
+    "moodIndex": { "label": "Mood Index", "score": 79, "change": "+4 vs prior update" },
+    "trendIndicators": [
+      { "label": "Enterprise ARR", "value": "$1.05B Q3 run rate", "helper": "+8% WoW" },
+      { "label": "Claude for Work seats", "value": "210K active", "helper": "+32K in 14 days" },
+      { "label": "Engagement Heat", "value": "Ops roadmap card", "helper": "Trending with GPs" }
+    ],
+    "topEngaged": [
+      { "cardId": "milestone-claude-work", "message": "Trending with GPs — 41 investors expanded details, avg dwell 2m12s." }
+    ],
+    "predictions": [
+      {
+        "title": "Claude Ops upsell closes $35M ACV",
+        "timeframe": "Inside 60 days",
+        "probability": "68%",
+        "narrative": "Pipeline telemetry plus AWS co-sell pushes two Fortune 100 logos into late-stage diligence."
+      },
+      {
+        "title": "Safety governance partnership",
+        "timeframe": "Next quarter",
+        "probability": "54%",
+        "narrative": "Policy momentum and Claude’s evaluations put Anthropic in line for a flagship public-private program."
+      }
+    ],
+    "contrast": {
+      "title": "Revenue delta vs last note",
+      "current": "$9B run rate",
+      "previous": "$8.6B run rate",
+      "change": "+$400M",
+      "narrative": "Seat expansion and upsells from Claude for Work release drove the jump."
+    },
+    "cards": [
+      {
+        "id": "narrative-founder-diary",
+        "type": "narrative",
+        "title": "Founder diary: Claude for Work afterglow",
+        "timestamp": "2025-10-08T07:15:00Z",
+        "summary": "Focus this week is smoothing roll-out across regulated industries and layering AI safety guardrails into every workflow.",
+        "body": "We’re doubling down on reliability evaluations. Expect deeper agent orchestration updates during the next enterprise showcase.",
+        "highlight": "Narrative card",
+        "tags": ["Founder", "Strategy"]
+      },
+      {
+        "id": "milestone-claude-work",
+        "type": "milestone",
+        "title": "Claude for Work launches to Fortune 100 pilots",
+        "timestamp": "2025-10-07T14:45:00Z",
+        "summary": "First wave of pilots hit productivity lifts of 24% across ops and legal teams.",
+        "metrics": [
+          { "label": "Seat expansion", "value": "+32K in 14 days", "trend": "up" },
+          { "label": "Net retention (pilot)", "value": "148%", "trend": "up" }
+        ],
+        "tags": ["Milestone", "Product"],
+        "sentiment": "positive"
+      },
+      {
+        "id": "data-safe-systems",
+        "type": "data",
+        "title": "Safety benchmark beats frontier peers",
+        "timestamp": "2025-10-06T10:20:00Z",
+        "summary": "Claude 3.5 Sonnet tops frontier evals on red-team resilience; this is resonating with regulated buyers.",
+        "metrics": [
+          { "label": "Red-team block rate", "value": "98.3%", "change": "+2.1 pts", "trend": "up" },
+          { "label": "Policy citations", "value": "12 national frameworks", "trend": "up" }
+        ],
+        "body": "Anthropic is leaning into differentiated safety evaluation IP — expect this to be a cornerstone of enterprise moat build.",
+        "tags": ["Data spark", "Safety"]
+      },
+      {
+        "id": "future-signal-ops",
+        "type": "future",
+        "title": "Future signal: Claude Ops automation suite",
+        "timestamp": "2025-10-05T12:00:00Z",
+        "summary": "Automation modules move from beta into co-sell with AWS; investors watching the attach rates.",
+        "body": "Pipeline shows healthcare & financial services as early adopters. Forecasting $35M ACV in next 60 days.",
+        "tags": ["Future signal", "Product"]
+      },
+      {
+        "id": "market-watch-policy",
+        "type": "market",
+        "title": "Market watch: White House brief highlights Claude evals",
+        "timestamp": "2025-10-04T16:30:00Z",
+        "summary": "Policy brief underscores Anthropic’s role in frontier model evaluations — brand equity boost.",
+        "body": "Signals a durable seat at the policy table, de-risking future compliance burdens for customers.",
+        "tags": ["Policy", "Market"],
+        "sentiment": "positive"
+      },
+      {
+        "id": "poll-product-roadmap",
+        "type": "poll",
+        "title": "Investor decision: next deep dive",
+        "timestamp": "2025-10-03T18:10:00Z",
+        "summary": "Where should Anthropic spotlight next?",
+        "poll": {
+          "question": "Pick your preferred October deep dive.",
+          "options": [
+            { "label": "Claude for Work case studies", "percent": 47 },
+            { "label": "Claude Ops automation demos", "percent": 38 },
+            { "label": "Safety research pipeline", "percent": 15 }
+          ]
+        },
+        "tags": ["Engagement"],
+        "trending": true
+      }
+    ],
+    "bot": {
+      "name": "Claude Signal",
+      "tagline": "Ask me about Anthropic’s growth engines, safety moat, or pipeline signals.",
+      "systemPrompt": "You are Claude Signal, Anthropic’s intelligence concierge. Use the intelligence feed, KPI summaries, and noted milestones to brief investors with calm, precise, safety-forward commentary. Emphasize enterprise traction, safety differentiation, and roadmap clarity. Flag when data is illustrative and recommend next touchpoints when appropriate.",
+      "welcome": "Claude Signal online — ready to brief you on Anthropic’s momentum.",
+      "sampleQuestions": [
+        "How is enterprise ARR trending after the Claude for Work launch?",
+        "Which signals are general partners engaging with most?",
+        "What should I know about Anthropic’s safety differentiation this week?"
+      ]
+    }
+  },
+  "openai": {
+    "headline": "Distribution + compute alliances fuel OpenAI’s flywheel",
+    "summary": "OpenAI pushes deeper into enterprise distribution, expands compute commitments, and keeps Whisper/GPT pipelines humming with new co-build announcements.",
+    "aiNarrative": "Momentum is accelerating — ARR pacing +6% month over month, the AMD 6-GW roadmap stayed on track, and strategic alliances broadened channel reach.",
+    "updatedAt": "2025-10-08T18:05:00Z",
+    "moodIndex": { "label": "Mood Index", "score": 82, "change": "+5 vs prior update" },
+    "trendIndicators": [
+      { "label": "Enterprise ARR", "value": "$5.6B trailing", "helper": "+6% MoM" },
+      { "label": "Azure consumption uplift", "value": "+14%", "helper": "Copilot expansion" },
+      { "label": "Engagement Heat", "value": "Prediction Corner", "helper": "Trending with LPs" }
+    ],
+    "topEngaged": [
+      { "cardId": "future-signal-agents", "message": "Trending with LPs — 52 saves, avg dwell 2m48s." }
+    ],
+    "predictions": [
+      {
+        "title": "GPT Agents in GA for enterprise",
+        "timeframe": "By January 2026",
+        "probability": "66%",
+        "narrative": "Pilot telemetry and Microsoft demand signals show broad readiness."
+      },
+      {
+        "title": "6-GW compute campus milestone",
+        "timeframe": "Next 120 days",
+        "probability": "58%",
+        "narrative": "AMD + OpenAI joint updates indicate critical path on schedule."
+      }
+    ],
+    "contrast": {
+      "title": "Revenue vs prior insight",
+      "current": "$20B run rate",
+      "previous": "$18.8B run rate",
+      "change": "+$1.2B",
+      "narrative": "Copilot upsell + GPT Enterprise expansions account for majority of the delta."
+    },
+    "cards": [
+      {
+        "id": "narrative-foundation",
+        "type": "narrative",
+        "title": "Leadership memo: agents era playbook",
+        "timestamp": "2025-10-08T09:30:00Z",
+        "summary": "Leadership memo frames three swim lanes: enterprise agents, developer platform, and compute alliances.",
+        "body": "Expect incremental reveals at DevDay Encore next month. Focus stays on trustworthy automation and safety instrumentation.",
+        "highlight": "Narrative card",
+        "tags": ["Strategy", "Leadership"]
+      },
+      {
+        "id": "milestone-copilot-expansion",
+        "type": "milestone",
+        "title": "Copilot for Security + Finance roll out",
+        "timestamp": "2025-10-07T13:20:00Z",
+        "summary": "Microsoft announced broad availability; OpenAI receives usage-based royalties which lift ARR.",
+        "metrics": [
+          { "label": "Seat expansion (net)", "value": "+2.6M QoQ", "trend": "up" },
+          { "label": "Azure OpenAI consumption", "value": "+14% MoM", "trend": "up" }
+        ],
+        "tags": ["Milestone", "Distribution"],
+        "sentiment": "positive"
+      },
+      {
+        "id": "data-multi-modal",
+        "type": "data",
+        "title": "Multi-modal adoption surge",
+        "timestamp": "2025-10-06T12:05:00Z",
+        "summary": "GPT-4.2 audio/video flows represent 26% of new enterprise workflows.",
+        "metrics": [
+          { "label": "Video minutes processed", "value": "2.3B/mo", "change": "+19%", "trend": "up" },
+          { "label": "Voice automation savings", "value": "$420M est.", "change": "+$40M", "trend": "up" }
+        ],
+        "body": "Signals deeper moat around Whisper + GPT synthesis stack; cross-selling with Sora beta is next lever.",
+        "tags": ["Data spark", "Multi-modal"]
+      },
+      {
+        "id": "future-signal-agents",
+        "type": "future",
+        "title": "Future signal: GPT Agents compliance track",
+        "timestamp": "2025-10-05T14:15:00Z",
+        "summary": "Compliance reviewers green-lit financial services pilots; this is the last checkpoint before GA.",
+        "body": "Investors watching for conversion to paid automation SKUs; signals point to January timing.",
+        "tags": ["Future signal", "Product"],
+        "trending": true
+      },
+      {
+        "id": "market-watch-amd",
+        "type": "market",
+        "title": "Market watch: AMD + OpenAI 6-GW campus update",
+        "timestamp": "2025-10-04T17:45:00Z",
+        "summary": "Joint press noted power-on for phase one fabrication and supply chain readiness.",
+        "body": "This derisks 2026 capacity ramp and provides leverage in negotiations with other compute vendors.",
+        "tags": ["Compute", "Market"],
+        "sentiment": "positive"
+      },
+      {
+        "id": "media-partner-voice",
+        "type": "media",
+        "title": "Partner reel: Stripe on AI automation",
+        "timestamp": "2025-10-03T19:00:00Z",
+        "summary": "30-second clip from Stripe’s COO on GPT Agents improving dispute resolution.",
+        "media": {
+          "kind": "video",
+          "src": "https://player.vimeo.com/video/76979871?h=8272103f6e",
+          "caption": "Stripe partner spotlight — recorded Sep 28"
+        },
+        "tags": ["Voice", "Customer"],
+        "sentiment": "positive"
+      },
+      {
+        "id": "poll-investor-priority",
+        "type": "poll",
+        "title": "Investor poll: where to dive deeper",
+        "timestamp": "2025-10-03T08:40:00Z",
+        "summary": "Pick the Insight Stream you want next.",
+        "poll": {
+          "question": "Which storyline should we unpack in the next briefing?",
+          "options": [
+            { "label": "Enterprise agents go-to-market", "percent": 51 },
+            { "label": "Compute partnerships roadmap", "percent": 33 },
+            { "label": "Consumer flywheel + Sora", "percent": 16 }
+          ]
+        },
+        "tags": ["Engagement"]
+      }
+    ],
+    "bot": {
+      "name": "OpenAI Briefing",
+      "tagline": "Ask me about OpenAI’s revenue mix, compute roadmap, or strategic alliances.",
+      "systemPrompt": "You are OpenAI Briefing, the intelligence companion for the OpenAI microsite. Respond with crisp, insight-rich answers grounded in the live intelligence feed. Highlight why signals matter for investors, reference metrics when available, and acknowledge when numbers are directional. Offer next-step suggestions (e.g., book diligence, watchlist a card) when it makes sense.",
+      "welcome": "OpenAI Briefing here — ready to unpack distribution, compute, and product signals.",
+      "sampleQuestions": [
+        "What is driving OpenAI’s current revenue momentum?",
+        "How should I interpret the AMD 6-GW compute partnership update?",
+        "Which cards are trending with LPs this week?"
+      ]
+    }
+  }
+}

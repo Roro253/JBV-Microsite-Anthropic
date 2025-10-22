@@ -17,13 +17,17 @@ import type { OpenAiData } from "@/lib/data";
 import type { FundModel } from "@/lib/openaiFundModel";
 import OpenAIInvestmentDashboard from "@/components/OpenAIInvestmentDashboard";
 import { ExplorerBackdrop } from "@/components/ExplorerBackdrop";
+import { MicrositeModeTransition } from "@/components/MicrositeModeTransition";
+import { MicrositeIntelligenceView } from "@/components/intelligence/MicrositeIntelligenceView";
+import type { IntelligenceFeedEntry } from "@/lib/intelligence";
 
 interface OpenAIExperienceProps {
   data: OpenAiData;
   fundModel: FundModel | null;
+  intelligence?: IntelligenceFeedEntry | null;
 }
 
-export function OpenAIExperience({ data, fundModel }: OpenAIExperienceProps) {
+export function OpenAIExperience({ data, fundModel, intelligence }: OpenAIExperienceProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
   const prefersReducedMotion = useReducedMotion();
@@ -31,52 +35,6 @@ export function OpenAIExperience({ data, fundModel }: OpenAIExperienceProps) {
   useEffect(() => {
     if (!mode) setMode("investor");
   }, [mode, setMode]);
-
-  const isInvestor = mode === "investor";
-
-  const valuationDisplay = formatUSDShort(Number(data.kpis.valuation.value));
-  const revenueDisplay = formatUSDShort(Number(data.kpis.revenue_h1_2025.value));
-  const computeDisplay = `${(Number(data.kpis.compute_commit.value) / 1_000_000_000).toFixed(1)} GW target`;
-  const latestModelsDisplay = String(data.kpis.latest_models.value);
-
-  const stepperItems: StepperItem[] = [
-    {
-      id: "reasoning",
-      eyebrow: "Reasoning",
-      title: "o-series agents push deeper planning",
-      summary:
-        "OpenAI's o-series focuses on chain-of-thought style reasoning for math, code, and analysis—moving beyond standard chat completions.",
-      bullets: [
-        "o1 preview + o1-mini opened in late 2024 as the first reasoning-focused models",
-        "Successor models (o2, o3) target richer multi-step planning and agent workflows",
-        "Reasoning roadmap underpins enterprise copilots for complex analysis"
-      ]
-    },
-    {
-      id: "video",
-      eyebrow: "Multimodal",
-      title: "Sora 2 expands into world-simulative video",
-      summary:
-        "Sora 2 adds higher-fidelity video, audio, and world modeling—broadening OpenAI's surface beyond text/chat and into synthetic media.",
-      bullets: [
-        "Launches Oct 2025 with stronger world-consistency vs. original Sora",
-        "Watermarking is deployed but adversarial removal remains a governance focus",
-        "Targets marketing, simulation, and entertainment pipelines with partner studios"
-      ]
-    },
-    {
-      id: "distribution",
-      eyebrow: "Distribution",
-      title: "Microsoft alliance locks in enterprise reach",
-      summary:
-        "The Microsoft partnership provides global distribution (Copilot, Azure OpenAI) and shared investment in the Stargate compute program.",
-      bullets: [
-        "Rights through 2030 reaffirmed in Jan 2025 for Copilot and Azure integration",
-        "Joint roadmap covers AI infrastructure, including Stargate hyperscale build",
-        "Commercial monetization spans developer APIs, Office, Windows, GitHub"
-      ]
-    }
-  ];
 
   const commentary: NewsItem[] = useMemo(
     () => [
@@ -132,7 +90,73 @@ export function OpenAIExperience({ data, fundModel }: OpenAIExperienceProps) {
     []
   );
 
-  return (
+  const intelligenceSummary =
+    intelligence?.summary ??
+    "A living insight stream blending OpenAI milestones, partner commentary, predictive signals, and investor engagement trends.";
+  const intelligenceTagline =
+    intelligence?.aiNarrative ??
+    "AI narration highlights what matters across revenue, compute, distribution, and roadmap catalysts.";
+
+  const intelligenceContent = (
+    <div className="flex flex-col gap-8">
+      <MicrositeIntelligenceView
+        companyName={data.company.name}
+        companySlug="openai"
+        tagline={intelligenceTagline}
+        heroDescription={intelligenceSummary}
+        feed={intelligence ?? null}
+        sources={data.sources}
+      />
+    </div>
+  );
+
+  const isInvestor = mode === "investor";
+
+  const valuationDisplay = formatUSDShort(Number(data.kpis.valuation.value));
+  const revenueDisplay = formatUSDShort(Number(data.kpis.revenue_h1_2025.value));
+  const computeDisplay = `${(Number(data.kpis.compute_commit.value) / 1_000_000_000).toFixed(1)} GW target`;
+  const latestModelsDisplay = String(data.kpis.latest_models.value);
+
+  const stepperItems: StepperItem[] = [
+    {
+      id: "reasoning",
+      eyebrow: "Reasoning",
+      title: "o-series agents push deeper planning",
+      summary:
+        "OpenAI's o-series focuses on chain-of-thought style reasoning for math, code, and analysis—moving beyond standard chat completions.",
+      bullets: [
+        "o1 preview + o1-mini opened in late 2024 as the first reasoning-focused models",
+        "Successor models (o2, o3) target richer multi-step planning and agent workflows",
+        "Reasoning roadmap underpins enterprise copilots for complex analysis"
+      ]
+    },
+    {
+      id: "video",
+      eyebrow: "Multimodal",
+      title: "Sora 2 expands into world-simulative video",
+      summary:
+        "Sora 2 adds higher-fidelity video, audio, and world modeling—broadening OpenAI's surface beyond text/chat and into synthetic media.",
+      bullets: [
+        "Launches Oct 2025 with stronger world-consistency vs. original Sora",
+        "Watermarking is deployed but adversarial removal remains a governance focus",
+        "Targets marketing, simulation, and entertainment pipelines with partner studios"
+      ]
+    },
+    {
+      id: "distribution",
+      eyebrow: "Distribution",
+      title: "Microsoft alliance locks in enterprise reach",
+      summary:
+        "The Microsoft partnership provides global distribution (Copilot, Azure OpenAI) and shared investment in the Stargate compute program.",
+      bullets: [
+        "Rights through 2030 reaffirmed in Jan 2025 for Copilot and Azure integration",
+        "Joint roadmap covers AI infrastructure, including Stargate hyperscale build",
+        "Commercial monetization spans developer APIs, Office, Windows, GitHub"
+      ]
+    }
+  ];
+
+  const defaultContent = (
     <div className="flex flex-col gap-10">
       <Section
         eyebrow="Capped-profit structure (non-profit-controlled)"
@@ -249,6 +273,12 @@ export function OpenAIExperience({ data, fundModel }: OpenAIExperienceProps) {
 
       <SourceFootnotes sources={data.sources} />
     </div>
+  );
+
+  return (
+    <MicrositeModeTransition mode={mode}>
+      {mode === "intelligence" ? intelligenceContent : defaultContent}
+    </MicrositeModeTransition>
   );
 }
 

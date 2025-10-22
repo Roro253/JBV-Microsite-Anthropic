@@ -14,18 +14,22 @@ import { Stepper, type StepperItem } from "@/components/Stepper";
 import { Badge } from "@/components/ui/badge";
 import AnthropicInvestmentDashboard from "@/components/AnthropicInvestmentDashboard";
 import { ExplorerBackdrop } from "@/components/ExplorerBackdrop";
+import { MicrositeIntelligenceView } from "@/components/intelligence/MicrositeIntelligenceView";
+import { MicrositeModeTransition } from "@/components/MicrositeModeTransition";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useUIStore } from "@/lib/store/ui";
 import { formatCurrency } from "@/lib/utils";
 import type { AnthropicData } from "@/lib/data";
 import type { AnthFundModel } from "@/lib/anthropicFundModel";
+import type { IntelligenceFeedEntry } from "@/lib/intelligence";
 
 interface AnthropicExperienceProps {
   data: AnthropicData;
   fundModel?: AnthFundModel | null;
+  intelligence?: IntelligenceFeedEntry | null;
 }
 
-export function AnthropicExperience({ data, fundModel }: AnthropicExperienceProps) {
+export function AnthropicExperience({ data, fundModel, intelligence }: AnthropicExperienceProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
   const prefersReducedMotion = useReducedMotion();
@@ -126,7 +130,27 @@ export function AnthropicExperience({ data, fundModel }: AnthropicExperienceProp
     if (!mode) setMode("investor");
   }, [mode, setMode]);
 
-  return (
+  const intelligenceSummary =
+    intelligence?.summary ??
+    "A vertically scrolling intelligence stream highlighting narrative cards, milestones, and predictive signals for Anthropic.";
+  const intelligenceTagline =
+    intelligence?.aiNarrative ??
+    "AI narration interprets Anthropic’s weekly momentum across go-to-market, safety research, and investor engagement.";
+
+  const intelligenceContent = (
+    <div className="flex flex-col gap-8">
+      <MicrositeIntelligenceView
+        companyName={data.company.name}
+        companySlug="anthropic"
+        tagline={intelligenceTagline}
+        heroDescription={intelligenceSummary}
+        feed={intelligence ?? null}
+        sources={data.sources}
+      />
+    </div>
+  );
+
+  const defaultContent = (
     <div className="flex flex-col gap-10">
       <Section
         eyebrow={data.company.structure}
@@ -245,9 +269,7 @@ export function AnthropicExperience({ data, fundModel }: AnthropicExperienceProp
             title="Engage JBV Capital"
             description="Unlock diligence pathways and expedition-level coverage across Anthropic's roadmap."
           >
-            <CallToAction
-              reserveUrl={data.links.reserve_interest}
-            />
+            <CallToAction reserveUrl={data.links.reserve_interest} />
           </Section>
         </>
       ) : null}
@@ -313,5 +335,11 @@ export function AnthropicExperience({ data, fundModel }: AnthropicExperienceProp
         </div>
       </div>
     </div>
+  );
+
+  return (
+    <MicrositeModeTransition mode={mode}>
+      {mode === "intelligence" ? intelligenceContent : defaultContent}
+    </MicrositeModeTransition>
   );
 }

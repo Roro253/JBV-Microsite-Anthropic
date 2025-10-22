@@ -3,6 +3,7 @@ import { AnthropicExperience } from "@/components/anthropic/AnthropicExperience"
 import { cn } from "@/lib/utils";
 import { getAnthropicData } from "@/lib/data";
 import { getAnthropicFundModel } from "@/lib/anthropicFundModel";
+import { getIntelligenceFeed } from "@/lib/intelligence";
 
 interface AnthropicViewProps {
   variant?: "full" | "pane";
@@ -10,6 +11,7 @@ interface AnthropicViewProps {
 
 export async function AnthropicView({ variant = "full" }: AnthropicViewProps) {
   const data = getAnthropicData();
+  const intelligence = getIntelligenceFeed("anthropic");
   let fundModel = null;
 
   try {
@@ -28,7 +30,7 @@ export async function AnthropicView({ variant = "full" }: AnthropicViewProps) {
         variant === "pane" && "max-w-4xl px-4 sm:px-6"
       )}
     >
-      <AnthropicExperience data={data} fundModel={fundModel} />
+      <AnthropicExperience data={data} fundModel={fundModel} intelligence={intelligence} />
     </Container>
   );
 }

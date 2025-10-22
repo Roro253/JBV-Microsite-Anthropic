@@ -3,6 +3,7 @@ import { OpenAIExperience } from "@/components/openai/OpenAIExperience";
 import { cn } from "@/lib/utils";
 import { getOpenAIData } from "@/lib/data";
 import { getOpenAIFundModel } from "@/lib/openaiFundModel";
+import { getIntelligenceFeed } from "@/lib/intelligence";
 
 interface OpenAIViewProps {
   variant?: "full" | "pane";
@@ -10,6 +11,7 @@ interface OpenAIViewProps {
 
 export async function OpenAIView({ variant = "full" }: OpenAIViewProps) {
   const data = getOpenAIData();
+  const intelligence = getIntelligenceFeed("openai");
   let fundModel = null;
 
   try {
@@ -28,7 +30,7 @@ export async function OpenAIView({ variant = "full" }: OpenAIViewProps) {
         variant === "pane" && "max-w-4xl px-4 sm:px-6"
       )}
     >
-      <OpenAIExperience data={data} fundModel={fundModel} />
+      <OpenAIExperience data={data} fundModel={fundModel} intelligence={intelligence} />
     </Container>
   );
 }

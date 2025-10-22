@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-export type ExplorerInvestorMode = "explorer" | "investor";
+export type ExplorerInvestorMode = "explorer" | "investor" | "intelligence";
 
 export type SimulatorScenario = {
   entryValuation: number; // billions in USD

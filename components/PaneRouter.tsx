@@ -33,7 +33,8 @@ interface PaneRouterProps {
 
 export function PaneRouter({ paneKey, mode }: PaneRouterProps) {
   const company = paneKey ? COMPANY_LOOKUP[paneKey] : undefined;
-  const normalizedMode = mode === "explorer" || mode === "investor" ? mode : undefined;
+  const normalizedMode =
+    mode === "explorer" || mode === "investor" || mode === "intelligence" ? mode : undefined;
 
   return (
     <>

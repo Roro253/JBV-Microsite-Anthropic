@@ -3,6 +3,7 @@ import { XaiExperience } from "@/components/xai/XaiExperience";
 import { cn } from "@/lib/utils";
 import { getXaiData } from "@/lib/data";
 import { getXAIFundModel } from "@/lib/xaiFundModel";
+import { getIntelligenceFeed } from "@/lib/intelligence";
 
 interface XAIViewProps {
   variant?: "full" | "pane";
@@ -10,6 +11,7 @@ interface XAIViewProps {
 
 export async function XAIView({ variant = "full" }: XAIViewProps) {
   const data = await getXaiData();
+  const intelligence = getIntelligenceFeed("xai");
   let fundModel = null;
 
   try {
@@ -28,7 +30,7 @@ export async function XAIView({ variant = "full" }: XAIViewProps) {
         variant === "pane" && "max-w-4xl px-4 sm:px-6"
       )}
     >
-      <XaiExperience data={data} fundModel={fundModel} />
+      <XaiExperience data={data} fundModel={fundModel} intelligence={intelligence} />
     </Container>
   );
 }

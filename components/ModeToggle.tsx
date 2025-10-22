@@ -11,7 +11,8 @@ import { cn } from "@/lib/utils";
 
 const modes: { value: ExplorerInvestorMode; label: string }[] = [
   { value: "explorer", label: "Explorer" },
-  { value: "investor", label: "Investor" }
+  { value: "investor", label: "Investor" },
+  { value: "intelligence", label: "Intelligence Feed" }
 ];
 
 interface ModeToggleProps {
@@ -33,7 +34,9 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
   const isMicrositeRoute = isMicrositePath || Boolean(paneSlug);
   const urlModeParam = searchParams?.get("mode");
   const effectiveUrlMode =
-    urlModeParam === "explorer" || urlModeParam === "investor" ? urlModeParam : undefined;
+    urlModeParam === "explorer" || urlModeParam === "investor" || urlModeParam === "intelligence"
+      ? urlModeParam
+      : undefined;
   const hasSyncedRef = useRef(false);
 
   useEffect(() => {
@@ -97,6 +100,11 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
   }
 
   const shouldAnimate = animate && !prefersReducedMotion;
+  const indicatorIndex = Math.max(
+    0,
+    modes.findIndex((item) => item.value === mode)
+  );
+  const indicatorWidth = 100 / modes.length;
 
   return (
     <ToggleGroup.Root
@@ -115,11 +123,12 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
           <motion.span
             key={mode}
             layoutId="mode-toggle-indicator"
-            className="absolute inset-y-1 w-1/2 rounded-full bg-gradient-to-r from-sky-300/70 via-indigo-300/60 to-sky-400/70"
+            className="absolute inset-y-1 rounded-full bg-gradient-to-r from-sky-300/70 via-indigo-300/60 to-sky-400/70"
+            style={{ width: `${indicatorWidth}%` }}
             initial={{ opacity: 0.4, x: 0 }}
             animate={{
               opacity: 1,
-              x: mode === "investor" ? "100%" : "0%"
+              x: `${indicatorIndex * 100}%`
             }}
             exit={{ opacity: 0 }}
             transition={{
@@ -133,10 +142,11 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
       </AnimatePresence>
       {!shouldAnimate && mounted ? (
         <span
-          className={cn(
-            "absolute inset-y-1 w-1/2 rounded-full bg-sky-300/40 transition-transform duration-200",
-            mode === "investor" ? "translate-x-full" : "translate-x-0"
-          )}
+          className="absolute inset-y-1 rounded-full bg-sky-300/40 transition-transform duration-200"
+          style={{
+            width: `${indicatorWidth}%`,
+            transform: `translateX(${indicatorIndex * 100}%)`
+          }}
           aria-hidden
         />
       ) : null}
@@ -146,10 +156,11 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
           key={item.value}
           value={item.value}
           className={cn(
-            "relative z-10 flex min-w-[110px] items-center justify-center gap-1 rounded-full px-4 py-2 font-medium transition-colors",
+            "relative z-10 flex min-w-[120px] items-center justify-center gap-1 rounded-full px-4 py-2 font-medium transition-colors",
             item.value === mode
-              ? "text-sky-700"
-              : "text-slate-400 hover:text-sky-600"
+              ? "text-sky-700 after:opacity-100 after:scale-x-100"
+              : "text-slate-400 hover:text-sky-600 after:opacity-0 after:scale-x-75",
+            "after:absolute after:bottom-1 after:left-6 after:right-6 after:h-0.5 after:rounded-full after:bg-sky-500 after:transition after:duration-300 after:ease-out"
           )}
         >
           {item.label} Mode

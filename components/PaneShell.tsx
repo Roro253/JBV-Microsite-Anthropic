@@ -45,11 +45,13 @@ export function PaneShell({ company, mode, children }: PaneShellProps) {
   const setMode = useUIStore((state) => state.setMode);
 
   const normalizedMode = useMemo(() => {
-    if (mode === "explorer" || mode === "investor") {
+    if (mode === "explorer" || mode === "investor" || mode === "intelligence") {
       return mode;
     }
     const queryMode = searchParams?.get("mode");
-    return queryMode === "explorer" || queryMode === "investor" ? queryMode : undefined;
+    return queryMode === "explorer" || queryMode === "investor" || queryMode === "intelligence"
+      ? queryMode
+      : undefined;
   }, [mode, searchParams]);
 
   useEffect(() => {

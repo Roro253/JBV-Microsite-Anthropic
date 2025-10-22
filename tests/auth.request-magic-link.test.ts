@@ -35,7 +35,7 @@ describe('POST /api/auth/request-magic-link', () => {
       headers: { 'Content-Type': 'application/json' }
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     expect(response.status).toBe(200);
     const json = await response.json();
     expect(json).toEqual({ success: true });
@@ -48,7 +48,7 @@ describe('POST /api/auth/request-magic-link', () => {
       body,
       headers: { 'Content-Type': 'application/json' }
     });
-    const response = await POST(request as any);
+    const response = await POST(request);
     expect(response.status).toBe(403);
     const json = await response.json();
     expect(json.code).toBe('unauthorized');
