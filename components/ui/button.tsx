@@ -18,7 +18,9 @@ const buttonVariants = cva(
         ghost:
           "text-slate-600 hover:bg-sky-100/60 hover:text-sky-700",
         destructive:
-          "bg-rose-500 text-white hover:bg-rose-400"
+          "bg-rose-500 text-white hover:bg-rose-400",
+        link:
+          "border-transparent bg-transparent text-sky-600 hover:text-sky-700 hover:underline"
       },
       size: {
         default: "h-11 px-6",
