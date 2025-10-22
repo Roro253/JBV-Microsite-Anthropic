@@ -5,7 +5,7 @@ const AIRTABLE_API_URL = "https://api.airtable.com/v0";
 function getEnv(name: string) {
   const value = process.env[name];
   if (!value) {
-    throw new IntegrationError("analytics-airtable", `${name} is not configured.`);
+    throw new IntegrationError("airtable", `${name} is not configured.`);
   }
   return value;
 }
@@ -32,7 +32,7 @@ async function postRecord({
   if (!response.ok) {
     const text = await response.text().catch(() => "");
     console.warn("[analytics-airtable] failed to post record", response.status, text.slice(0, 240));
-    throw new IntegrationError("analytics-airtable", `Failed to post record (status ${response.status})`);
+    throw new IntegrationError("airtable", `Failed to post record (status ${response.status})`);
   }
 }
 
