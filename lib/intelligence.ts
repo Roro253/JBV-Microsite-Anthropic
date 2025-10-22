@@ -103,7 +103,7 @@ const feedEntrySchema = z.object({
   bot: botSchema
 });
 
-const intelligenceStoreSchema = z.record(feedEntrySchema);
+const intelligenceStoreSchema = z.record(z.string(), feedEntrySchema);
 
 export type IntelligenceFeedEntry = z.infer<typeof feedEntrySchema>;
 export type IntelligenceCard = z.infer<typeof cardSchema>;
