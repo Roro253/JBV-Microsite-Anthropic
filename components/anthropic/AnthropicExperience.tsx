@@ -16,6 +16,7 @@ import AnthropicInvestmentDashboard from "@/components/AnthropicInvestmentDashbo
 import { ExplorerBackdrop } from "@/components/ExplorerBackdrop";
 import { MicrositeIntelligenceView } from "@/components/intelligence/MicrositeIntelligenceView";
 import { MicrositeModeTransition } from "@/components/MicrositeModeTransition";
+import { ModeToggle } from "@/components/ModeToggle";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useUIStore } from "@/lib/store/ui";
 import { formatCurrency } from "@/lib/utils";
@@ -338,8 +339,17 @@ export function AnthropicExperience({ data, fundModel, intelligence }: Anthropic
   );
 
   return (
-    <MicrositeModeTransition mode={mode}>
-      {mode === "intelligence" ? intelligenceContent : defaultContent}
-    </MicrositeModeTransition>
+    <div className="flex flex-col gap-8">
+      <div className="w-full sm:max-w-xl">
+        <ModeToggle className="w-full" />
+      </div>
+      <MicrositeModeTransition
+        mode={mode}
+        labelledById={`mode-tab-${mode}`}
+        panelId={`mode-panel-${mode}`}
+      >
+        {mode === "intelligence" ? intelligenceContent : defaultContent}
+      </MicrositeModeTransition>
+    </div>
   );
 }

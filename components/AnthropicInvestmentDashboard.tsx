@@ -18,7 +18,13 @@ import { ExternalLink, Info } from "lucide-react";
 
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import type { AnthFundModel } from "@/lib/anthropicFundModel";
-import { formatPct, formatUSDShort, grossProceeds, investedAfterFee, jbvCarry } from "@/lib/format";
+import {
+  formatPct,
+  formatUSDShort,
+  grossProceeds,
+  investedAfterFee,
+  jbvCarry
+} from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -32,6 +38,13 @@ import {
 } from "@/components/ui/tooltip";
 
 const STORAGE_KEY = "jbv:anthropic:fundmodel:v1";
+
+const formatScenarioPct = (value?: number | null) => {
+  if (value === null || value === undefined || Number.isNaN(value)) {
+    return "—";
+  }
+  return formatPct(value * 100, { sign: true });
+};
 
 const MULTIPLE_MIN = 10;
 const MULTIPLE_MAX = 30;
@@ -341,8 +354,8 @@ export default function AnthropicInvestmentDashboard({ fundModel }: AnthropicInv
               />
             </label>
             <div className="flex flex-wrap gap-2 text-xs text-slate-500">
-              <Badge variant="outline">Mgmt fee {formatPct(mgmtFeePct * 100)}</Badge>
-              <Badge variant="outline">Carry {formatPct(carryPct * 100)}</Badge>
+              <Badge variant="outline">Mgmt fee {formatScenarioPct(mgmtFeePct)}</Badge>
+              <Badge variant="outline">Carry {formatScenarioPct(carryPct)}</Badge>
             </div>
           </div>
           <ul className="grid gap-2 text-sm text-slate-600">
@@ -522,7 +535,7 @@ export default function AnthropicInvestmentDashboard({ fundModel }: AnthropicInv
                 <Row label="Invested after fee" value={formatUSDShort(invested)} />
                 <Row label="Gross proceeds" value={formatUSDShort(gross)} />
                 <Row label="Gross profit" value={formatUSDShort(grossProfit)} />
-                <Row label="Carry ({formatPct(carryPct * 100)})" value={formatUSDShort(carry)} />
+                <Row label={`Carry (${formatScenarioPct(carryPct)})`} value={formatUSDShort(carry)} />
                 <Row label="Net to investors" value={formatUSDShort(net)} />
                 <Row label="Net MoM" value={`${netMoM.toFixed(2)}×`} />
               </tbody>

@@ -27,6 +27,13 @@ export function formatPct(value?: number | null): string {
   return `${sign}${value.toFixed(0)}%`;
 }
 
+export function formatPctFromDecimal(value?: number | null): string {
+  if (value === null || value === undefined || Number.isNaN(value)) {
+    return "—";
+  }
+  return formatPct(value * 100);
+}
+
 export function daysUntil(iso?: string | null): number | null {
   if (!iso) return null;
   const closing = new Date(iso).getTime();

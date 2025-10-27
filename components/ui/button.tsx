@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-full border border-transparent text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60",
+  "inline-flex min-h-[var(--button-min-height)] items-center justify-center gap-[var(--gap-2)] whitespace-nowrap rounded-[var(--radius-lg)] border border-transparent px-[var(--pad-x-3)] py-[var(--pad-y-2)] text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 [&>svg]:h-[var(--icon-size)] [&>svg]:w-[var(--icon-size)] [&>svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -23,10 +23,10 @@ const buttonVariants = cva(
           "border-transparent bg-transparent text-sky-600 hover:text-sky-700 hover:underline"
       },
       size: {
-        default: "h-11 px-6",
-        sm: "h-9 px-4 text-xs",
-        lg: "h-12 px-8 text-base",
-        icon: "h-10 w-10"
+        default: "text-sm",
+        sm: "min-h-[2.5rem] px-4 text-xs",
+        lg: "min-h-[3rem] px-6 text-base",
+        icon: "min-h-[var(--button-min-height)] px-0 [&>svg]:mx-auto"
       }
     },
     defaultVariants: {

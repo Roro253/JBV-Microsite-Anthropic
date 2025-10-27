@@ -9,7 +9,7 @@
     "round": "Series F",
     "valuation_usd": 183000000000,
     "valuation_as_of": "2025-09-02",
-  "run_rate_revenue_usd": 9000000000,
+    "run_rate_revenue_usd": 5000000000,
     "run_rate_as_of": "2025-08-15",
     "growth_12m_pct": 400,
     "closing_date": "2025-11-15",
