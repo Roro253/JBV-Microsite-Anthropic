@@ -17,6 +17,7 @@ import type { OpenAiData } from "@/lib/data";
 import type { FundModel } from "@/lib/openaiFundModel";
 import OpenAIInvestmentDashboard from "@/components/OpenAIInvestmentDashboard";
 import { ExplorerBackdrop } from "@/components/ExplorerBackdrop";
+import { ModeToggle } from "@/components/ModeToggle";
 import { MicrositeModeTransition } from "@/components/MicrositeModeTransition";
 import { MicrositeIntelligenceView } from "@/components/intelligence/MicrositeIntelligenceView";
 import type { IntelligenceFeedEntry } from "@/lib/intelligence";
@@ -276,9 +277,18 @@ export function OpenAIExperience({ data, fundModel, intelligence }: OpenAIExperi
   );
 
   return (
-    <MicrositeModeTransition mode={mode}>
-      {mode === "intelligence" ? intelligenceContent : defaultContent}
-    </MicrositeModeTransition>
+    <div className="flex flex-col gap-8">
+      <div className="w-full sm:max-w-xl">
+        <ModeToggle className="w-full" />
+      </div>
+      <MicrositeModeTransition
+        mode={mode}
+        labelledById={`mode-tab-${mode}`}
+        panelId={`mode-panel-${mode}`}
+      >
+        {mode === "intelligence" ? intelligenceContent : defaultContent}
+      </MicrositeModeTransition>
+    </div>
   );
 }
 

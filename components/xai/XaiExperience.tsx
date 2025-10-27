@@ -331,9 +331,18 @@ export function XaiExperience({ data, fundModel, intelligence }: XaiExperiencePr
 
   return (
     <TooltipProvider>
-      <MicrositeModeTransition mode={mode}>
-        {mode === "intelligence" ? intelligenceContent : investorExplorerContent}
-      </MicrositeModeTransition>
+      <div className="flex flex-col gap-8">
+        <div className="w-full sm:max-w-xl">
+          <ModeToggle className="w-full" />
+        </div>
+        <MicrositeModeTransition
+          mode={mode}
+          labelledById={`mode-tab-${mode}`}
+          panelId={`mode-panel-${mode}`}
+        >
+          {mode === "intelligence" ? intelligenceContent : investorExplorerContent}
+        </MicrositeModeTransition>
+      </div>
     </TooltipProvider>
   );
 }
@@ -367,18 +376,15 @@ function ModePrimer({
       className="mt-4 flex flex-col gap-3 rounded-3xl border border-sky-200/70 bg-white/85 p-4 text-slate-700 shadow-[0_26px_60px_-48px_rgba(15,23,42,0.35)]"
       aria-live="polite"
     >
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600">
-            Choose your lens
-          </p>
-          <p className="text-sm text-slate-600">
-            You&apos;re viewing the {" "}
-            <span className="font-semibold text-slate-800">{activeLabel}</span>{" "}
-            perspective. Switch anytime to reframe the story.
-          </p>
-        </div>
-        <ModeToggle className="self-start shadow-none sm:self-auto" />
+      <div className="space-y-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600">
+          Choose your lens
+        </p>
+        <p className="text-sm text-slate-600">
+          You&apos;re viewing the {" "}
+          <span className="font-semibold text-slate-800">{activeLabel}</span>{" "}
+          perspective. Use the mode switch above anytime to reframe the story.
+        </p>
       </div>
       {showDetails ? (
         <div className="space-y-3 rounded-2xl border border-sky-100 bg-white/90 p-4 text-sm text-slate-600">
