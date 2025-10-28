@@ -6,7 +6,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 
-import { ModeToggle } from "@/components/ModeToggle";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useUIStore, type ExplorerInvestorMode } from "@/lib/store/ui";
 import { cn } from "@/lib/utils";
@@ -171,7 +170,6 @@ export function PaneShell({ company, mode, children }: PaneShellProps) {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <ModeToggle animate={!prefersReducedMotion} />
             <button
               type="button"
               onClick={handleClose}

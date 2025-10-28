@@ -45,6 +45,13 @@ import type { XFundModel } from "@/lib/xaiFundModel";
 
 const STORAGE_KEY = "jbv:xai:fundmodel:v1";
 
+const formatScenarioPct = (value?: number | null) => {
+  if (value === null || value === undefined || Number.isNaN(value)) {
+    return "—";
+  }
+  return formatPct(value * 100, { sign: true });
+};
+
 type PersistedState = {
   year: number;
   multiple: number;
@@ -535,10 +542,10 @@ export default function XAIInvestmentDashboard({ fundModel }: XAIInvestmentDashb
             )}
             <div className="flex flex-wrap gap-2 text-xs text-slate-600">
               <span className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 font-semibold text-sky-700">
-                Mgmt fee {formatPct(mgmtFee * 100)}
+                Mgmt fee {formatScenarioPct(mgmtFee)}
               </span>
               <span className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 font-semibold text-sky-700">
-                Carry {formatPct(carryPct * 100)}
+                Carry {formatScenarioPct(carryPct)}
               </span>
             </div>
           </div>

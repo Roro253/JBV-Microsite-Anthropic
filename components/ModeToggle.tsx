@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import * as ToggleGroup from "@radix-ui/react-toggle-group";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useUIStore, type ExplorerInvestorMode } from "@/lib/store/ui";
 import { cn } from "@/lib/utils";
 
@@ -17,16 +15,14 @@ const modes: { value: ExplorerInvestorMode; label: string }[] = [
 
 interface ModeToggleProps {
   className?: string;
-  animate?: boolean;
 }
 
-export function ModeToggle({ className, animate = true }: ModeToggleProps) {
+export function ModeToggle({ className }: ModeToggleProps) {
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const prefersReducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   const paneSlug = searchParams?.get("pane");
   const isMicrositePath =
@@ -38,6 +34,8 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
       ? urlModeParam
       : undefined;
   const hasSyncedRef = useRef(false);
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const panelIds = useMemo(() => modes.map((item) => `mode-panel-${item.value}`), []);
 
   useEffect(() => {
     setMounted(true);
@@ -66,9 +64,7 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
     }
   }, [effectiveUrlMode, isMicrositeRoute, mode, mounted, setMode]);
 
-  const handleChange = (value: string) => {
-    if (!value) return;
-    const nextMode = value as ExplorerInvestorMode;
+  const handleSelectionChange = (nextMode: ExplorerInvestorMode) => {
     if (nextMode === mode) return;
     setMode(nextMode);
 
@@ -99,73 +95,57 @@ export function ModeToggle({ className, animate = true }: ModeToggleProps) {
     return null;
   }
 
-  const shouldAnimate = animate && !prefersReducedMotion;
-  const indicatorIndex = Math.max(
-    0,
-    modes.findIndex((item) => item.value === mode)
-  );
-  const indicatorWidth = 100 / modes.length;
+  const focusTab = (index: number) => {
+    tabRefs.current[index]?.focus();
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") {
+      return;
+    }
+    event.preventDefault();
+    const direction = event.key === "ArrowRight" ? 1 : -1;
+    const nextIndex = (index + direction + modes.length) % modes.length;
+    focusTab(nextIndex);
+    const nextMode = modes[nextIndex].value;
+    handleSelectionChange(nextMode);
+  };
 
   return (
-    <ToggleGroup.Root
-      type="single"
-      aria-label="Toggle explorer or investor mode"
-      value={mounted ? mode : undefined}
-      onValueChange={handleChange}
+    <div
+      role="tablist"
+      aria-label="Select microsite mode"
       className={cn(
-        "relative flex w-auto items-center gap-1 overflow-hidden rounded-full border border-sky-200 bg-white/70 p-1 text-sm text-slate-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6)] backdrop-blur",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70",
+        "relative flex w-full flex-col gap-2 rounded-[var(--radius-xl)] border border-sky-200 bg-white/80 p-2 text-sm text-slate-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.65)] backdrop-blur sm:flex-row sm:gap-0",
         className
       )}
     >
-      <AnimatePresence initial={false}>
-        {mounted && shouldAnimate ? (
-          <motion.span
-            key={mode}
-            layoutId="mode-toggle-indicator"
-            className="absolute inset-y-1 rounded-full bg-gradient-to-r from-sky-300/70 via-indigo-300/60 to-sky-400/70"
-            style={{ width: `${indicatorWidth}%` }}
-            initial={{ opacity: 0.4, x: 0 }}
-            animate={{
-              opacity: 1,
-              x: `${indicatorIndex * 100}%`
-            }}
-            exit={{ opacity: 0 }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 30,
-              mass: 0.8
-            }}
-          />
-        ) : null}
-      </AnimatePresence>
-      {!shouldAnimate && mounted ? (
-        <span
-          className="absolute inset-y-1 rounded-full bg-sky-300/40 transition-transform duration-200"
-          style={{
-            width: `${indicatorWidth}%`,
-            transform: `translateX(${indicatorIndex * 100}%)`
-          }}
-          aria-hidden
-        />
-      ) : null}
-
-      {modes.map((item) => (
-        <ToggleGroup.Item
+      {modes.map((item, index) => (
+        <button
           key={item.value}
-          value={item.value}
+          ref={(node) => {
+            tabRefs.current[index] = node;
+          }}
+          role="tab"
+          id={`mode-tab-${item.value}`}
+          aria-controls={panelIds[index]}
+          aria-selected={mode === item.value}
+          tabIndex={mode === item.value ? 0 : -1}
           className={cn(
-            "relative z-10 flex min-w-[120px] items-center justify-center gap-1 rounded-full px-4 py-2 font-medium transition-colors",
-            item.value === mode
-              ? "text-sky-700 after:opacity-100 after:scale-x-100"
-              : "text-slate-400 hover:text-sky-600 after:opacity-0 after:scale-x-75",
-            "after:absolute after:bottom-1 after:left-6 after:right-6 after:h-0.5 after:rounded-full after:bg-sky-500 after:transition after:duration-300 after:ease-out"
+            "relative z-10 flex flex-1 items-center justify-center gap-2 rounded-[var(--radius-lg)] px-4 py-2 font-medium transition-colors sm:min-w-0",
+            mode === item.value
+              ? "text-sky-700 font-semibold after:opacity-100"
+              : "text-slate-500 hover:text-sky-600 after:opacity-0",
+            "after:absolute after:bottom-1 after:left-6 after:right-6 after:h-0.5 after:rounded-full after:bg-sky-500 after:transition after:duration-200 after:ease-out"
           )}
+          onClick={() => handleSelectionChange(item.value)}
+          onKeyDown={(event) => handleKeyDown(event, index)}
         >
-          {item.label} Mode
-        </ToggleGroup.Item>
+          <span className="truncate-ellipsis">
+            {item.label}
+          </span>
+        </button>
       ))}
-    </ToggleGroup.Root>
+    </div>
   );
 }
